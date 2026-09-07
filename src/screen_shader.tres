@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://do2kxidtqc3ki"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_gh0ne"]
+viewport_path = NodePath("../SubViewport")
+
+[resource]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_gh0ne")
+metallic = 1.0
+metallic_specular = 0.56
+texture_filter = 0

@@ -1,0 +1,113 @@
+[gd_scene format=3 uid="uid://ddaamrwug6xyd"]
+
+[ext_resource type="PackedScene" uid="uid://3qluagwwy56t" path="res://src/computer.tscn" id="1_eewff"]
+[ext_resource type="Script" uid="uid://d2kqtpi3v5r60" path="res://src/computer.gd" id="2_5q4o7"]
+[ext_resource type="PackedScene" uid="uid://c7oa26urw2rkr" path="res://src/os.tscn" id="2_gh0ne"]
+
+[sub_resource type="Environment" id="Environment_01wwf"]
+background_mode = 1
+ambient_light_source = 2
+ambient_light_color = Color(0.34, 0.34, 0.34, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_5q4o7"]
+viewport_path = NodePath("../SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3cfgd"]
+resource_local_to_scene = true
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_5q4o7")
+texture_filter = 1
+
+[sub_resource type="Animation" id="Animation_eewff"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-5.6341822e-08, 0.6976586, 0.15864186)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.14996031, 3.1415925, 2.8954847e-08)]
+}
+
+[sub_resource type="Animation" id="Animation_gh0ne"]
+resource_name = "camera_in"
+length = 3.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(2.278615e-08, 0.8488608, -0.3513403), Vector3(-5.943766e-08, 0.61543655, 0.12322961)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-0.43957496, 3.1415925, 3.1637583e-08), Vector3(0, 3.1415927, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5q4o7"]
+_data = {
+&"RESET": SubResource("Animation_eewff"),
+&"camera_in": SubResource("Animation_gh0ne")
+}
+
+[node name="Node3D" type="Node3D" unique_id=1440675962]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=540544675]
+transform = Transform3D(-1, 6.3962386e-09, 1.493011e-07, 2.8629886e-08, 0.9887765, 0.14939882, -1.4666998e-07, 0.14939882, -0.9887765, -5.6341822e-08, 0.6976586, 0.15864186)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=564316047]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0477078, 0.17795596)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=371054119]
+environment = SubResource("Environment_01wwf")
+
+[node name="Computer" parent="." unique_id=2079385045 instance=ExtResource("1_eewff")]
+script = ExtResource("2_5q4o7")
+
+[node name="Screen" parent="Computer" index="1" unique_id=1909088440]
+surface_material_override/0 = SubResource("StandardMaterial3D_3cfgd")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=78349408]
+libraries/ = SubResource("AnimationLibrary_5q4o7")
+autoplay = &"camera_in"
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=2070214338]
+scaling_3d_mode = 5
+anisotropic_filtering_level = 0
+fsr_sharpness = 0.0
+canvas_item_default_texture_filter = 0
+size = Vector2i(1024, 1024)
+
+[node name="Os" parent="SubViewport" unique_id=471898743 instance=ExtResource("2_gh0ne")]
+
+[editable path="Computer"]

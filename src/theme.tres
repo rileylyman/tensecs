@@ -1,0 +1,25 @@
+[gd_resource type="Theme" format=3 uid="uid://cy365sb7aygxo"]
+
+[ext_resource type="FontFile" uid="uid://nhuqlgrjhboq" path="res://assets/AcPlus_IBM_VGA_8x16.ttf" id="1_if6vc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rlt6q"]
+bg_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_01wwf"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[resource]
+default_font = ExtResource("1_if6vc")
+InvertedLabel/base_type = &"Label"
+InvertedLabel/colors/font_color = Color(0, 0, 0, 1)
+InvertedLabel/colors/font_outline_color = Color(0, 0, 0, 1)
+InvertedLabel/constants/outline_size = 2
+InvertedLabel/styles/normal = SubResource("StyleBoxFlat_rlt6q")
+Label/colors/font_color = Color(0.53133345, 1, 0.24000001, 1)
+Label/font_sizes/font_size = 48
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_01wwf")

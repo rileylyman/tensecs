@@ -1,0 +1,10 @@
+# Godot 4+ specific ignores
+.godot/
+.vscode/
+/android/
+builds/
+priv/
+**/__pycache__
+**/*.blend[1-9]
+**/*.rpp-bak
+assets/reaper/Backups

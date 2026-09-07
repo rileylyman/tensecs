@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://3qluagwwy56t"]
+
+[ext_resource type="PackedScene" uid="uid://bnfq4xpcn3yom" path="res://assets/gltf/Computer.glb" id="1_pl170"]
+[ext_resource type="Texture2D" uid="uid://dwjg7hfdlrb35" path="res://assets/vendor/Computer/Computer.fbm/Computer.png" id="2_y8nn6"]
+[ext_resource type="Texture2D" uid="uid://c4oo0hm0fq5wx" path="res://assets/vendor/Computer/Computer.fbm/Keyboard.png" id="3_wwy5b"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p1ebi"]
+albedo_texture = ExtResource("2_y8nn6")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gh0ne"]
+albedo_texture = ExtResource("3_wwy5b")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wwy5b"]
+albedo_texture = ExtResource("2_y8nn6")
+metallic = 1.0
+
+[node name="Computer" unique_id=2079385045 instance=ExtResource("1_pl170")]
+
+[node name="Computer" parent="." index="0" unique_id=371170896]
+surface_material_override/0 = SubResource("StandardMaterial3D_p1ebi")
+surface_material_override/1 = SubResource("StandardMaterial3D_gh0ne")
+
+[node name="Screen-Template" parent="." index="2" unique_id=1639809575]
+visible = false
+surface_material_override/0 = SubResource("StandardMaterial3D_wwy5b")
