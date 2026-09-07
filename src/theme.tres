@@ -1,6 +1,9 @@
 [gd_resource type="Theme" format=3 uid="uid://cy365sb7aygxo"]
 
 [ext_resource type="FontFile" uid="uid://nhuqlgrjhboq" path="res://assets/AcPlus_IBM_VGA_8x16.ttf" id="1_if6vc"]
+[ext_resource type="FontFile" uid="uid://ici2yg2165st" path="res://assets/Ac437_IBM_VGA_8x16-2x.ttf" id="1_ssy0u"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rlt6q"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rlt6q"]
 bg_color = Color(0.53133345, 1, 0.24000001, 1)
@@ -13,13 +16,24 @@ border_width_right = 4
 border_width_bottom = 4
 border_color = Color(0.53133345, 1, 0.24000001, 1)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_01wwf"]
+
 [resource]
 default_font = ExtResource("1_if6vc")
+HSeparator/styles/separator = SubResource("StyleBoxEmpty_rlt6q")
 InvertedLabel/base_type = &"Label"
 InvertedLabel/colors/font_color = Color(0, 0, 0, 1)
 InvertedLabel/colors/font_outline_color = Color(0, 0, 0, 1)
 InvertedLabel/constants/outline_size = 2
 InvertedLabel/styles/normal = SubResource("StyleBoxFlat_rlt6q")
 Label/colors/font_color = Color(0.53133345, 1, 0.24000001, 1)
-Label/font_sizes/font_size = 48
+Label/font_sizes/font_size = 32
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_01wwf")
+RichTextLabel/colors/default_color = Color(0.53133345, 1, 0.24000001, 1)
+RichTextLabel/font_sizes/bold_font_size = 32
+RichTextLabel/font_sizes/bold_italics_font_size = 32
+RichTextLabel/font_sizes/italics_font_size = 32
+RichTextLabel/font_sizes/mono_font_size = 32
+RichTextLabel/font_sizes/normal_font_size = 32
+RichTextLabel/fonts/bold_font = ExtResource("1_ssy0u")
+VSeparator/styles/separator = SubResource("StyleBoxEmpty_01wwf")

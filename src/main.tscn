@@ -9,15 +9,6 @@ background_mode = 1
 ambient_light_source = 2
 ambient_light_color = Color(0.34, 0.34, 0.34, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_5q4o7"]
-viewport_path = NodePath("../SubViewport")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3cfgd"]
-resource_local_to_scene = true
-shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_5q4o7")
-texture_filter = 1
-
 [sub_resource type="Animation" id="Animation_eewff"]
 length = 0.001
 tracks/0/type = "value"
@@ -73,6 +64,23 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector3(-0.43957496, 3.1415925, 3.1637583e-08), Vector3(0, 3.1415927, 0)]
 }
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Os")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [false],
+"method": &"show_self"
+}, {
+"args": [true],
+"method": &"show_self"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5q4o7"]
 _data = {
@@ -83,7 +91,7 @@ _data = {
 [node name="Node3D" type="Node3D" unique_id=1440675962]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=540544675]
-transform = Transform3D(-1, 6.3962386e-09, 1.493011e-07, 2.8629886e-08, 0.9887765, 0.14939882, -1.4666998e-07, 0.14939882, -0.9887765, -5.6341822e-08, 0.6976586, 0.15864186)
+transform = Transform3D(-1, 6.3962378e-09, 1.4930109e-07, 2.8629886e-08, 0.9887764, 0.1493988, -1.4666998e-07, 0.1493988, -0.9887764, -5.6341822e-08, 0.6976586, 0.15864186)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=564316047]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0477078, 0.17795596)
@@ -95,19 +103,16 @@ environment = SubResource("Environment_01wwf")
 script = ExtResource("2_5q4o7")
 
 [node name="Screen" parent="Computer" index="1" unique_id=1909088440]
-surface_material_override/0 = SubResource("StandardMaterial3D_3cfgd")
+visible = false
+
+[node name="Screen-Template" parent="Computer" index="2" unique_id=1019529331]
+visible = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=78349408]
 libraries/ = SubResource("AnimationLibrary_5q4o7")
 autoplay = &"camera_in"
 
-[node name="SubViewport" type="SubViewport" parent="." unique_id=2070214338]
-scaling_3d_mode = 5
-anisotropic_filtering_level = 0
-fsr_sharpness = 0.0
-canvas_item_default_texture_filter = 0
-size = Vector2i(1024, 1024)
-
-[node name="Os" parent="SubViewport" unique_id=471898743 instance=ExtResource("2_gh0ne")]
+[node name="Os" parent="." unique_id=471898743 instance=ExtResource("2_gh0ne")]
+visible = false
 
 [editable path="Computer"]

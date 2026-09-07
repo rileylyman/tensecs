@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bf3b765n283fk"]
+
+[ext_resource type="Script" uid="uid://dc6gxqknqty4n" path="res://src/list_element.gd" id="1_f13mx"]
+
+[node name="Label" type="Label" unique_id=1308441327]
+offset_right = 169.0
+offset_bottom = 23.0
+text = " > Admin Console Info"
+script = ExtResource("1_f13mx")
+metadata/_custom_type_script = "uid://dc6gxqknqty4n"
