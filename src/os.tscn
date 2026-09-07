@@ -13,6 +13,8 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.53133345, 1, 0.24000001, 1)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_01wwf"]
+
 [node name="Os" type="Control" unique_id=471898743]
 layout_mode = 3
 anchors_preset = 15
@@ -94,9 +96,198 @@ text = " > View Facility Map"
 layout_mode = 2
 text = " > Successful Query Log"
 
-[node name="AboutContainer" type="MarginContainer" parent="." unique_id=2131062049]
+[node name="QueryContainer" type="Control" parent="." unique_id=37906816]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label2" type="Label" parent="QueryContainer" unique_id=299607268]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -147.0
+offset_top = -64.0
+offset_right = 147.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Mon, Feb 23"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="QueryContainer" unique_id=8866613]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -147.0
+offset_top = -35.0
+offset_right = 147.0
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "At 7:32pm"
+horizontal_alignment = 1
+
+[node name="DateContainer" type="PanelContainer" parent="QueryContainer" unique_id=2142755883]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -159.0
+offset_top = -125.0
+offset_right = 159.0
+offset_bottom = -69.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="QueryContainer/DateContainer" unique_id=98518959]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="QueryContainer/DateContainer/VBoxContainer" unique_id=1698251796]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="QueryContainer/DateContainer/VBoxContainer/MarginContainer" unique_id=1792031657]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Year" type="Label" parent="QueryContainer/DateContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=2005583346]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1642"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="QueryContainer/DateContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=2073177236]
+layout_mode = 2
+text = " / "
+horizontal_alignment = 1
+
+[node name="Month" type="Label" parent="QueryContainer/DateContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=266770666]
+unique_name_in_owner = true
+layout_mode = 2
+text = "01"
+horizontal_alignment = 1
+
+[node name="Label4" type="Label" parent="QueryContainer/DateContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=284994449]
+layout_mode = 2
+text = " / "
+horizontal_alignment = 1
+
+[node name="Day" type="Label" parent="QueryContainer/DateContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1372033357]
+unique_name_in_owner = true
+layout_mode = 2
+text = "01"
+horizontal_alignment = 1
+
+[node name="Label6" type="Label" parent="QueryContainer/DateContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=354420016]
+layout_mode = 2
+text = " - "
+horizontal_alignment = 1
+
+[node name="Hour" type="Label" parent="QueryContainer/DateContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1845196446]
+unique_name_in_owner = true
+layout_mode = 2
+text = "00"
+horizontal_alignment = 1
+
+[node name="Label8" type="Label" parent="QueryContainer/DateContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=890749804]
+layout_mode = 2
+text = ":"
+horizontal_alignment = 1
+
+[node name="Minute" type="Label" parent="QueryContainer/DateContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1443072908]
+unique_name_in_owner = true
+layout_mode = 2
+text = "00"
+horizontal_alignment = 1
+
+[node name="SearchBar" type="Control" parent="QueryContainer" unique_id=316799382]
 unique_name_in_owner = true
 visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label4" type="Label" parent="QueryContainer/SearchBar" unique_id=856817979]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -147.0
+offset_top = 32.0
+offset_right = 147.0
+offset_bottom = 56.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "Searching"
+horizontal_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="QueryContainer/SearchBar" unique_id=1208207418]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.00002
+offset_top = 60.0
+offset_right = 150.00002
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+show_percentage = false
+indeterminate = true
+editor_preview_indeterminate = true
+
+[node name="OutcomeMsg" type="Label" parent="QueryContainer" unique_id=1929440161]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.5
+offset_top = 50.0
+offset_right = 180.5
+offset_bottom = 78.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+text = "<No Results Found>"
+horizontal_alignment = 1
+
+[node name="AboutContainer" type="MarginContainer" parent="." unique_id=2131062049]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -124,15 +315,15 @@ theme_override_constants/margin_bottom = 16
 [node name="RichTextLabel" type="RichTextLabel" parent="AboutContainer/PanelContainer/MarginContainer" unique_id=103126932]
 layout_mode = 2
 bbcode_enabled = true
-text = "Welcome, [u]Felxi092[/u], to the [b][u]SubMariner[/u][/b] administration and security checkpoint management console.
+text = "Welcome, Felxi092, to the [b][u]SubMariner[/u][/b] security management console.
 
 Using this interface, authorized personnel may
   	 Review security camera footage and attached audio transcripts
   	 View up-to-date facility floor plans
-  	 [s]Control and configure lock-down and other security measures[/s]
-       	 [u]1645/02/15:[/u] Control matrix deactivated by external override
+  	 [s]Manage security counter-measures[/s]
+       	 [u]1642/11/15 03:12[/u] Control matrix deactivated by external override
 
-[u]Please note:[/u] starting 1642/01/01, to preserve storage longevity, security cameras will only capture snapshots [u]once every ten seconds[/u], and only if motion is detected.
+[u]Please note:[/u] starting 1642/01/01, to preserve storage longevity, security cameras will only capture snapshots [u]once every ten seconds[/u], and only if motion is detected. All data before that point has been wiped.
 "
 
 [node name="LoginPortal" type="MarginContainer" parent="." unique_id=263114693]
@@ -239,7 +430,6 @@ text = " To Continue"
 
 [node name="TopTitle" type="Label" parent="." unique_id=1951740952]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -247,7 +437,7 @@ offset_top = 25.0
 offset_bottom = 89.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 64
-text = "Admin Home"
+text = "Date/Time Query"
 horizontal_alignment = 1
 
 [node name="BottomHelp" type="HBoxContainer" parent="." unique_id=383177332]
@@ -265,6 +455,7 @@ theme_override_constants/separation = 48
 alignment = 1
 
 [node name="Select" type="HBoxContainer" parent="BottomHelp" unique_id=751209315]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
 
@@ -303,6 +494,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Done" type="HBoxContainer" parent="BottomHelp" unique_id=649304928]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
 
@@ -321,7 +513,82 @@ text = "Done"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="NavigateH" type="HBoxContainer" parent="BottomHelp" unique_id=668892353]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="BottomHelp/NavigateH" unique_id=2055018656]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"InvertedLabel"
+theme_override_font_sizes/font_size = 26
+text = "    "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="BottomHelp/NavigateH/Label" unique_id=1355760603]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_type_variation = &"InvertedLabel"
+theme_override_styles/normal = SubResource("StyleBoxEmpty_01wwf")
+text = "⇆"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="BottomHelp/NavigateH" unique_id=1756448818]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Select"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Adjust" type="HBoxContainer" parent="BottomHelp" unique_id=489839253]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="BottomHelp/Adjust" unique_id=902318176]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"InvertedLabel"
+text = " ↑↓ "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="BottomHelp/Adjust" unique_id=1405371520]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Adjust"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Search" type="HBoxContainer" parent="BottomHelp" unique_id=707185509]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="BottomHelp/Search" unique_id=1395317569]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"InvertedLabel"
+text = " X "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="BottomHelp/Search" unique_id=1642731466]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Search"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Navigate" type="HBoxContainer" parent="BottomHelp" unique_id=373793193]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
 

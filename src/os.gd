@@ -3,23 +3,32 @@ extends Control
 
 enum Command {
 	Unknown,
-	QueryDate,
+	GoToQueryScreen,
 	ViewMap,
 	ViewLog,
 	ConsoleInfo,
 	GoBack,
 	Home,
+	PerformQuery,
 }
 
 enum State {
 	List,
 	About,
 	Login,
+	Query,
 }
+
+const days: Array[int] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 var _login_done := false
 var _call_stack: Array[Callable] = []
 var _list_idx := 0
+
+var _date_idx := 0
+var _is_searching := false
+@onready var _date_parts := [%Year, %Month, %Day, %Hour, %Minute]
+
 var _state := State.List:
 	set(val):
 		_state = val
@@ -30,8 +39,8 @@ const list_el: PackedScene = preload("res://src/list_element.tscn")
 
 func _ready() -> void:
 	show_self(true)
-	# display_home()
-	display_login()
+	display_home()
+	# display_login()
 
 func show_self(should_show: bool) -> void:
 	visible = should_show
@@ -45,6 +54,9 @@ func _process(_delta: float) -> void:
 		State.List:
 			for i in range(%ListElements.get_child_count()):
 				%ListElements.get_child(i).theme_type_variation = &"InvertedLabel" if i == _list_idx else &""
+		State.Query:
+			for i in range(_date_parts.size()):
+				_date_parts[i].theme_type_variation = &"InvertedLabel" if i == _date_idx else &""
 
 
 func _input(event: InputEvent) -> void:
@@ -58,6 +70,36 @@ func _input(event: InputEvent) -> void:
 				_list_idx = (_list_idx + 1) % %ListElements.get_child_count()
 			elif event.is_action_pressed("select"):
 				handle_command(%ListElements.get_child(_list_idx).command)
+		State.Query:
+			var part = _date_parts[_date_idx]
+			var n = int(part.text)
+			if part == %Month or part == %Day:
+				n -= 1
+			if event.is_action_pressed("up"):
+				n += 1
+			elif event.is_action_pressed("down"):
+				n -= 1
+			
+			if event.is_action_pressed("up") or event.is_action_pressed("down"):
+				if part != %Year:
+					var basis := 24 if part == %Hour else (60 if part == %Minute else (days[int(%Month.text) - 1] if part == %Day else (12 if part == %Month else 1)))
+					n = (n + basis) % basis
+				if part == %Month or part == %Day:
+					n += 1
+				part.text = "%02d" % n
+				if int(%Day.text) > days[int(%Month.text) - 1]:
+					%Day.text = "%02d" % (days[int(%Month.text) - 1])
+				if int(%Year.text) < 1642:
+					%Year.text = "1642"
+				elif int(%Year.text) > 1643:
+					%Year.text = "1643"
+
+			elif event.is_action_pressed("right"):
+				_date_idx = (_date_idx + 1) % _date_parts.size()
+			elif event.is_action_pressed("left"):
+				_date_idx = (_date_idx + _date_parts.size() - 1) % _date_parts.size()
+			elif event.is_action_pressed("select"):
+				handle_command(Command.PerformQuery)
 		State.About:
 			if event.is_action_pressed("select"):
 				handle_command(Command.GoBack)
@@ -77,13 +119,31 @@ func handle_command(cmd: Command) -> void:
 				_call_stack.pop_front()
 				_call_stack[0].call()
 				_call_stack.pop_front()
+		Command.PerformQuery:
+			if _state == State.Query and not _is_searching:
+				do_query()
+		Command.GoToQueryScreen:
+			display_query()
+
+
+func do_query():
+	_is_searching = true
+	%OutcomeMsg.visible = false
+	%SearchBar.visible = true
+	%SearchBar/ProgressBar.indeterminate = false
+	%SearchBar/ProgressBar.indeterminate = true
+	await get_tree().create_timer(1.0).timeout
+	%SearchBar.visible = false
+	%OutcomeMsg.visible = true
+	%OutcomeMsg.text = "<No Results Found.>"
+	_is_searching = false
 
 func display_home() -> void:
 	display_list(
 		"Admin Home", 
 		{
 			"Admin Console Info": Command.ConsoleInfo,
-			"Perform Date/Time Query": Command.QueryDate,
+			"Perform Date/Time Query": Command.GoToQueryScreen,
 			"Inspect Real-Time Data": Command.Unknown,
 			"View Facility Map": Command.ViewMap,
 			"Successful Query Log": Command.ViewLog,
@@ -95,8 +155,20 @@ func display_nothing() -> void:
 	%AboutContainer.visible = false
 	%ListContainer.visible = false
 	%LoginPortal.visible = false
+	%QueryContainer.visible = false
 	%TopTitle.visible = false
 	%BottomHelp.visible = false
+
+func display_query() -> void:
+	display_nothing()
+	_call_stack.push_front(display_query)
+	_state = State.Query
+
+	%QueryContainer.visible = true
+	%SearchBar.visible = false
+	%OutcomeMsg.visible = false
+	display_title("Camera Query")
+	display_bottom(["Back", "NavigateH", "Adjust", "Search"])
 
 func display_login() -> void:
 	display_nothing()
@@ -131,7 +203,6 @@ func display_list(title: String, options: Dictionary[String, Command], keys: Arr
 	display_nothing()
 	_call_stack.push_front(display_list.bind(title, options, keys))
 	_state = State.List
-	_list_idx = 0
 
 	%ListContainer.visible = true
 	display_title(title)

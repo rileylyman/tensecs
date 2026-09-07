@@ -16,6 +16,15 @@ border_width_right = 4
 border_width_bottom = 4
 border_color = Color(0.53133345, 1, 0.24000001, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ssy0u"]
+bg_color = Color(0.06376001, 0.12, 0.028800001, 1)
+border_width_left = 4
+border_width_right = 4
+border_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rnpv8"]
+bg_color = Color(0.53133345, 1, 0.24000001, 1)
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_01wwf"]
 
 [resource]
@@ -29,6 +38,8 @@ InvertedLabel/styles/normal = SubResource("StyleBoxFlat_rlt6q")
 Label/colors/font_color = Color(0.53133345, 1, 0.24000001, 1)
 Label/font_sizes/font_size = 32
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_01wwf")
+ProgressBar/styles/background = SubResource("StyleBoxFlat_ssy0u")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_rnpv8")
 RichTextLabel/colors/default_color = Color(0.53133345, 1, 0.24000001, 1)
 RichTextLabel/font_sizes/bold_font_size = 32
 RichTextLabel/font_sizes/bold_italics_font_size = 32
