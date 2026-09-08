@@ -304,7 +304,6 @@ horizontal_alignment = 1
 
 [node name="AboutContainer" type="MarginContainer" parent="." unique_id=2131062049]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -340,11 +339,12 @@ Using this interface, authorized personnel may
   	 [s]Manage security counter-measures[/s]
        	 [u]Nov 15, 3:12am[/u] Error: Control matrix disabled by external override
 
-[u]Please note:[/u] starting 1642/01/01, to preserve storage longevity, security cameras will only capture snapshots [u]once every ten seconds[/u], and only if motion is detected. All data before that point has been wiped.
+[u]Please note:[/u] starting January 1642, to preserve storage longevity, security cameras will only capture still-frame snapshots [u]once every ten seconds[/u], and only if motion is detected.
 "
 
 [node name="ImageContainer" type="Control" parent="." unique_id=170892621]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

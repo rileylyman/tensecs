@@ -43,8 +43,8 @@ const list_el: PackedScene = preload("res://src/list_element.tscn")
 
 func _ready() -> void:
 	show_self(true)
-	display_image()
-	# display_home()
+	# display_image()
+	display_home()
 	# display_login()
 
 func show_self(should_show: bool) -> void:
@@ -148,6 +148,8 @@ func handle_command(cmd: Command) -> void:
 			display_about()
 		Command.Home:
 			display_home()
+		Command.ViewLog:
+			display_image()
 		Command.GoBack:
 			if _call_stack.size() > 1:
 				_call_stack.pop_front()
