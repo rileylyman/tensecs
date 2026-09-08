@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://b508iyr2yk0h" path="res://src/os.gd" id="2_e6663"]
 [ext_resource type="PackedScene" uid="uid://bf3b765n283fk" path="res://src/list_element.tscn" id="4_mvs76"]
 [ext_resource type="Shader" uid="uid://ne4cxxwktoov" path="res://src/greyscale_image.gdshader" id="5_nypig"]
+[ext_resource type="Script" uid="uid://b2howx6swswgq" path="res://src/mail.gd" id="6_nypig"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k4k8l"]
 bg_color = Color(0, 0, 0, 1)
@@ -63,7 +64,6 @@ color = Color(0, 0, 0, 1)
 
 [node name="ListContainer" type="MarginContainer" parent="." unique_id=519687065]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -104,6 +104,12 @@ text = " > View Facility Map"
 [node name="Label4" type="Label" parent="ListContainer/PanelContainer/ListElements" unique_id=1542221148]
 layout_mode = 2
 text = " > Successful Query Log"
+
+[node name="EmptyLabel" type="Label" parent="ListContainer/PanelContainer" unique_id=704967834]
+unique_name_in_owner = true
+layout_mode = 2
+text = "<No results found>"
+horizontal_alignment = 1
 
 [node name="QueryContainer" type="Control" parent="." unique_id=37906816]
 unique_name_in_owner = true
@@ -304,6 +310,7 @@ horizontal_alignment = 1
 
 [node name="AboutContainer" type="MarginContainer" parent="." unique_id=2131062049]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -337,9 +344,9 @@ Using this interface, authorized personnel may
   	 Review security camera footage and attached audio transcripts
   	 View up-to-date facility floor plans
   	 [s]Manage security counter-measures[/s]
-       	 [u]Nov 15, 3:12am[/u] Error: Control matrix disabled by external override
+       	 [u]Nov 15, 1643 at 3:12am[/u] Error: Control disabled by external override
 
-[u]Please note:[/u] starting January 1642, to preserve storage longevity, security cameras will only capture still-frame snapshots [u]once every ten seconds[/u], and only if motion is detected.
+[u]Please note:[/u] To preserve storage longevity, security cameras only capture still-frame snapshots [u]once every ten seconds[/u], and only if motion is detected.
 "
 
 [node name="ImageContainer" type="Control" parent="." unique_id=170892621]
@@ -392,7 +399,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_k4k8l")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="ImageContainer/ImageScroll" unique_id=1657759086]
+[node name="ImageDesc" type="RichTextLabel" parent="ImageContainer/ImageScroll" unique_id=1657759086]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -756,5 +764,44 @@ size_flags_horizontal = 4
 text = "Scroll"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="MailNoti" type="PanelContainer" parent="." unique_id=690747320]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -480.0
+offset_top = 22.0
+offset_right = -32.0
+offset_bottom = 133.0
+grow_horizontal = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(1000, 0)
+
+[node name="Label" type="RichTextLabel" parent="MailNoti" unique_id=1857315572]
+layout_mode = 2
+bbcode_enabled = true
+text = "[font_size=48]You got mail![/font_size]
+[font_size=28] View it from the main menu."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Mail" type="Node" parent="." unique_id=841715243]
+unique_name_in_owner = true
+script = ExtResource("6_nypig")
+mail = "=A Friendly Introduction
+
+Well... who do we have here, then? A curious soul poking around amidst all this death and decay. 
+
+Please, don't be alarmed. I sat in that same seat once; I'm just here to observe.
+
+You won't get very far snooping around that late in 1643. Here, by way of a friendly introduction, a date for you.
+1642-12-20 at 7:05pm
+
+Sincerely yours,
+A
+
+"
 
 [editable path="flowerwall_crt"]
