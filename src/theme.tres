@@ -25,6 +25,23 @@ border_color = Color(0.53133345, 1, 0.24000001, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rnpv8"]
 bg_color = Color(0.53133345, 1, 0.24000001, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k4k8l"]
+bg_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m734d"]
+bg_color = Color(0.35599342, 0.67, 0.16080001, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xh1a0"]
+bg_color = Color(0.39850008, 0.75, 0.18, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k27xv"]
+content_margin_left = 8.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vsku8"]
+content_margin_left = 8.0
+bg_color = Color(0, 0, 0, 0)
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_01wwf"]
 
 [resource]
@@ -47,4 +64,9 @@ RichTextLabel/font_sizes/italics_font_size = 32
 RichTextLabel/font_sizes/mono_font_size = 32
 RichTextLabel/font_sizes/normal_font_size = 32
 RichTextLabel/fonts/bold_font = ExtResource("1_ssy0u")
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_k4k8l")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_m734d")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_xh1a0")
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_k27xv")
+VScrollBar/styles/scroll_focus = SubResource("StyleBoxFlat_vsku8")
 VSeparator/styles/separator = SubResource("StyleBoxEmpty_01wwf")

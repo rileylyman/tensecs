@@ -16,16 +16,20 @@ enum State {
 	List,
 	About,
 	Login,
+	Image,
 	Query,
 }
 
 const days: Array[int] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+const weekdays: Array[String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+const month_names: Array[String] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 var _login_done := false
 var _call_stack: Array[Callable] = []
 var _list_idx := 0
 
 var _date_idx := 0
+var _date_keys_pressed := 0
 var _is_searching := false
 @onready var _date_parts := [%Year, %Month, %Day, %Hour, %Minute]
 
@@ -39,7 +43,8 @@ const list_el: PackedScene = preload("res://src/list_element.tscn")
 
 func _ready() -> void:
 	show_self(true)
-	display_home()
+	display_image()
+	# display_home()
 	# display_login()
 
 func show_self(should_show: bool) -> void:
@@ -59,10 +64,24 @@ func _process(_delta: float) -> void:
 				_date_parts[i].theme_type_variation = &"InvertedLabel" if i == _date_idx else &""
 
 
+func _trigger_right() -> void:
+	var i = InputEventAction.new()
+	i.action = "right"
+	i.pressed = true
+	Input.parse_input_event(i)
+
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("back"):
 		handle_command(Command.GoBack)
 	match _state:
+		State.Image:
+			if event.is_action_pressed("up", true):
+				%ImageScroll.scroll_vertical -= 25
+			elif event.is_action_pressed("down", true):
+				%ImageScroll.scroll_vertical += 25
+			elif event.is_action_pressed("select"):
+				handle_command(Command.GoBack)
 		State.List:
 			if event.is_action_pressed("up"):
 				_list_idx = (_list_idx - 1 + %ListElements.get_child_count()) % %ListElements.get_child_count()
@@ -73,31 +92,46 @@ func _input(event: InputEvent) -> void:
 		State.Query:
 			var part = _date_parts[_date_idx]
 			var n = int(part.text)
-			if part == %Month or part == %Day:
-				n -= 1
-			if event.is_action_pressed("up"):
-				n += 1
-			elif event.is_action_pressed("down"):
-				n -= 1
-			
-			if event.is_action_pressed("up") or event.is_action_pressed("down"):
-				if part != %Year:
-					var basis := 24 if part == %Hour else (60 if part == %Minute else (days[int(%Month.text) - 1] if part == %Day else (12 if part == %Month else 1)))
-					n = (n + basis) % basis
-				if part == %Month or part == %Day:
-					n += 1
+			var should_recalc := false
+
+			if event is InputEventKey and event.pressed and event.keycode >= KEY_0 and event.keycode <= KEY_9:
+				n = (n * 10 + event.keycode - 48)
+				_date_keys_pressed += 1
+				n %= 100
 				part.text = "%02d" % n
-				if int(%Day.text) > days[int(%Month.text) - 1]:
-					%Day.text = "%02d" % (days[int(%Month.text) - 1])
-				if int(%Year.text) < 1642:
-					%Year.text = "1642"
-				elif int(%Year.text) > 1643:
-					%Year.text = "1643"
+				if _date_keys_pressed >= 2:
+					should_recalc = true
+					_trigger_right()
+
+			if event.is_action_pressed("up", true):
+				should_recalc = true
+				n += 1
+			elif event.is_action_pressed("down", true):
+				should_recalc = true
+				n -= 1
+
+			
+			if should_recalc:
+				part.text = "%02d" % n
+
+				%Year.text = "%02d" % clamp(int(%Year.text), 42, 43)
+				%Month.text = "%02d" % clamp(int(%Month.text), 1, 12)
+				%Day.text = "%02d" % clamp(int(%Day.text), 1, days[int(%Month.text) - 1])
+				%Hour.text = "%02d" % clamp(int(%Hour.text), 0, 23)
+				%Minute.text = "%02d" % clamp(int(%Minute.text), 0, 59)
+				
+				var info := Time.get_datetime_dict_from_datetime_string("%s-%s-%sT%s:%s:00" % [%Year.text, %Month.text, %Day.text, %Hour.text, %Minute.text], true)
+				%DayAndMonthLabel.text = "%s, %s %02d" % [weekdays[info["weekday"]], month_names[int(%Month.text) - 1], int(%Day.text)]
+				var ampm := "am" if int(%Hour.text) < 12 else "pm"
+				var twelve := int(%Hour.text) % 12 if int(%Hour.text) > 12 else (int(%Hour.text) if int(%Hour.text) >= 1 else 12)
+				%TimeLabel.text = "At %d:%02d%s" % [twelve, int(%Minute.text), ampm]
 
 			elif event.is_action_pressed("right"):
 				_date_idx = (_date_idx + 1) % _date_parts.size()
+				_date_keys_pressed = 0
 			elif event.is_action_pressed("left"):
 				_date_idx = (_date_idx + _date_parts.size() - 1) % _date_parts.size()
+				_date_keys_pressed = 0
 			elif event.is_action_pressed("select"):
 				handle_command(Command.PerformQuery)
 		State.About:
@@ -158,6 +192,18 @@ func display_nothing() -> void:
 	%QueryContainer.visible = false
 	%TopTitle.visible = false
 	%BottomHelp.visible = false
+	%ImageContainer.visible = false
+
+func display_image() -> void:
+	display_nothing()
+	_call_stack.push_front(display_image)
+	_state = State.Image
+
+	%ImageContainer.visible = true
+	if get_tree().current_scene.name == "Main":
+		%ImageRect.texture.viewport_path = get_tree().current_scene.get_node("HallwayCamSVP").get_path()
+	
+	display_bottom(["Done", "Scroll"])
 
 func display_query() -> void:
 	display_nothing()
