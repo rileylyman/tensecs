@@ -17,8 +17,10 @@ enum Command {
 	GoBack,
 	Home,
 	PerformQuery,
+	PerformRequery,
 	LoadImage,
 	ViewMail,
+	ViewMailList,
 }
 
 enum State {
@@ -27,6 +29,7 @@ enum State {
 	Login,
 	Image,
 	Query,
+	Mail,
 }
 
 const days: Array[int] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -39,10 +42,14 @@ var _list_idx := 0
 
 var _current_results_list := []
 
+var _current_list_names := []
+
 var _date_idx := 0
 var _date_keys_pressed := 0
 var _is_searching := false
 @onready var _date_parts := [%Year, %Month, %Day, %Hour, %Minute]
+
+var _successful_queries: Array[String] = []
 
 class Mail:
 	var subject: String
@@ -52,6 +59,7 @@ class Mail:
 	var order: int
 
 var mails: Array[Mail] = []
+var _current_shown_mails: Array[Mail] = []
 
 var _state := State.List:
 	set(val):
@@ -181,6 +189,13 @@ func _input(event: InputEvent) -> void:
 		State.About:
 			if event.is_action_pressed("select"):
 				handle_command(Command.GoBack)
+		State.Mail:
+			if event.is_action_pressed("up", true):
+				%MailScroll.scroll_vertical -= 25
+			elif event.is_action_pressed("down", true):
+				%MailScroll.scroll_vertical += 25
+			elif event.is_action_pressed("select"):
+				handle_command(Command.GoBack)
 		State.Login:
 			if _login_done and event.is_action_pressed("select"):
 				handle_command(Command.Home)
@@ -193,7 +208,9 @@ func handle_command(cmd: Command) -> void:
 		Command.Home:
 			display_home()
 		Command.ViewLog:
-			display_image()
+			display_log()
+		Command.ViewMail:
+			display_mail()
 		Command.GoBack:
 			if _state == State.Image:
 				process_image_notis()
@@ -204,23 +221,16 @@ func handle_command(cmd: Command) -> void:
 		Command.PerformQuery:
 			if _state == State.Query and not _is_searching:
 				do_query()
+		Command.PerformRequery:
+			do_requery()
 		Command.GoToQueryScreen:
 			display_query()
 		Command.LoadImage:
 			display_image()
-		Command.ViewMail:
+		Command.ViewMailList:
 			display_mail_list()
 
-
-func do_query():
-	_is_searching = true
-	%OutcomeMsg.visible = false
-	%SearchBar.visible = true
-	%SearchBar/ProgressBar.indeterminate = false
-	%SearchBar/ProgressBar.indeterminate = true
-
-	var query_string := "16%s-%s-%sT%s:%s" % [%Year.text, %Month.text, %Day.text, %Hour.text, %Minute.text]
-
+func find_results(query_string: String) -> Array:
 	var main := get_tree().current_scene
 	var results := []
 	if main.name == "Main":
@@ -230,6 +240,21 @@ func do_query():
 		results = cam_scenes.filter(func(c): return c.time == query_string)
 		for r in results:
 			r.visible = true
+	return results
+
+func do_requery() -> void:
+	var results = find_results(_current_list_names[_list_idx - 1])
+	display_search_results(results)
+
+func do_query():
+	_is_searching = true
+	%OutcomeMsg.visible = false
+	%SearchBar.visible = true
+	%SearchBar/ProgressBar.indeterminate = false
+	%SearchBar/ProgressBar.indeterminate = true
+
+	var query_string := "16%s-%s-%sT%s:%s" % [%Year.text, %Month.text, %Day.text, %Hour.text, %Minute.text]
+	var results = find_results(query_string)
 
 	await get_tree().create_timer(1.0).timeout
 	%SearchBar.visible = false
@@ -238,25 +263,57 @@ func do_query():
 	if results.is_empty():
 		%OutcomeMsg.text = "<No Results Found.>"
 	else:
+		if not query_string in _successful_queries:
+			_successful_queries.append(query_string)
+			_successful_queries.sort()
 		%OutcomeMsg.text = "<Found %d result%s. Loading...>" % [results.size(), "s" if results.size() > 1 else ""]
 		await get_tree().create_timer(1.0).timeout
+		_call_stack.pop_front()
 		display_search_results(results)
 	_is_searching = false
+
+func display_log() -> void:
+	_call_stack.push_front(display_log)
+
+	var dict: Dictionary[String, Command] = {}
+	for q in _successful_queries:
+		dict[q] = Command.PerformRequery
+
+	display_list(
+		"Query Log",
+		dict,
+		["Select", "Back", "Navigate"]
+	)
+	_list_idx = 0
+
+func display_mail() -> void:
+	display_nothing()
+	_call_stack.push_front(display_image)
+	_state = State.Mail
+
+	%MailContainer.visible = true
+	%MailScroll.scroll_vertical = 0
+	var m = _current_shown_mails[_list_idx - 1]
+	m.unread = false
+	%MailLabel.text = "[b][u]" + m.subject + "[/u][/b]" + m.content + "\n-- End of Transmission"
+
+	display_bottom(["Done", "Scroll"])
+
 
 func display_mail_list() -> void:
 	_call_stack.push_front(display_mail_list)
 
-	var to_show := mails.filter(func(m): return not m.hidden)
-	to_show.sort_custom(func(a, b):
+	_current_shown_mails = mails.filter(func(m): return not m.hidden)
+	_current_shown_mails.sort_custom(func(a, b):
 		if a.unread and not b.unread:
 			return true
 		else:
-			return a.i > b.i
+			return a.order > b.order
 	)
 
 	var dict: Dictionary[String, Command] = {}
-	for i in range(to_show.size()):
-		dict[to_show[i].subject + " [unread]" if to_show[i].unread else ""] = Command.GoBack
+	for i in range(_current_shown_mails.size()):
+		dict[_current_shown_mails[i].subject + (" [unread]" if _current_shown_mails[i].unread else "")] = Command.ViewMail
 	display_list(
 		"Mail",
 		dict,
@@ -272,7 +329,7 @@ func display_search_results(results: Array) -> void:
 	for r in results:
 		dict[r.svp.location] = Command.LoadImage
 	display_list(
-		"%s %s" % [%DayAndMonthLabel.text, %TimeLabel.text], 
+		"Query Results",
 		dict,
 		["Select", "Back", "Navigate"]
 	)
@@ -286,7 +343,8 @@ func display_home() -> void:
 			"General Info": Command.ConsoleInfo,
 			"Query": Command.GoToQueryScreen,
 			"Facility Map": Command.ViewMap,
-			("Mail" + (" [unread]" if mails.filter(func(m): return not m.hidden and m.unread).size() > 0 else "")): Command.ViewMail,
+			("Mail" + (" [unread]" if mails.filter(func(m): return not m.hidden and m.unread).size() > 0 else "")): Command.ViewMailList,
+			"Log": Command.ViewLog,
 		},
 		["Select", "Back", "Navigate"]
 	)
@@ -299,6 +357,7 @@ func display_nothing() -> void:
 	%TopTitle.visible = false
 	%BottomHelp.visible = false
 	%ImageContainer.visible = false
+	%MailContainer.visible = false
 
 func process_image_notis() -> void:
 	var r: CamScene = _current_results_list[_list_idx - 1]
@@ -307,6 +366,24 @@ func process_image_notis() -> void:
 		mails[idx].hidden = false
 		show_noti()
 
+func pretty_date(date_string: String) -> Array[String]:
+	date_string += ":00"
+	var date_split = date_string.split("T")[0]
+	var time_split = date_string.split("T")[1]
+	var month = date_split.split("-")[1]
+	var day = date_split.split("-")[2]
+	var hour = time_split.split(":")[0]
+	var minute = time_split.split(":")[1]
+
+	var info := Time.get_datetime_dict_from_datetime_string(date_string, true)
+
+	var date_part := "%s, %s %02d" % [weekdays[info["weekday"]], month_names[int(month) - 1], int(day)]
+	var ampm := "am" if int(hour) < 12 else "pm"
+	var twelve := int(hour) % 12 if int(hour) > 12 else (int(hour) if int(hour) >= 1 else 12)
+	var time_part := "%d:%02d%s" % [twelve, int(minute), ampm]
+	return [date_part, time_part]
+
+@onready var _img_header_orig: String = %ImageHeader.text
 func display_image() -> void:
 	display_nothing()
 	_call_stack.push_front(display_image)
@@ -318,6 +395,9 @@ func display_image() -> void:
 		%ImageRect.texture.viewport_path = r.svp.get_path()
 		%ImageDesc.text = ""
 		%ImageDesc.append_text("\n-- Automatic Audio Transcription --\n\n" + r.transcript.replace("{", "[font_size=20][b]").replace("}", "[/b][/font_size]") + "\n\n-- End of Transcript --\n")
+		var d := pretty_date(r.time)
+		%ImageHeader.text = _img_header_orig.format({"title_string": r.svp.location, "date_string": d[0] + " At " + d[1]})
+		%ImageScroll.scroll_vertical = 0
 	
 	display_bottom(["Done", "Scroll"])
 
@@ -371,6 +451,7 @@ func display_about() -> void:
 func display_list(title: String, options: Dictionary[String, Command], keys: Array[String]) -> void:
 	display_nothing()
 	_state = State.List
+	_current_list_names = options.keys()
 
 	%ListContainer.visible = true
 	display_title(title)

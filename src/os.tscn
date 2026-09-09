@@ -64,6 +64,7 @@ color = Color(0, 0, 0, 1)
 
 [node name="ListContainer" type="MarginContainer" parent="." unique_id=519687065]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -310,6 +311,7 @@ horizontal_alignment = 1
 
 [node name="AboutContainer" type="MarginContainer" parent="." unique_id=2131062049]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -348,7 +350,7 @@ Using this interface, authorized personnel may
 [u]Please note:[/u] To preserve storage longevity, security cameras only capture still-frame snapshots [u]once every ten seconds[/u], and only if motion is detected.
 "
 
-[node name="ImageContainer" type="Control" parent="." unique_id=170892621]
+[node name="MailContainer" type="MarginContainer" parent="." unique_id=1041146529]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -359,8 +361,57 @@ offset_top = 84.0
 offset_bottom = -83.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 16
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="ImageContainer" unique_id=56007330]
+[node name="PanelContainer" type="PanelContainer" parent="MailContainer" unique_id=1650320626]
+custom_minimum_size = Vector2(800, 400)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MailContainer/PanelContainer" unique_id=178127224]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="MailScroll" type="ScrollContainer" parent="MailContainer/PanelContainer/MarginContainer" unique_id=2042444004]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MailLabel" type="RichTextLabel" parent="MailContainer/PanelContainer/MarginContainer/MailScroll" unique_id=1617248525]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/normal_font_size = 28
+bbcode_enabled = true
+text = "Welcome, Felxi092, to the [b][u]SubMariner[/u][/b] security management console.
+
+Using this interface, authorized personnel may
+  	 Review security camera footage and attached audio transcripts
+  	 View up-to-date facility floor plans
+  	 [s]Manage security counter-measures[/s]
+       	 [u]Feb 15, 1643 at 3:12am[/u] Error: Control disabled by external override
+
+[u]Please note:[/u] To preserve storage longevity, security cameras only capture still-frame snapshots [u]once every ten seconds[/u], and only if motion is detected.
+"
+fit_content = true
+
+[node name="ImageContainer" type="Control" parent="." unique_id=170892621]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 84.0
+offset_bottom = -83.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ImageHeader" type="RichTextLabel" parent="ImageContainer" unique_id=56007330]
+unique_name_in_owner = true
 custom_maximum_size = Vector2(-1, 400)
 layout_mode = 1
 anchors_preset = 8
@@ -377,8 +428,8 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
-text = "[b][u]Main Hallway[/u][/b]
-[font_size=24]Nov 03, 1642 at 03:15am
+text = "[b][u]{title_string}[/u][/b]
+[font_size=24]{date_string}
 [s]                                                        "
 fit_content = true
 
@@ -558,7 +609,7 @@ text = "Press "
 layout_mode = 2
 theme_type_variation = &"InvertedLabel"
 theme_override_font_sizes/font_size = 28
-text = " X/Enter "
+text = " X "
 
 [node name="Label3" type="Label" parent="LoginPortal/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=303772300]
 layout_mode = 2
@@ -567,6 +618,7 @@ text = " To Continue"
 
 [node name="TopTitle" type="Label" parent="." unique_id=1951740952]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -579,6 +631,7 @@ horizontal_alignment = 1
 
 [node name="BottomHelp" type="HBoxContainer" parent="." unique_id=383177332]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -797,7 +850,7 @@ We both know what happens after he deactivates the control matrix. The line betw
 
 When I was in your shoes, I had some help, so I'll pay it forward. If you can tell me the man's name- his true name- I'll send you a few leads. 
 
-For now, why don't you take a look at the morning of Christmas' Eve, 1642. They always seem to serve breakfast at 6am on special holidays.
+For now, why don't you take a look at the morning of Christmas Eve, 1642. They always seem to serve breakfast at 6am on special holidays.
 
 Looking forward to seeing your progress. Until then, good luck.
 
