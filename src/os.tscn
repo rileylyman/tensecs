@@ -310,7 +310,6 @@ horizontal_alignment = 1
 
 [node name="AboutContainer" type="MarginContainer" parent="." unique_id=2131062049]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -344,7 +343,7 @@ Using this interface, authorized personnel may
   	 Review security camera footage and attached audio transcripts
   	 View up-to-date facility floor plans
   	 [s]Manage security counter-measures[/s]
-       	 [u]Nov 15, 1643 at 3:12am[/u] Error: Control disabled by external override
+       	 [u]Feb 15, 1643 at 3:12am[/u] Error: Control disabled by external override
 
 [u]Please note:[/u] To preserve storage longevity, security cameras only capture still-frame snapshots [u]once every ten seconds[/u], and only if motion is detected.
 "
@@ -792,12 +791,15 @@ unique_name_in_owner = true
 script = ExtResource("6_nypig")
 mail = "=A Friendly Introduction
 
-Well... who do we have here, then? A curious soul poking around amidst all this death and decay. 
+Well... what do we have here, then? Yet another curious soul poking around amidst all this death and decay. Please, don't be alarmed. I sat in that same seat once; I'm just here to observe.
 
-Please, don't be alarmed. I sat in that same seat once; I'm just here to observe.
+We both know what happens after he deactivates the control matrix. The line between life and death is never thinner than in the cold vacuum of space. But how did he get the codes? Why did he do it at all? After all, he died along with everyone else.
 
-You won't get very far snooping around that late in 1643. Here, by way of a friendly introduction, a date for you.
-1642-12-20 at 7:05pm
+When I was in your shoes, I had some help, so I'll pay it forward. If you can tell me the man's name- his true name- I'll send you a few leads. 
+
+For now, why don't you take a look at the morning of Christmas' Eve, 1642. They always seem to serve breakfast at 6am on special holidays.
+
+Looking forward to seeing your progress. Until then, good luck.
 
 Sincerely yours,
 A

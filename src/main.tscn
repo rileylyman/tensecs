@@ -2159,7 +2159,7 @@ script = ExtResource("9_srxbw")
 svp = NodePath("../ControlRoomSVP")
 time = "1643-02-15T03:12"
 trigger_mail = "A Friendly Introduction"
-transcript = "<keyboard clicking>
+transcript = "(Keyboard clicking)
 
 {Robotic Voice}:
 Control Matrix deactivated. Override access now available."
@@ -2586,7 +2586,6 @@ skeleton = NodePath("..")
 surface_material_override/0 = SubResource("StandardMaterial3D_mgm53")
 
 [node name="InviteBreakfast" type="Node3D" parent="." unique_id=809477499 node_paths=PackedStringArray("svp")]
-visible = false
 script = ExtResource("9_srxbw")
 svp = NodePath("../BreakfastSVP")
 time = "1642-12-24T06:00"
@@ -3857,7 +3856,6 @@ skeleton = NodePath("..")
 surface_material_override/0 = SubResource("StandardMaterial3D_mgm53")
 
 [node name="Phonecall" type="Node3D" parent="." unique_id=1129573465 node_paths=PackedStringArray("svp")]
-visible = false
 script = ExtResource("9_srxbw")
 svp = NodePath("../BedroomSVP")
 time = "1642-12-25T18:55"
@@ -4068,7 +4066,6 @@ transform = Transform3D(8.475281, 1.7355682e-06, -8.545296, 0, -21.6564, -2.4310
 mesh = SubResource("ArrayMesh_gl80d")
 
 [node name="Eavesdropping" type="Node3D" parent="." unique_id=451143581 node_paths=PackedStringArray("svp")]
-visible = false
 script = ExtResource("9_srxbw")
 svp = NodePath("../ResidentialCorridorSVP")
 time = "1642-12-25T18:55"
@@ -4301,7 +4298,6 @@ transform = Transform3D(-1.9073485e-06, -7.8136554, -2.0751135e-05, 0, -9.314603
 mesh = SubResource("ArrayMesh_vqxay")
 
 [node name="6pmConfront" type="Node3D" parent="." unique_id=716201421 node_paths=PackedStringArray("svp")]
-visible = false
 script = ExtResource("9_srxbw")
 svp = NodePath("../ResidentialCorridorSVP")
 time = "1642-02-14T18:00"
@@ -5810,7 +5806,6 @@ skeleton = NodePath("..")
 surface_material_override/0 = SubResource("StandardMaterial3D_mgm53")
 
 [node name="GeneralBreakfast" type="Node3D" parent="." unique_id=630849450 node_paths=PackedStringArray("svp")]
-visible = false
 script = ExtResource("9_srxbw")
 svp = NodePath("../BreakfastSVP")
 time = "1642-12-24T06:00"
@@ -6432,7 +6427,7 @@ skeleton = NodePath("..")
 surface_material_override/0 = SubResource("StandardMaterial3D_mgm53")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=540544675]
-transform = Transform3D(-1, 6.396235e-09, 1.4930102e-07, 2.8629886e-08, 0.9887759, 0.14939873, -1.4666998e-07, 0.14939873, -0.9887759, -5.6341822e-08, 0.6976586, 0.15864186)
+transform = Transform3D(-1, 6.3962347e-09, 1.49301e-07, 2.8629886e-08, 0.98877585, 0.14939873, -1.4666998e-07, 0.14939873, -0.98877585, -5.6341822e-08, 0.6976586, 0.15864186)
 current = true
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=564316047]

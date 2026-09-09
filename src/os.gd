@@ -224,8 +224,12 @@ func do_query():
 	var main := get_tree().current_scene
 	var results := []
 	if main.name == "Main":
-		results = main.get_children().filter(func(c): return c is CamScene and c.time == query_string)
-
+		var cam_scenes := main.get_children().filter(func(c): return c is CamScene)
+		for c in cam_scenes:
+			c.visible = false
+		results = cam_scenes.filter(func(c): return c.time == query_string)
+		for r in results:
+			r.visible = true
 
 	await get_tree().create_timer(1.0).timeout
 	%SearchBar.visible = false
