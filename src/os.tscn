@@ -350,6 +350,58 @@ Using this interface, authorized personnel may
 [u]Please note:[/u] To preserve storage longevity, security cameras only capture still-frame snapshots [u]once every ten seconds[/u], and only if motion is detected.
 "
 
+[node name="NameInputContainer" type="MarginContainer" parent="." unique_id=1703301771]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 84.0
+offset_bottom = -83.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 16
+
+[node name="PanelContainer" type="PanelContainer" parent="NameInputContainer" unique_id=1258823817]
+custom_minimum_size = Vector2(800, 400)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="NameInputContainer/PanelContainer" unique_id=1074756267]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="PanelContainer" type="PanelContainer" parent="NameInputContainer/PanelContainer/MarginContainer" unique_id=1714311693]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="NameInputContainer/PanelContainer/MarginContainer" unique_id=50958294]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -46.6)
+text = "Enter his true name:"
+horizontal_alignment = 1
+
+[node name="NameInputLabel" type="Label" parent="NameInputContainer/PanelContainer/MarginContainer" unique_id=967188603]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="NameResultLabel" type="Label" parent="NameInputContainer/PanelContainer/MarginContainer" unique_id=1784126845]
+unique_name_in_owner = true
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 86.22)
+text = "<Success>"
+horizontal_alignment = 1
+
 [node name="MailContainer" type="MarginContainer" parent="." unique_id=1041146529]
 unique_name_in_owner = true
 visible = false
@@ -401,6 +453,7 @@ fit_content = true
 
 [node name="ImageContainer" type="Control" parent="." unique_id=170892621]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -629,9 +682,21 @@ theme_override_font_sizes/font_size = 64
 text = "Date/Time Query"
 horizontal_alignment = 1
 
+[node name="TopTitleWithSub" type="RichTextLabel" parent="." unique_id=1130612467]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 16.0
+offset_bottom = 112.0
+grow_horizontal = 2
+bbcode_enabled = true
+text = "[font_size=48]{top}[/font_size]
+{bot}"
+horizontal_alignment = 1
+
 [node name="BottomHelp" type="HBoxContainer" parent="." unique_id=383177332]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -665,6 +730,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Back" type="HBoxContainer" parent="BottomHelp" unique_id=1245593799]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
 
@@ -703,7 +769,46 @@ text = "Done"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="TextBack" type="HBoxContainer" parent="BottomHelp" unique_id=723047801]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="BottomHelp/TextBack" unique_id=1575064258]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"InvertedLabel"
+text = " Esc "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="BottomHelp/TextBack" unique_id=32842435]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Back"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextEnter" type="HBoxContainer" parent="BottomHelp" unique_id=612362219]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="BottomHelp/TextEnter" unique_id=697120389]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"InvertedLabel"
+text = " Enter "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="BottomHelp/TextEnter" unique_id=46449072]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Submit"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="NavigateH" type="HBoxContainer" parent="BottomHelp" unique_id=668892353]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
 
@@ -740,6 +845,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Adjust" type="HBoxContainer" parent="BottomHelp" unique_id=489839253]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
 
@@ -759,6 +865,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Search" type="HBoxContainer" parent="BottomHelp" unique_id=707185509]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
 
@@ -856,7 +963,14 @@ Looking forward to seeing your progress. Until then, good luck.
 
 Sincerely yours,
 A
+=A Job Well Done
 
+Very nice work. Quite the sad tale, is it not? Alas, this is where the story ends... for now.
+
+With admiration,
+A
+
+<Thank you for playing!>
 "
 
 [editable path="flowerwall_crt"]

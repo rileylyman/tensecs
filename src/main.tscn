@@ -2136,7 +2136,7 @@ script = ExtResource("6_d3u4l")
 location = "Cafeteria"
 
 [node name="Cam" type="Camera3D" parent="BreakfastSVP" unique_id=378440838]
-transform = Transform3D(0.80930984, -0.44885415, 0.37887684, 0.010102884, 0.65556794, 0.75506866, -0.58729523, -0.6072567, 0.5350923, -14.812013, 3.6682718, -19.354858)
+transform = Transform3D(-0.4789995, -0.65966165, 0.5791426, 0.010102927, 0.655568, 0.7550686, -0.87775713, 0.3675285, -0.3073522, -14.369081, 2.4142845, -24.39472)
 
 [node name="BreakroomSVP" type="SubViewport" parent="." unique_id=1010220361]
 size = Vector2i(1152, 1152)
@@ -7090,7 +7090,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.0124999, 0, 0, 0)
 mesh = SubResource("ArrayMesh_51gu8")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=540544675]
-transform = Transform3D(-1, 6.3962338e-09, 1.4930099e-07, 2.8629886e-08, 0.98877573, 0.1493987, -1.4666998e-07, 0.1493987, -0.98877573, -5.6341822e-08, 0.6976586, 0.15864186)
+transform = Transform3D(-1, 6.3962333e-09, 1.4930097e-07, 2.8629886e-08, 0.9887757, 0.1493987, -1.4666998e-07, 0.1493987, -0.9887757, -5.6341822e-08, 0.6976586, 0.15864186)
 current = true
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=564316047]

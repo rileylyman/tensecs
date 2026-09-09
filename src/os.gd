@@ -21,6 +21,7 @@ enum Command {
 	LoadImage,
 	ViewMail,
 	ViewMailList,
+	ViewNameInput,
 }
 
 enum State {
@@ -30,15 +31,21 @@ enum State {
 	Image,
 	Query,
 	Mail,
+	NameInput,
 }
 
 const days: Array[int] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 const weekdays: Array[String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 const month_names: Array[String] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
+const true_name := "GRAYSON"
+
+var _is_going_back := false
+
 var _login_done := false
 var _call_stack: Array[Callable] = []
 var _list_idx := 0
+var _list_idx_stack: Array[int] = []
 
 var _current_results_list := []
 
@@ -49,7 +56,12 @@ var _date_keys_pressed := 0
 var _is_searching := false
 @onready var _date_parts := [%Year, %Month, %Day, %Hour, %Minute]
 
+var _curr_name_guess := ""
+var _name_succeeded := false
+
 var _successful_queries: Array[String] = []
+
+@onready var alphabet := "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split()
 
 class Mail:
 	var subject: String
@@ -63,8 +75,19 @@ var _current_shown_mails: Array[Mail] = []
 
 var _state := State.List:
 	set(val):
+		var prev = _state 
+		if prev == State.List and not _is_going_back:
+			_list_idx_stack.push_front(_list_idx)
+
+		if val == State.List and _is_going_back:
+			var idx: int = _list_idx_stack.pop_front()
+			_list_idx = idx if idx != null else 0 
+		elif val == State.List:
+			_list_idx = 0
+
 		_state = val
 		%ListContainer.visible = _state == State.List
+
 
 @onready var crt: flowerwallCRT = $flowerwall_crt
 const list_el: PackedScene = preload("res://src/list_element.tscn")
@@ -72,8 +95,8 @@ const list_el: PackedScene = preload("res://src/list_element.tscn")
 func _ready() -> void:
 	show_self(true)
 	# display_image()
-	# display_home()
-	display_login()
+	display_home()
+	# display_login()
 
 	var all_mail: String = %Mail.mail
 	var i = 0
@@ -103,6 +126,8 @@ func _process(_delta: float) -> void:
 		State.Query:
 			for i in range(_date_parts.size()):
 				_date_parts[i].theme_type_variation = &"InvertedLabel" if i == _date_idx else &""
+		State.NameInput:
+			%NameInputLabel.text = _curr_name_guess + (" " if _name_succeeded or floori((Time.get_ticks_msec() / 500.0)) % 2 == 0 else "_")
 
 
 func _trigger_right() -> void:
@@ -122,11 +147,29 @@ func show_noti() -> void:
 	_showing_noti = false
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and event.keycode == KEY_F:
-		show_noti()
-	if event.is_action_pressed("back"):
+	if _state != State.NameInput and event.is_action_pressed("back"):
 		handle_command(Command.GoBack)
 	match _state:
+		State.NameInput:
+			if not _name_succeeded:
+				if event is InputEventKey and event.pressed:
+					var k: String = event.as_text_keycode()
+					if k in alphabet:
+						_curr_name_guess += k
+					elif event.keycode == KEY_BACKSPACE:
+						_curr_name_guess = _curr_name_guess.substr(0, max(0, _curr_name_guess.length() - 1))
+					elif event.keycode == KEY_ENTER:
+						if _curr_name_guess == true_name:
+							_name_succeeded = true
+							%NameResultLabel.text = "<Success>"
+							push_mail_noti("A Job Well Done")
+						else:
+							%NameResultLabel.text = "<Failure>"
+					elif event.keycode == KEY_ESCAPE:
+						handle_command(Command.GoBack)
+			else:
+				if event.is_action_pressed("select") or event.is_action_pressed("back"):
+					handle_command(Command.GoBack)
 		State.Image:
 			if event.is_action_pressed("up", true):
 				%ImageScroll.scroll_vertical -= 25
@@ -211,13 +254,17 @@ func handle_command(cmd: Command) -> void:
 			display_log()
 		Command.ViewMail:
 			display_mail()
+		Command.ViewNameInput:
+			display_name_input()
 		Command.GoBack:
 			if _state == State.Image:
 				process_image_notis()
 			if _call_stack.size() > 1:
+				_is_going_back = true
 				_call_stack.pop_front()
 				_call_stack[0].call()
 				_call_stack.pop_front()
+				_is_going_back = false
 		Command.PerformQuery:
 			if _state == State.Query and not _is_searching:
 				do_query()
@@ -243,8 +290,8 @@ func find_results(query_string: String) -> Array:
 	return results
 
 func do_requery() -> void:
-	var results = find_results(_current_list_names[_list_idx - 1])
-	display_search_results(results)
+	var results = find_results(_successful_queries[_list_idx - 1])
+	display_query_results(results)
 
 func do_query():
 	_is_searching = true
@@ -269,7 +316,7 @@ func do_query():
 		%OutcomeMsg.text = "<Found %d result%s. Loading...>" % [results.size(), "s" if results.size() > 1 else ""]
 		await get_tree().create_timer(1.0).timeout
 		_call_stack.pop_front()
-		display_search_results(results)
+		display_query_results(results)
 	_is_searching = false
 
 func display_log() -> void:
@@ -277,14 +324,13 @@ func display_log() -> void:
 
 	var dict: Dictionary[String, Command] = {}
 	for q in _successful_queries:
-		dict[q] = Command.PerformRequery
+		dict[" At ".join(pretty_date(q))] = Command.PerformRequery
 
 	display_list(
 		"Query Log",
 		dict,
 		["Select", "Back", "Navigate"]
 	)
-	_list_idx = 0
 
 func display_mail() -> void:
 	display_nothing()
@@ -295,7 +341,7 @@ func display_mail() -> void:
 	%MailScroll.scroll_vertical = 0
 	var m = _current_shown_mails[_list_idx - 1]
 	m.unread = false
-	%MailLabel.text = "[b][u]" + m.subject + "[/u][/b]" + m.content + "\n-- End of Transmission"
+	%MailLabel.text = "[b][u]" + m.subject + "[/u][/b]" + m.content + "\n-- End of Transmission --"
 
 	display_bottom(["Done", "Scroll"])
 
@@ -319,33 +365,34 @@ func display_mail_list() -> void:
 		dict,
 		["Select", "Back", "Navigate"]
 	)
-	_list_idx = 0
 
-func display_search_results(results: Array) -> void:
-	_call_stack.push_front(display_search_results.bind(results))
+func display_query_results(results: Array) -> void:
+	_call_stack.push_front(display_query_results.bind(results))
 
 	_current_results_list = results
 	var dict: Dictionary[String, Command] = {}
 	for r in results:
 		dict[r.svp.location] = Command.LoadImage
 	display_list(
-		"Query Results",
+		"Query Results;%s" % ("" if results.size() == 0 else " At ".join(pretty_date(results[0].time))),
 		dict,
 		["Select", "Back", "Navigate"]
 	)
-	_list_idx = 0
 
 func display_home() -> void:
 	_call_stack.push_front(display_home)
+	var dict: Dictionary[String, Command] = {
+		"General Info": Command.ConsoleInfo,
+		"Query": Command.GoToQueryScreen,
+		# "Facility Map": Command.ViewMap,
+		("Mail" + (" [unread]" if mails.filter(func(m): return not m.hidden and m.unread).size() > 0 else "")): Command.ViewMailList,
+		"Log": Command.ViewLog,
+	}
+	if _current_shown_mails.size() > 0:
+		dict["Input Name"] = Command.ViewNameInput
 	display_list(
 		"Admin Home", 
-		{
-			"General Info": Command.ConsoleInfo,
-			"Query": Command.GoToQueryScreen,
-			"Facility Map": Command.ViewMap,
-			("Mail" + (" [unread]" if mails.filter(func(m): return not m.hidden and m.unread).size() > 0 else "")): Command.ViewMailList,
-			"Log": Command.ViewLog,
-		},
+		dict,
 		["Select", "Back", "Navigate"]
 	)
 
@@ -355,16 +402,21 @@ func display_nothing() -> void:
 	%LoginPortal.visible = false
 	%QueryContainer.visible = false
 	%TopTitle.visible = false
+	%TopTitleWithSub.visible = false
 	%BottomHelp.visible = false
 	%ImageContainer.visible = false
 	%MailContainer.visible = false
+	%NameInputContainer.visible = false
 
-func process_image_notis() -> void:
-	var r: CamScene = _current_results_list[_list_idx - 1]
-	var idx := mails.find_custom(func(m): return m.subject == r.trigger_mail)
+func push_mail_noti(subject_line: String) -> void:
+	var idx := mails.find_custom(func(m): return m.subject == subject_line)
 	if idx >= 0 and mails[idx].hidden:
 		mails[idx].hidden = false
 		show_noti()
+
+func process_image_notis() -> void:
+	var r: CamScene = _current_results_list[_list_idx - 1]
+	push_mail_noti(r.trigger_mail)
 
 func pretty_date(date_string: String) -> Array[String]:
 	date_string += ":00"
@@ -439,6 +491,17 @@ func display_login() -> void:
 
 	_login_done = true
 
+func display_name_input() -> void:
+	display_nothing()
+	_call_stack.push_front(display_name_input)
+	_state = State.NameInput
+
+	_curr_name_guess = "" if not _name_succeeded else true_name
+
+	%NameInputContainer.visible = true
+	%NameResultLabel.text = ""
+	display_bottom(["TextBack", "TextEnter"])
+
 func display_about() -> void:
 	display_nothing()
 	_call_stack.push_front(display_about)
@@ -472,9 +535,16 @@ func display_list(title: String, options: Dictionary[String, Command], keys: Arr
 		el.text = " > " + o
 		el.command = options[o]
 
+
+@onready var _title_w_sub_orig: String = %TopTitleWithSub.text
 func display_title(title: String) -> void:
-	%TopTitle.visible = true
-	%TopTitle.text = title
+	var split = title.split(";")
+	if split.size() == 1:
+		%TopTitle.visible = true
+		%TopTitle.text = title
+	else:
+		%TopTitleWithSub.visible = true
+		%TopTitleWithSub.text = _title_w_sub_orig.format({"top": split[0], "bot": split[1]})
 
 func display_bottom(keys: Array[String]) -> void:
 	%BottomHelp.visible = true
