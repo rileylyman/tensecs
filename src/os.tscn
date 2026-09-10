@@ -311,7 +311,6 @@ horizontal_alignment = 1
 
 [node name="AboutContainer" type="MarginContainer" parent="." unique_id=2131062049]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -339,7 +338,7 @@ theme_override_constants/margin_bottom = 16
 [node name="RichTextLabel" type="RichTextLabel" parent="AboutContainer/PanelContainer/MarginContainer" unique_id=103126932]
 layout_mode = 2
 bbcode_enabled = true
-text = "Welcome, Felxi092, to the [b][u]SubMariner[/u][/b] security management console.
+text = "Welcome, Felxi092, to the [b][u]Pelagius[/u][/b] security management console.
 
 Using this interface, authorized personnel may
   	 Review security camera footage and attached audio transcripts
@@ -352,6 +351,7 @@ Using this interface, authorized personnel may
 
 [node name="NameInputContainer" type="MarginContainer" parent="." unique_id=1703301771]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -605,7 +605,7 @@ theme_override_constants/separation = 20
 [node name="Label" type="RichTextLabel" parent="LoginPortal/PanelContainer/MarginContainer/VBoxContainer" unique_id=737931705]
 layout_mode = 2
 bbcode_enabled = true
-text = "[b][u]SubMariner[/u][/b]
+text = "[b][u]Pelagius[/u][/b]
 Security Console"
 fit_content = true
 horizontal_alignment = 1
@@ -749,6 +749,26 @@ text = "Back"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Search" type="HBoxContainer" parent="BottomHelp" unique_id=707185509]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="BottomHelp/Search" unique_id=1395317569]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"InvertedLabel"
+text = " X "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="BottomHelp/Search" unique_id=1642731466]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Search"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Done" type="HBoxContainer" parent="BottomHelp" unique_id=649304928]
 visible = false
 layout_mode = 2
@@ -864,26 +884,6 @@ text = "Adjust"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Search" type="HBoxContainer" parent="BottomHelp" unique_id=707185509]
-visible = false
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Label" type="Label" parent="BottomHelp/Search" unique_id=1395317569]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_type_variation = &"InvertedLabel"
-text = " X "
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Label2" type="Label" parent="BottomHelp/Search" unique_id=1642731466]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Search"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="Navigate" type="HBoxContainer" parent="BottomHelp" unique_id=373793193]
 visible = false
 layout_mode = 2
@@ -951,15 +951,15 @@ unique_name_in_owner = true
 script = ExtResource("6_nypig")
 mail = "=A Friendly Introduction
 
-Well... what do we have here, then? Yet another curious soul poking around amidst all this death and decay. Please, don't be alarmed. I sat in that same seat once; I'm just here to observe.
+Well... what do we have here? Yet another curious soul poking around amidst all this death and decay.
 
-We both know what happens after he deactivates the control matrix. The line between life and death is never thinner than in the cold vacuum of space. But how did he get the codes? Why did he do it at all? After all, he died along with everyone else.
+We both know the fate of this doomed mining station. The line between life and death is never thinner than in the cold vacuum of space. Yet, if you are like me, you came itching to know not how, but [u]why[/u].
 
-When I was in your shoes, I had some help, so I'll pay it forward. If you can tell me the man's name- his true name- I'll send you a few leads. 
+I sat where you sit, once, eager to unravel this mystery. I had some help, so I'll pay it forward, but not without a little challenge. If you can tell me the man's name- his true name- you will have my aid.
 
-For now, why don't you take a look at the morning of Christmas Eve, 1642. They always seem to serve breakfast at 6am on special holidays.
+By way of a friendly introduction, why don't you take a look at the morning of Christmas Eve, 1642. They seemed to always serve breakfast at 6am on special holidays.
 
-Looking forward to seeing your progress. Until then, good luck.
+Looking forward to seeing your progress. And, until then, good luck.
 
 Sincerely yours,
 A

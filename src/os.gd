@@ -209,11 +209,39 @@ func _input(event: InputEvent) -> void:
 			if should_recalc:
 				part.text = "%02d" % n
 
-				%Year.text = "%02d" % clamp(int(%Year.text), 0, 99)
-				%Month.text = "%02d" % clamp(int(%Month.text), 1, 12)
-				%Day.text = "%02d" % clamp(int(%Day.text), 1, days[int(%Month.text) - 1])
-				%Hour.text = "%02d" % clamp(int(%Hour.text), 0, 23)
-				%Minute.text = "%02d" % clamp(int(%Minute.text), 0, 59)
+				var year := int(%Year.text)
+				var month := int(%Month.text)
+				var day = int(%Day.text)
+				var hour = int(%Hour.text)
+				var minute = int(%Minute.text)
+
+				if year == -1:
+					year = 99
+				if year == 100:
+					year = 0
+				if month == 13:
+					month = 1
+				if month == 0:
+					month = 12
+				if day == days[month - 1] + 1:
+					day = 1
+				if day == 0:
+					day = days[month - 1]
+				if hour == 24:
+					hour = 0
+				if hour == -1:
+					hour = 23
+				if minute == 60:
+					minute = 0
+				if minute == -1:
+					minute = 59
+				
+
+				%Year.text = "%02d" % clamp(year, 0, 99)
+				%Month.text = "%02d" % clamp(month, 1, 12)
+				%Day.text = "%02d" % clamp(day, 1, days[month - 1])
+				%Hour.text = "%02d" % clamp(hour, 0, 23)
+				%Minute.text = "%02d" % clamp(minute, 0, 59)
 				
 				var info := Time.get_datetime_dict_from_datetime_string("%s-%s-%sT%s:%s:00" % [%Year.text, %Month.text, %Day.text, %Hour.text, %Minute.text], true)
 				%DayAndMonthLabel.text = "%s, %s %02d" % [weekdays[info["weekday"]], month_names[int(%Month.text) - 1], int(%Day.text)]
