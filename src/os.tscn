@@ -19,6 +19,7 @@
 [ext_resource type="AudioStream" uid="uid://b46k2obfa1bsb" path="res://assets/reaper/ambience.wav" id="16_vhmww"]
 [ext_resource type="AudioStream" uid="uid://b5kvbsowqtxca" path="res://assets/reaper/success.wav" id="17_votk1"]
 [ext_resource type="AudioStream" uid="uid://ypnxo8ljsddn" path="res://assets/reaper/noti.wav" id="18_k81yc"]
+[ext_resource type="AudioStream" uid="uid://cju4ynta86ihx" path="res://assets/reaper/piano_music.wav" id="20_k81yc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k4k8l"]
 bg_color = Color(0, 0, 0, 1)
@@ -1013,6 +1014,11 @@ stream = ExtResource("18_k81yc")
 
 [node name="Ambience" type="AudioStreamPlayer" parent="." unique_id=2039966841]
 stream = ExtResource("16_vhmww")
+volume_db = -6.035
 autoplay = true
+
+[node name="Music" type="AudioStreamPlayer" parent="." unique_id=1679312618]
+stream = ExtResource("20_k81yc")
+volume_db = -10.214
 
 [editable path="flowerwall_crt"]

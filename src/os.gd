@@ -2,11 +2,10 @@ class_name Os
 extends Control
 
 #TODO
-# Add search query button to query screen
-# Add list of successful queries to query screen
-# Add correct date to image loads
-# Add viewing of mails
-# Add map
+# AM/PM mode instead of 24 hr
+# Add click mode
+# music?
+# map
 
 enum Command {
 	Unknown,
@@ -73,6 +72,8 @@ class Mail:
 var mails: Array[Mail] = []
 var _current_shown_mails: Array[Mail] = []
 
+var _has_played_music := false
+
 var _state := State.List:
 	set(val):
 		var prev = _state 
@@ -85,6 +86,10 @@ var _state := State.List:
 		elif val == State.List:
 			_list_idx = 0
 
+		if prev == State.Mail and not _has_played_music:
+			_has_played_music = true
+			# handle_music()
+
 		_state = val
 		%ListContainer.visible = _state == State.List
 
@@ -92,11 +97,17 @@ var _state := State.List:
 @onready var crt: flowerwallCRT = $flowerwall_crt
 const list_el: PackedScene = preload("res://src/list_element.tscn")
 
+func handle_music() -> void:
+	var _orig_ambience_vol: float = $Ambience.volume_db
+	await create_tween().tween_property($Ambience, "volume_db", _orig_ambience_vol * 4, 3.0).finished
+	$Music.play()
+	await $Music.finished
+	await create_tween().tween_property($Ambience, "volume_db", _orig_ambience_vol, 3.0).finished
+
 func _ready() -> void:
-	show_self(true)
+	show_self(false)
 	# display_image()
-	display_home()
-	# display_login()
+	# display_home()
 
 	var all_mail: String = %Mail.mail
 	var i = 0
@@ -117,6 +128,9 @@ func show_self(should_show: bool) -> void:
 		crt.enable_shader()
 	elif should_show and not crt.is_enabled:
 		crt.enable_shader()
+		display_login(false)
+		await get_tree().create_timer(1.0).timeout
+		display_login(true)
 
 func _process(_delta: float) -> void:
 	match _state:
@@ -435,7 +449,8 @@ func display_home() -> void:
 	display_list(
 		"Admin Home", 
 		dict,
-		["Select", "Back", "Navigate"]
+		["Select", "Back", "Navigate"],
+		false
 	)
 
 func display_nothing() -> void:
@@ -507,31 +522,34 @@ func display_query() -> void:
 	display_bottom(["Back", "NavigateH", "Adjust", "Search"])
 
 var _has_done_login := false
-func display_login() -> void:
+func display_login(should_fill: bool) -> void:
 	display_nothing()
-	_call_stack.push_front(display_login)
+	# _call_stack.push_front(display_login)
 	_state = State.Login
 
 	%LoginPortal.visible = true
 	%Username.text = ""
 	%Password.text = ""
 
-	var username := " Felxi092"
-	var password := " ********"
-	if not _has_done_login:
-		_has_done_login = true
-		for i in range(username.length()):
-			%Username.text = username.substr(0, i + 1)
-			await get_tree().create_timer(0.1).timeout
-		await get_tree().create_timer(0.5).timeout
-		for i in range(password.length()):
-			%Password.text = password.substr(0, i + 1)
-			await get_tree().create_timer(0.1).timeout
-	else:
-		%Username.text = username
-		%Password.text = password
+	if should_fill:
+		var username := " Felxi092"
+		var password := " ********"
+		if not _has_done_login:
+			_has_done_login = true
+			for i in range(username.length()):
+				%Username.text = username.substr(0, i + 1)
+				$Audio.play()
+				await get_tree().create_timer(0.1).timeout
+			await get_tree().create_timer(0.5).timeout
+			for i in range(password.length()):
+				%Password.text = password.substr(0, i + 1)
+				$Audio.play()
+				await get_tree().create_timer(0.1).timeout
+		else:
+			%Username.text = username
+			%Password.text = password
 
-	_login_done = true
+		_login_done = true
 
 func display_name_input() -> void:
 	display_nothing()
@@ -553,7 +571,7 @@ func display_about() -> void:
 	display_title("System Information")
 	display_bottom(["Done"])
 
-func display_list(title: String, options: Dictionary[String, Command], keys: Array[String]) -> void:
+func display_list(title: String, options: Dictionary[String, Command], keys: Array[String], show_back := true) -> void:
 	display_nothing()
 	_state = State.List
 	_current_list_names = options.keys()
@@ -567,10 +585,12 @@ func display_list(title: String, options: Dictionary[String, Command], keys: Arr
 	for c in %ListElements.get_children():
 		c.queue_free()
 
-	var el := list_el.instantiate()
-	%ListElements.add_child(el)
-	el.text = " > .."
-	el.command = Command.GoBack
+	var el 
+	if show_back:
+		el = list_el.instantiate()
+		%ListElements.add_child(el)
+		el.text = " > .."
+		el.command = Command.GoBack
 	for o in options:
 		el = list_el.instantiate()
 		%ListElements.add_child(el)

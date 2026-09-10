@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://ddaamrwug6xyd"]
 
 [ext_resource type="PackedScene" uid="uid://3qluagwwy56t" path="res://src/computer.tscn" id="1_eewff"]
+[ext_resource type="Script" uid="uid://ca11dgoeo6q0g" path="res://src/main.gd" id="1_ocmcv"]
 [ext_resource type="Script" uid="uid://d2kqtpi3v5r60" path="res://src/computer.gd" id="2_5q4o7"]
 [ext_resource type="PackedScene" uid="uid://c7oa26urw2rkr" path="res://src/os.tscn" id="2_gh0ne"]
 [ext_resource type="Texture2D" uid="uid://bvngvycfgv8pd" path="res://assets/vendor/psx-industrial-pack/industrial_1.png" id="4_mgm53"]
@@ -22,6 +23,7 @@
 [ext_resource type="Texture2D" uid="uid://dwjg7hfdlrb35" path="res://assets/vendor/Computer/Computer.fbm/Computer.png" id="19_ocmcv"]
 [ext_resource type="Texture2D" uid="uid://c4oo0hm0fq5wx" path="res://assets/vendor/Computer/Computer.fbm/Keyboard.png" id="20_adv81"]
 [ext_resource type="PackedScene" uid="uid://c7wvqoaxevaph" path="res://assets/vendor/retro-lowpoly-bed/bed.glb" id="21_d7bab"]
+[ext_resource type="Theme" uid="uid://cy365sb7aygxo" path="res://src/theme.tres" id="23_43aqp"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_63cwi"]
 resource_name = "Hair_A"
@@ -702,7 +704,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(-5.6341822e-08, 0.6976586, 0.15864186)]
+"values": [Vector3(1.4458365e-07, 1.228187, -1.1579688)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -714,7 +716,21 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(-0.14996031, 3.1415925, 2.8954847e-08)]
+"values": [Vector3(-0.439575, 3.1415925, 3.1637583e-08)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Os")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [false],
+"method": &"show_self"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_gh0ne"]
@@ -728,10 +744,10 @@ tracks/0/path = NodePath("Camera3D:position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(1, 3),
+"times": PackedFloat32Array(0, 3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(2.278615e-08, 0.8488608, -0.3513403), Vector3(-5.943766e-08, 0.61543655, 0.12322961)]
+"values": [Vector3(1.4458365e-07, 1.228187, -1.1579688), Vector3(-6.28019e-08, 0.7261406, 0.084747165)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -740,10 +756,10 @@ tracks/1/path = NodePath("Camera3D:rotation")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(1, 3),
+"times": PackedFloat32Array(0, 3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(-0.43957496, 3.1415925, 3.1637583e-08), Vector3(0, 3.1415927, 0)]
+"values": [Vector3(-0.439575, 3.1415925, 3.1637583e-08), Vector3(-0.22863813, 3.1415927, 0)]
 }
 tracks/2/type = "method"
 tracks/2/imported = false
@@ -2104,7 +2120,20 @@ shadow_mesh = SubResource("ArrayMesh_nube7")
 albedo_texture = ExtResource("19_ocmcv")
 metallic = 1.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_adv81"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.53133345, 1, 0.24000001, 1)
+
 [node name="Main" type="Node3D" unique_id=1440675962]
+script = ExtResource("1_ocmcv")
 
 [node name="HallwayCamSVP" type="SubViewport" parent="." unique_id=1542929807]
 size = Vector2i(1152, 1152)
@@ -7110,7 +7139,7 @@ skin = SubResource("Skin_gbndb")
 skeleton = NodePath("..")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=540544675]
-transform = Transform3D(-1, 6.3962315e-09, 1.4930093e-07, 2.8629886e-08, 0.9887754, 0.14939865, -1.4666998e-07, 0.14939865, -0.9887754, -5.6341822e-08, 0.6976586, 0.15864186)
+transform = Transform3D(-1, -3.2619365e-08, 1.366408e-07, 2.862988e-08, 0.9049311, 0.4255542, -1.3753227e-07, 0.4255542, -0.9049311, 1.4458365e-07, 1.228187, -1.1579688)
 current = true
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=564316047]
@@ -7130,8 +7159,6 @@ visible = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=78349408]
 libraries/ = SubResource("AnimationLibrary_5q4o7")
-autoplay = &"camera_in"
-speed_scale = 4.0
 
 [node name="Os" parent="." unique_id=471898743 instance=ExtResource("2_gh0ne")]
 visible = false
@@ -7563,12 +7590,24 @@ mesh = SubResource("ArrayMesh_ykqs4")
 transform = Transform3D(-2.870523e-07, 99.999985, 1.1920928e-05, 6.566991, 4.3711407e-06, -4.371138e-06, -2.8705227e-07, 1.1920929e-05, -99.99999, -0.07253051, 0.01230669, -18.356495)
 mesh = SubResource("ArrayMesh_ykqs4")
 
+[node name="Wall18" type="MeshInstance3D" parent="." unique_id=1372504149]
+transform = Transform3D(-2.870523e-07, 191.05655, 1.1920928e-05, 6.566991, 8.351351e-06, -4.371138e-06, -2.8705227e-07, 2.2775721e-05, -99.99999, -0.29432642, -0.7510314, 2.9017773)
+mesh = SubResource("ArrayMesh_ykqs4")
+
+[node name="Wall19" type="MeshInstance3D" parent="." unique_id=1760023645]
+transform = Transform3D(-2.870523e-07, 191.05655, 1.1920928e-05, 6.566991, 8.351351e-06, -4.371138e-06, -2.8705227e-07, 2.2775721e-05, -99.99999, -0.29432613, -0.7510315, 0.41387522)
+mesh = SubResource("ArrayMesh_ykqs4")
+
 [node name="Wall6" type="MeshInstance3D" parent="." unique_id=280978253]
 transform = Transform3D(-2.870523e-07, 99.999985, 1.1920928e-05, 6.566991, 4.3711407e-06, -4.371138e-06, -2.8705227e-07, 1.1920929e-05, -99.99999, -0.07253051, 0.01230669, -20.83538)
 mesh = SubResource("ArrayMesh_ykqs4")
 
 [node name="Floor3" type="MeshInstance3D" parent="." unique_id=926128500]
 transform = Transform3D(-9.88528e-06, 1.0678928e-06, -432.18692, -226.14883, 2.8651405e-07, 1.8891491e-05, 9.885278e-06, 6.5546784, 7.041217e-05, 3.1693387, 1.1579726, -15.892204)
+mesh = SubResource("ArrayMesh_t433r")
+
+[node name="Floor15" type="MeshInstance3D" parent="." unique_id=802852022]
+transform = Transform3D(-1.94859e-05, 1.0678925e-06, -780.4674, -445.78543, 2.86514e-07, 3.4115314e-05, 1.9485897e-05, 6.554677, 0.00012715424, 6.1866584, 1.1579726, 3.1111412)
 mesh = SubResource("ArrayMesh_t433r")
 
 [node name="Floor5" type="MeshInstance3D" parent="." unique_id=438118988]
@@ -7627,6 +7666,10 @@ mesh = SubResource("ArrayMesh_l73y7")
 transform = Transform3D(100, 0, 0, 0, -1.1920929e-05, 99.99999, 0, -99.99999, -1.1920929e-05, -3.0171494, 4.7683716e-07, -19.15699)
 mesh = SubResource("ArrayMesh_xqafp")
 
+[node name="CrateMetal4" type="MeshInstance3D" parent="." unique_id=528938647]
+transform = Transform3D(300.36853, 0, 0, 0, -5.739135e-06, 100, 0, -131.2961, -4.371139e-06, 0.030952998, -1.0528286, 0.47386956)
+mesh = SubResource("ArrayMesh_xqafp")
+
 [node name="GeneratorPortable2" type="MeshInstance3D" parent="." unique_id=297012684]
 transform = Transform3D(1.3113418e-05, 100.00001, 1.1920929e-05, 0, -1.1920929e-05, 100.00001, 100.00003, -1.3113418e-05, -1.5632413e-12, -3.1498847, 1.0615959, -16.899803)
 mesh = SubResource("ArrayMesh_fhag6")
@@ -7647,8 +7690,48 @@ mesh = SubResource("ArrayMesh_fhag6")
 transform = Transform3D(4.371139e-06, -100.00001, -4.3711393e-06, 0, -4.3711393e-06, 100.00001, 100, 4.3711393e-06, 1.9106856e-13, -3.026946, -4.7683716e-07, -21.60361)
 mesh = SubResource("ArrayMesh_c1vsa")
 
+[node name="BarrelWater4" type="MeshInstance3D" parent="." unique_id=2092210626]
+transform = Transform3D(-4.371139e-06, -99.99999, -1.38890355e-05, 0, -1.1920928e-05, 116.50966, -100, 4.3711384e-06, 2.262811e-12, -2.650807, -0.4913615, 2.6033583)
+mesh = SubResource("ArrayMesh_l73y7")
+
+[node name="GeneratorPortable4" type="MeshInstance3D" parent="." unique_id=1645698322]
+transform = Transform3D(100.00003, -1.7484559e-05, -2.0843219e-12, -1.8635287e-19, -1.1920931e-05, 100.00001, -1.7484559e-05, -100.00001, -1.1920931e-05, 1.7446443, 0.5288048, 2.715089)
+mesh = SubResource("ArrayMesh_fhag6")
+
+[node name="TransformerBox4" type="MeshInstance3D" parent="." unique_id=964375809]
+transform = Transform3D(-100.000015, 8.742278e-06, 1.0421608e-12, 0, -1.1920929e-05, 100.00001, 8.7422795e-06, 100.00002, 1.1920931e-05, 2.116011, -0.5327916, 2.5921504)
+mesh = SubResource("ArrayMesh_c1vsa")
+
+[node name="GeneratorPortable5" type="MeshInstance3D" parent="." unique_id=609578713]
+transform = Transform3D(-99.99999, -1.1920929e-05, -5.210804e-13, 2.6822241e-20, -4.3711393e-06, 100, 1.1920929e-05, -100.00001, -4.3711398e-06, -3.775554, 0.5288048, 2.7150893)
+mesh = SubResource("ArrayMesh_fhag6")
+
+[node name="TransformerBox5" type="MeshInstance3D" parent="." unique_id=342744527]
+transform = Transform3D(99.99999, 8.742278e-06, 3.821371e-13, 1.5529403e-20, -4.3711393e-06, 100, -8.742278e-06, 100.00001, 4.3711398e-06, -3.9472516, -0.5327916, 2.5921507)
+mesh = SubResource("ArrayMesh_c1vsa")
+
 [node name="bed" parent="." unique_id=152002115 instance=ExtResource("21_d7bab")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.317272, 0.25207746, -1.9834685)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1083818702]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=372280088]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("23_43aqp")
+
+[node name="Label" type="Label" parent="CanvasLayer/Control" unique_id=755246325]
+layout_mode = 0
+offset_left = 388.0
+offset_top = 508.0
+offset_right = 763.0
+offset_bottom = 556.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_adv81")
+text = "<Press Any Button to Start>"
 
 [editable path="Computer"]
 [editable path="female_secretary"]
