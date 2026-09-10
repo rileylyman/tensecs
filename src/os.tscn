@@ -6,6 +6,19 @@
 [ext_resource type="PackedScene" uid="uid://bf3b765n283fk" path="res://src/list_element.tscn" id="4_mvs76"]
 [ext_resource type="Shader" uid="uid://ne4cxxwktoov" path="res://src/greyscale_image.gdshader" id="5_nypig"]
 [ext_resource type="Script" uid="uid://b2howx6swswgq" path="res://src/mail.gd" id="6_nypig"]
+[ext_resource type="AudioStream" uid="uid://dwqnovatac31h" path="res://assets/reaper/keyboard_sounds1.wav" id="7_86xux"]
+[ext_resource type="AudioStream" uid="uid://lk70ltsvpuwx" path="res://assets/reaper/keyboard_sounds2.wav" id="8_vhmww"]
+[ext_resource type="AudioStream" uid="uid://w4q8jswwoqr6" path="res://assets/reaper/keyboard_sounds3.wav" id="9_jmg3a"]
+[ext_resource type="AudioStream" uid="uid://cpesfqrc431fs" path="res://assets/reaper/keyboard_sounds4.wav" id="10_hrncq"]
+[ext_resource type="AudioStream" uid="uid://jsb2pxjfgjqi" path="res://assets/reaper/keyboard_sounds5.wav" id="11_votk1"]
+[ext_resource type="AudioStream" uid="uid://bug6aieqy7vph" path="res://assets/reaper/keyboard_sounds6.wav" id="12_k81yc"]
+[ext_resource type="AudioStream" uid="uid://dcsnj1jngxx40" path="res://assets/reaper/keyboard_sounds7.wav" id="13_hoff3"]
+[ext_resource type="AudioStream" uid="uid://qsqn01dm715d" path="res://assets/reaper/keyboard_sounds8.wav" id="14_w85aw"]
+[ext_resource type="AudioStream" uid="uid://g0f11eaej2cy" path="res://assets/reaper/keyboard_sounds9.wav" id="15_3lt3v"]
+[ext_resource type="AudioStream" uid="uid://d1fu6wi1wuavj" path="res://assets/reaper/error3.wav" id="16_jmg3a"]
+[ext_resource type="AudioStream" uid="uid://b46k2obfa1bsb" path="res://assets/reaper/ambience.wav" id="16_vhmww"]
+[ext_resource type="AudioStream" uid="uid://b5kvbsowqtxca" path="res://assets/reaper/success.wav" id="17_votk1"]
+[ext_resource type="AudioStream" uid="uid://ypnxo8ljsddn" path="res://assets/reaper/noti.wav" id="18_k81yc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k4k8l"]
 bg_color = Color(0, 0, 0, 1)
@@ -24,6 +37,19 @@ border_width_bottom = 2
 border_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_01wwf"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_01wwf"]
+playback_mode = 1
+streams_count = 9
+stream_0/stream = ExtResource("7_86xux")
+stream_1/stream = ExtResource("8_vhmww")
+stream_2/stream = ExtResource("9_jmg3a")
+stream_3/stream = ExtResource("10_hrncq")
+stream_4/stream = ExtResource("11_votk1")
+stream_5/stream = ExtResource("12_k81yc")
+stream_6/stream = ExtResource("13_hoff3")
+stream_7/stream = ExtResource("14_w85aw")
+stream_8/stream = ExtResource("15_3lt3v")
 
 [node name="Os" type="Control" unique_id=471898743]
 layout_mode = 3
@@ -965,12 +991,28 @@ Sincerely yours,
 A
 =A Job Well Done
 
-Very nice work. Quite the sad tale, is it not? Alas, this is where the story ends... for now.
+Very nice work. Alas, this is where the mystery ends... for now.
 
 With admiration,
 A
 
 <Thank you for playing!>
 "
+
+[node name="Audio" type="AudioStreamPlayer" parent="." unique_id=571101020]
+stream = SubResource("AudioStreamRandomizer_01wwf")
+
+[node name="Error" type="AudioStreamPlayer" parent="." unique_id=1928795102]
+stream = ExtResource("16_jmg3a")
+
+[node name="Success" type="AudioStreamPlayer" parent="." unique_id=1116131934]
+stream = ExtResource("17_votk1")
+
+[node name="Noti" type="AudioStreamPlayer" parent="." unique_id=373980674]
+stream = ExtResource("18_k81yc")
+
+[node name="Ambience" type="AudioStreamPlayer" parent="." unique_id=2039966841]
+stream = ExtResource("16_vhmww")
+autoplay = true
 
 [editable path="flowerwall_crt"]

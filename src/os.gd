@@ -142,17 +142,22 @@ func show_noti() -> void:
 		return
 	_showing_noti = true
 	await create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT).tween_property(%MailNoti, "offset_transform_position:x", 0.0, 0.5).finished
+	$Noti.play()
 	await get_tree().create_timer(3.0).timeout
 	await create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT).tween_property(%MailNoti, "offset_transform_position:x", 1000.0, 0.5).finished
 	_showing_noti = false
 
 func _input(event: InputEvent) -> void:
+	for a in ["select", "back", "up", "down", "right", "left"]:
+		if event.is_action_pressed(a):
+			$Audio.play()
 	if _state != State.NameInput and event.is_action_pressed("back"):
 		handle_command(Command.GoBack)
 	match _state:
 		State.NameInput:
 			if not _name_succeeded:
 				if event is InputEventKey and event.pressed:
+					$Audio.play()
 					var k: String = event.as_text_keycode()
 					if k in alphabet:
 						_curr_name_guess += k
@@ -190,6 +195,7 @@ func _input(event: InputEvent) -> void:
 			var should_recalc := false
 
 			if event is InputEventKey and event.pressed and event.keycode >= KEY_0 and event.keycode <= KEY_9:
+				$Audio.play()
 				n = (n * 10 + event.keycode - 48)
 				_date_keys_pressed += 1
 				n %= 100
@@ -223,10 +229,10 @@ func _input(event: InputEvent) -> void:
 					month = 1
 				if month == 0:
 					month = 12
-				if day == days[month - 1] + 1:
+				if day == days[clamp(month, 1, 12) - 1] + 1:
 					day = 1
 				if day == 0:
-					day = days[month - 1]
+					day = days[clamp(month, 1, 12) - 1]
 				if hour == 24:
 					hour = 0
 				if hour == -1:
@@ -239,7 +245,7 @@ func _input(event: InputEvent) -> void:
 
 				%Year.text = "%02d" % clamp(year, 0, 99)
 				%Month.text = "%02d" % clamp(month, 1, 12)
-				%Day.text = "%02d" % clamp(day, 1, days[month - 1])
+				%Day.text = "%02d" % clamp(day, 1, days[clamp(month, 1, 12) - 1])
 				%Hour.text = "%02d" % clamp(hour, 0, 23)
 				%Minute.text = "%02d" % clamp(minute, 0, 59)
 				
@@ -337,7 +343,9 @@ func do_query():
 
 	if results.is_empty():
 		%OutcomeMsg.text = "<No Results Found.>"
+		$Error.play()
 	else:
+		$Success.play()
 		if not query_string in _successful_queries:
 			_successful_queries.append(query_string)
 			_successful_queries.sort()
@@ -352,7 +360,13 @@ func display_log() -> void:
 
 	var dict: Dictionary[String, Command] = {}
 	for q in _successful_queries:
-		dict[" At ".join(pretty_date(q))] = Command.PerformRequery
+		var res := find_results(q)
+		var alias := ""
+		for r in res:
+			if not r.alias.is_empty():
+				alias = r.alias
+				break
+		dict[" At ".join(pretty_date(q)) + ("" if not alias else " - " + alias)] = Command.PerformRequery
 
 	display_list(
 		"Query Log",
