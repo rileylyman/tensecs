@@ -6,6 +6,7 @@ extends Control
 # Add click mode
 # music?
 # map
+# make it 30 mins early or something instead of 2 hours so they can't confuse the time
 
 enum Command {
 	Unknown,
