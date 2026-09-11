@@ -19,7 +19,7 @@
 [ext_resource type="AudioStream" uid="uid://b46k2obfa1bsb" path="res://assets/reaper/ambience.wav" id="16_vhmww"]
 [ext_resource type="AudioStream" uid="uid://b5kvbsowqtxca" path="res://assets/reaper/success.wav" id="17_votk1"]
 [ext_resource type="AudioStream" uid="uid://ypnxo8ljsddn" path="res://assets/reaper/noti.wav" id="18_k81yc"]
-[ext_resource type="AudioStream" uid="uid://cju4ynta86ihx" path="res://assets/reaper/piano_music.wav" id="20_k81yc"]
+[ext_resource type="AudioStream" uid="uid://7vs0mub6p3ac" path="res://assets/reaper/jazz.wav" id="20_k81yc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k4k8l"]
 bg_color = Color(0, 0, 0, 1)
@@ -338,6 +338,7 @@ horizontal_alignment = 1
 
 [node name="AboutContainer" type="MarginContainer" parent="." unique_id=2131062049]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -480,7 +481,6 @@ fit_content = true
 
 [node name="ImageContainer" type="Control" parent="." unique_id=170892621]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -572,6 +572,7 @@ grow_vertical = 2
 size_flags_horizontal = 0
 
 [node name="PanelContainer" type="PanelContainer" parent="ImageContainer/Image" unique_id=564338957]
+z_index = 1
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -584,6 +585,8 @@ offset_right = 204.0
 offset_bottom = 193.5
 grow_horizontal = 2
 grow_vertical = 2
+offset_transform_position = Vector2(300, 10)
+offset_transform_scale = Vector2(1.5, 1.5)
 
 [node name="ImageRect" type="TextureRect" parent="ImageContainer/Image/PanelContainer" unique_id=1615113690]
 unique_name_in_owner = true
@@ -773,6 +776,25 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Back"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Enlarge" type="HBoxContainer" parent="BottomHelp" unique_id=1831995134]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="BottomHelp/Enlarge" unique_id=709498852]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"InvertedLabel"
+text = " F "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="BottomHelp/Enlarge" unique_id=471665691]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Enlarge"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -982,7 +1004,7 @@ Well... what do we have here? Yet another curious soul poking around amidst all 
 
 We both know the fate of this doomed mining station. The line between life and death is never thinner than in the cold vacuum of space. Yet, if you are like me, you came itching to know not how, but [u]why[/u].
 
-I sat where you sit once, eager to unravel this mystery. I had some help, so I'll pay it forward, but not without a little challenge. If you can tell me the man's name- his true name- you will have my aid.
+I sat where you sit once, eager to unravel this mystery. I had some help, so I'll pay it forward, but not without a little challenge. The saboteur, the one you've already found: tell me his true identity, and you will have my aid.
 
 By way of a friendly introduction, why don't you take a look at the morning of Christmas Eve, 1642. They seemed to always serve breakfast at 6am on special holidays.
 
@@ -1020,5 +1042,6 @@ autoplay = true
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=1679312618]
 stream = ExtResource("20_k81yc")
 volume_db = -10.214
+autoplay = true
 
 [editable path="flowerwall_crt"]

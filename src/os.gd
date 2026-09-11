@@ -1,12 +1,22 @@
 class_name Os
 extends Control
 
-#TODO
+# Not doing:
 # AM/PM mode instead of 24 hr
 # Add click mode
-# music?
-# map
+# add computer startup sound
 # make it 30 mins early or something instead of 2 hours so they can't confuse the time
+# clarify "the man"
+
+#TODO
+# map
+# reset game
+
+# Done
+# music?
+# Jan 01
+# "Probably why she sat next to you"
+# Expand image button?
 
 enum Command {
 	Unknown,
@@ -29,6 +39,7 @@ enum State {
 	About,
 	Login,
 	Image,
+	ImageBig,
 	Query,
 	Mail,
 	NameInput,
@@ -41,6 +52,7 @@ const month_names: Array[String] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "J
 const true_name := "GRAYSON"
 
 var _is_going_back := false
+var _skip_intro := true
 
 var _login_done := false
 var _call_stack: Array[Callable] = []
@@ -77,13 +89,13 @@ var _has_played_music := false
 
 var _state := State.List:
 	set(val):
-		var prev = _state 
+		var prev = _state
 		if prev == State.List and not _is_going_back:
 			_list_idx_stack.push_front(_list_idx)
 
 		if val == State.List and _is_going_back:
 			var idx: int = _list_idx_stack.pop_front()
-			_list_idx = idx if idx != null else 0 
+			_list_idx = idx if idx != null else 0
 		elif val == State.List:
 			_list_idx = 0
 
@@ -106,10 +118,9 @@ func handle_music() -> void:
 	await create_tween().tween_property($Ambience, "volume_db", _orig_ambience_vol, 3.0).finished
 
 func _ready() -> void:
-	show_self(false)
+	crt.enable_shader()
 	# display_image()
 	# display_home()
-
 	var all_mail: String = %Mail.mail
 	var i = 0
 	for s in all_mail.split("=", false):
@@ -123,15 +134,22 @@ func _ready() -> void:
 		mails.append(m)
 		i += 1
 
+
 func show_self(should_show: bool) -> void:
+	if _skip_intro:
+		should_show = true
 	visible = should_show
-	if not should_show and crt.is_enabled: 
+	if not should_show and crt.is_enabled:
 		crt.enable_shader()
 	elif should_show and not crt.is_enabled:
 		crt.enable_shader()
-		display_login(false)
-		await get_tree().create_timer(1.0).timeout
-		display_login(true)
+		if _skip_intro:
+			print("display home")
+			display_home()
+		else:
+			display_login(false)
+			await get_tree().create_timer(1.0).timeout
+			display_login(true)
 
 func _process(_delta: float) -> void:
 	match _state:
@@ -166,7 +184,7 @@ func _input(event: InputEvent) -> void:
 	for a in ["select", "back", "up", "down", "right", "left"]:
 		if event.is_action_pressed(a):
 			$Audio.play()
-	if _state != State.NameInput and event.is_action_pressed("back"):
+	if _state != State.NameInput and _state != State.ImageBig and event.is_action_pressed("back"):
 		handle_command(Command.GoBack)
 	match _state:
 		State.NameInput:
@@ -197,6 +215,15 @@ func _input(event: InputEvent) -> void:
 				%ImageScroll.scroll_vertical += 25
 			elif event.is_action_pressed("select"):
 				handle_command(Command.GoBack)
+			elif event.is_action_pressed("enlarge_image"):
+				var cont := %ImageRect.get_parent()
+				cont.offset_transform_enabled = true
+				_state = State.ImageBig
+		State.ImageBig:
+			if event.is_action_pressed("select") or event.is_action_pressed("back") or event.is_action_pressed("enlarge_image"):
+				var cont := %ImageRect.get_parent()
+				cont.offset_transform_enabled = false
+				_state = State.Image
 		State.List:
 			if event.is_action_pressed("up") and %ListElements.get_child_count() > 0:
 				_list_idx = (_list_idx - 1 + %ListElements.get_child_count()) % %ListElements.get_child_count()
@@ -448,7 +475,7 @@ func display_home() -> void:
 	if _current_shown_mails.size() > 0:
 		dict["Input Name"] = Command.ViewNameInput
 	display_list(
-		"Admin Home", 
+		"Admin Home",
 		dict,
 		["Select", "Back", "Navigate"],
 		false
@@ -509,7 +536,7 @@ func display_image() -> void:
 		%ImageHeader.text = _img_header_orig.format({"title_string": r.svp.location, "date_string": d[0] + " At " + d[1]})
 		%ImageScroll.scroll_vertical = 0
 	
-	display_bottom(["Done", "Scroll"])
+	display_bottom(["Done", "Enlarge", "Scroll"])
 
 func display_query() -> void:
 	display_nothing()
@@ -586,7 +613,7 @@ func display_list(title: String, options: Dictionary[String, Command], keys: Arr
 	for c in %ListElements.get_children():
 		c.queue_free()
 
-	var el 
+	var el
 	if show_back:
 		el = list_el.instantiate()
 		%ListElements.add_child(el)
