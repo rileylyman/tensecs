@@ -377,6 +377,229 @@ Using this interface, authorized personnel may
 [u]Please note:[/u] To preserve storage longevity, security cameras only capture still-frame snapshots [u]once every ten seconds[/u], and only if motion is detected.
 "
 
+[node name="MapContainer" type="MarginContainer" parent="." unique_id=100373460]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 84.0
+offset_bottom = -83.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 16
+
+[node name="PanelContainer" type="PanelContainer" parent="MapContainer" unique_id=1921980167]
+custom_minimum_size = Vector2(800, 400)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MapContainer/PanelContainer" unique_id=44201851]
+layout_mode = 2
+
+[node name="Line2D" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=1688107115]
+position = Vector2(534, -60)
+points = PackedVector2Array(217, 179, 258, 111, 364, 111, 419, 165, 420, 246, 365, 299, 266, 299, 219, 251, 85, 251, 85, 367, -329, 367)
+default_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[node name="Line2D16" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=2141465060]
+position = Vector2(534, -60)
+points = PackedVector2Array(-7, 222, -7, 160, 145, 160)
+default_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[node name="Line2D12" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=314874980]
+position = Vector2(534, -60)
+points = PackedVector2Array(144, 253, 144, 334, 206, 334, 206, 437, 88, 437)
+default_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[node name="Line2D11" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=1558880376]
+position = Vector2(534, -60)
+points = PackedVector2Array(217, 177, 217, 225, 146, 225, 146, 111, 259, 111)
+default_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[node name="Line2D13" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=1332431650]
+position = Vector2(534, -60)
+points = PackedVector2Array(143, 225, -171, 225, -171, 125)
+default_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[node name="Line2D15" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=1094767782]
+position = Vector2(534, -60)
+points = PackedVector2Array(-197, 125, -197, 225, -332, 225)
+default_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[node name="Line2D14" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=888874279]
+position = Vector2(534, -60)
+points = PackedVector2Array(-87, 251, -333, 251)
+default_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[node name="Line2D2" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=1937384883]
+position = Vector2(534, -59)
+points = PackedVector2Array(-330, 336, 53, 336, 53, 250, -87, 250, -87, 334)
+default_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[node name="Line2D3" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=676637721]
+position = Vector2(534, -60)
+points = PackedVector2Array(-149, 369, -149, 398, -122, 398, -122, 368)
+default_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[node name="Line2D4" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=132985837]
+position = Vector2(581, -60)
+points = PackedVector2Array(-149, 369, -149, 398, -122, 398, -122, 368)
+default_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[node name="Line2D5" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=962207477]
+position = Vector2(488, -60)
+points = PackedVector2Array(-149, 369, -149, 398, -122, 398, -122, 368)
+default_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[node name="Line2D8" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=1059527940]
+position = Vector2(443, -91)
+points = PackedVector2Array(-149, 369, -149, 334, -122, 334, -122, 370)
+default_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[node name="Line2D9" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=609336926]
+position = Vector2(487, -91)
+points = PackedVector2Array(-149, 369, -149, 334, -122, 334, -122, 370)
+default_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[node name="Line2D10" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=579541833]
+position = Vector2(532, -91)
+points = PackedVector2Array(-149, 369, -149, 334, -122, 334, -122, 370)
+default_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[node name="Line2D6" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=917659251]
+position = Vector2(443, -60)
+points = PackedVector2Array(-149, 369, -149, 398, -122, 398, -122, 368)
+default_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[node name="Line2D7" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=1709627139]
+position = Vector2(443, -60)
+points = PackedVector2Array(74, 370, 74, 437, 176, 437, 176, 369)
+default_color = Color(0.53133345, 1, 0.24000001, 1)
+
+[node name="Line2D17" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=2116101667]
+position = Vector2(534, -60)
+points = PackedVector2Array(57, 224, 81, 224)
+width = 20.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="Line2D18" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=367693185]
+position = Vector2(534, -60)
+points = PackedVector2Array(-74, 252, -49, 252)
+width = 20.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="Line2D19" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=1890616828]
+position = Vector2(534, -60)
+points = PackedVector2Array(-2, 367, 18, 367)
+width = 20.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="Line2D20" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=836086110]
+position = Vector2(534, -60)
+points = PackedVector2Array(105, 251, 128, 251)
+width = 20.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="Line2D21" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=167951497]
+position = Vector2(534, -60)
+points = PackedVector2Array(164, 224, 187, 224)
+width = 20.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=1268600184]
+layout_mode = 0
+offset_left = 805.0
+offset_top = 138.0
+offset_right = 925.0
+offset_bottom = 170.0
+theme_override_font_sizes/font_size = 24
+text = "Cafeteria"
+
+[node name="Label7" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=2061363484]
+layout_mode = 0
+offset_left = 269.0
+offset_top = 33.0
+offset_right = 439.0
+offset_bottom = 65.0
+theme_override_font_sizes/font_size = 24
+text = "To Control Center"
+
+[node name="Label8" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=1393761065]
+layout_mode = 0
+offset_left = 109.0
+offset_top = 166.0
+offset_right = 279.0
+offset_bottom = 198.0
+theme_override_font_sizes/font_size = 24
+text = "To Mines"
+
+[node name="Label9" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=1119551185]
+layout_mode = 0
+offset_left = 63.0
+offset_top = 280.0
+offset_right = 233.0
+offset_bottom = 312.0
+theme_override_font_sizes/font_size = 24
+text = "To Hangar Bay"
+
+[node name="Label5" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=692885943]
+layout_mode = 0
+offset_left = 690.0
+offset_top = 76.0
+offset_right = 810.0
+offset_bottom = 108.0
+theme_override_font_sizes/font_size = 24
+text = "Storage"
+
+[node name="Label10" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=120173683]
+layout_mode = 0
+offset_left = 553.0
+offset_top = 119.0
+offset_right = 673.0
+offset_bottom = 151.0
+theme_override_font_sizes/font_size = 24
+text = "Breakroom"
+
+[node name="Label6" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=2136987849]
+layout_mode = 0
+offset_left = 640.0
+offset_top = 300.0
+offset_right = 760.0
+offset_bottom = 332.0
+theme_override_font_sizes/font_size = 24
+text = "Kitchens"
+
+[node name="Label3" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=1917186101]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 220.0
+offset_right = 616.0
+offset_bottom = 252.0
+theme_override_font_sizes/font_size = 24
+text = "Gym"
+
+[node name="Label2" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=1538146406]
+layout_mode = 0
+offset_left = 281.0
+offset_top = 281.0
+offset_right = 495.0
+offset_bottom = 313.0
+theme_override_font_sizes/font_size = 24
+text = "Residence Hall A"
+
+[node name="Label4" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=1278761768]
+layout_mode = 0
+offset_left = 529.0
+offset_top = 325.0
+offset_right = 743.0
+offset_bottom = 357.0
+theme_override_font_sizes/font_size = 24
+text = "Washroom"
+
 [node name="NameInputContainer" type="MarginContainer" parent="." unique_id=1703301771]
 unique_name_in_owner = true
 visible = false
@@ -481,6 +704,7 @@ fit_content = true
 
 [node name="ImageContainer" type="Control" parent="." unique_id=170892621]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -599,7 +823,6 @@ stretch_mode = 5
 
 [node name="LoginPortal" type="MarginContainer" parent="." unique_id=263114693]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(600, 350)
 layout_mode = 1
 anchors_preset = 8
@@ -657,7 +880,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_01wwf")
-text = " Felxi092"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="LoginPortal/PanelContainer/MarginContainer/VBoxContainer" unique_id=1045030265]
 layout_mode = 2
@@ -673,7 +895,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_01wwf")
-text = " ********"
 
 [node name="HSeparator2" type="HSeparator" parent="LoginPortal/PanelContainer/MarginContainer/VBoxContainer" unique_id=2133852514]
 layout_mode = 2
@@ -714,6 +935,7 @@ horizontal_alignment = 1
 
 [node name="TopTitleWithSub" type="RichTextLabel" parent="." unique_id=1130612467]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -727,6 +949,7 @@ horizontal_alignment = 1
 
 [node name="BottomHelp" type="HBoxContainer" parent="." unique_id=383177332]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0

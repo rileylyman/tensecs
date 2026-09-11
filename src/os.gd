@@ -5,18 +5,6 @@ extends Control
 # AM/PM mode instead of 24 hr
 # Add click mode
 # add computer startup sound
-# make it 30 mins early or something instead of 2 hours so they can't confuse the time
-# clarify "the man"
-
-#TODO
-# map
-# reset game
-
-# Done
-# music?
-# Jan 01
-# "Probably why she sat next to you"
-# Expand image button?
 
 enum Command {
 	Unknown,
@@ -43,6 +31,7 @@ enum State {
 	Query,
 	Mail,
 	NameInput,
+	Map,
 }
 
 const days: Array[int] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -52,7 +41,7 @@ const month_names: Array[String] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "J
 const true_name := "GRAYSON"
 
 var _is_going_back := false
-var _skip_intro := true
+var _skip_intro := false
 
 var _login_done := false
 var _call_stack: Array[Callable] = []
@@ -144,7 +133,6 @@ func show_self(should_show: bool) -> void:
 	elif should_show and not crt.is_enabled:
 		crt.enable_shader()
 		if _skip_intro:
-			print("display home")
 			display_home()
 		else:
 			display_login(false)
@@ -181,6 +169,8 @@ func show_noti() -> void:
 	_showing_noti = false
 
 func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("reset_game"):
+		get_tree().reload_current_scene()
 	for a in ["select", "back", "up", "down", "right", "left"]:
 		if event.is_action_pressed(a):
 			$Audio.play()
@@ -308,6 +298,9 @@ func _input(event: InputEvent) -> void:
 		State.About:
 			if event.is_action_pressed("select"):
 				handle_command(Command.GoBack)
+		State.Map:
+			if event.is_action_pressed("select"):
+				handle_command(Command.GoBack)
 		State.Mail:
 			if event.is_action_pressed("up", true):
 				%MailScroll.scroll_vertical -= 25
@@ -318,6 +311,7 @@ func _input(event: InputEvent) -> void:
 		State.Login:
 			if _login_done and event.is_action_pressed("select"):
 				handle_command(Command.Home)
+				$Success.play()
 
 
 func handle_command(cmd: Command) -> void:
@@ -330,6 +324,8 @@ func handle_command(cmd: Command) -> void:
 			display_log()
 		Command.ViewMail:
 			display_mail()
+		Command.ViewMap:
+			display_map()
 		Command.ViewNameInput:
 			display_name_input()
 		Command.GoBack:
@@ -465,15 +461,17 @@ func display_query_results(results: Array) -> void:
 
 func display_home() -> void:
 	_call_stack.push_front(display_home)
-	var dict: Dictionary[String, Command] = {
-		"General Info": Command.ConsoleInfo,
-		"Query": Command.GoToQueryScreen,
-		# "Facility Map": Command.ViewMap,
-		("Mail" + (" [unread]" if mails.filter(func(m): return not m.hidden and m.unread).size() > 0 else "")): Command.ViewMailList,
-		"Log": Command.ViewLog,
-	}
+	var dict: Dictionary[String, Command] = {}
+	dict["General Info"] = Command.ConsoleInfo
+	dict["Facility Map"] = Command.ViewMap
+	dict["Query"] = Command.GoToQueryScreen
+	#if mails.filter(func(m): return not m.hidden).size() > 0:
+	dict[("Mail" + (" [unread]" if mails.filter(func(m): return not m.hidden and m.unread).size() > 0 else ""))] = Command.ViewMailList
+	#if _successful_queries.size() > 0:
+	dict["Past Queries"] = Command.ViewLog
 	if _current_shown_mails.size() > 0:
 		dict["Input Name"] = Command.ViewNameInput
+
 	display_list(
 		"Admin Home",
 		dict,
@@ -492,6 +490,7 @@ func display_nothing() -> void:
 	%ImageContainer.visible = false
 	%MailContainer.visible = false
 	%NameInputContainer.visible = false
+	%MapContainer.visible = false
 
 func push_mail_noti(subject_line: String) -> void:
 	var idx := mails.find_custom(func(m): return m.subject == subject_line)
@@ -597,6 +596,15 @@ func display_about() -> void:
 
 	%AboutContainer.visible = true
 	display_title("System Information")
+	display_bottom(["Done"])
+
+func display_map() -> void:
+	display_nothing()
+	_call_stack.push_front(display_map)
+	_state = State.Map
+
+	%MapContainer.visible = true
+	display_title("Facility Map;Pelagius Asteroid Mines")
 	display_bottom(["Done"])
 
 func display_list(title: String, options: Dictionary[String, Command], keys: Array[String], show_back := true) -> void:
