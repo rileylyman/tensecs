@@ -298,6 +298,10 @@ func _input(event: InputEvent) -> void:
 		State.About:
 			if event.is_action_pressed("select"):
 				handle_command(Command.GoBack)
+			if event.is_action_pressed("up", true):
+				%AboutScroll.scroll_vertical -= 25
+			elif event.is_action_pressed("down", true):
+				%AboutScroll.scroll_vertical += 25
 		State.Map:
 			if event.is_action_pressed("select"):
 				handle_command(Command.GoBack)
@@ -554,6 +558,7 @@ func display_login(should_fill: bool) -> void:
 	# _call_stack.push_front(display_login)
 	_state = State.Login
 
+	%LoginPrompt.visible = false
 	%LoginPortal.visible = true
 	%Username.text = ""
 	%Password.text = ""
@@ -575,7 +580,8 @@ func display_login(should_fill: bool) -> void:
 		else:
 			%Username.text = username
 			%Password.text = password
-
+		
+		%LoginPrompt.visible = true
 		_login_done = true
 
 func display_name_input() -> void:
@@ -604,7 +610,7 @@ func display_map() -> void:
 	_state = State.Map
 
 	%MapContainer.visible = true
-	display_title("Facility Map;Pelagius Asteroid Mines")
+	display_title("Facility Map;Pelagius Asteroid Mine")
 	display_bottom(["Done"])
 
 func display_list(title: String, options: Dictionary[String, Command], keys: Array[String], show_back := true) -> void:

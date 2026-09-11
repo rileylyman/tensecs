@@ -92,6 +92,7 @@ color = Color(0, 0, 0, 1)
 [node name="ListContainer" type="MarginContainer" parent="." unique_id=519687065]
 unique_name_in_owner = true
 visible = false
+custom_maximum_size = Vector2(1000, -1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -339,6 +340,7 @@ horizontal_alignment = 1
 [node name="AboutContainer" type="MarginContainer" parent="." unique_id=2131062049]
 unique_name_in_owner = true
 visible = false
+custom_maximum_size = Vector2(1100, -1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -363,8 +365,13 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="RichTextLabel" type="RichTextLabel" parent="AboutContainer/PanelContainer/MarginContainer" unique_id=103126932]
+[node name="AboutScroll" type="ScrollContainer" parent="AboutContainer/PanelContainer/MarginContainer" unique_id=733563038]
+unique_name_in_owner = true
 layout_mode = 2
+
+[node name="AboutText" type="RichTextLabel" parent="AboutContainer/PanelContainer/MarginContainer/AboutScroll" unique_id=103126932]
+layout_mode = 2
+size_flags_horizontal = 3
 bbcode_enabled = true
 text = "Welcome, Felxi092, to the [b][u]Pelagius[/u][/b] security management console.
 
@@ -376,10 +383,12 @@ Using this interface, authorized personnel may
 
 [u]Please note:[/u] To preserve storage longevity, security cameras only capture still-frame snapshots [u]once every ten seconds[/u], and only if motion is detected.
 "
+fit_content = true
 
 [node name="MapContainer" type="MarginContainer" parent="." unique_id=100373460]
 unique_name_in_owner = true
 visible = false
+custom_maximum_size = Vector2(1000, -1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -401,208 +410,209 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Line2D" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=1688107115]
-position = Vector2(534, -60)
+position = Vector2(431, -56)
 points = PackedVector2Array(217, 179, 258, 111, 364, 111, 419, 165, 420, 246, 365, 299, 266, 299, 219, 251, 85, 251, 85, 367, -329, 367)
 default_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [node name="Line2D16" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=2141465060]
-position = Vector2(534, -60)
+position = Vector2(431, -56)
 points = PackedVector2Array(-7, 222, -7, 160, 145, 160)
 default_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [node name="Line2D12" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=314874980]
-position = Vector2(534, -60)
+position = Vector2(431, -56)
 points = PackedVector2Array(144, 253, 144, 334, 206, 334, 206, 437, 88, 437)
 default_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [node name="Line2D11" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=1558880376]
-position = Vector2(534, -60)
+position = Vector2(431, -56)
 points = PackedVector2Array(217, 177, 217, 225, 146, 225, 146, 111, 259, 111)
 default_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [node name="Line2D13" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=1332431650]
-position = Vector2(534, -60)
+position = Vector2(431, -56)
 points = PackedVector2Array(143, 225, -171, 225, -171, 125)
 default_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [node name="Line2D15" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=1094767782]
-position = Vector2(534, -60)
+position = Vector2(431, -56)
 points = PackedVector2Array(-197, 125, -197, 225, -332, 225)
 default_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [node name="Line2D14" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=888874279]
-position = Vector2(534, -60)
+position = Vector2(431, -56)
 points = PackedVector2Array(-87, 251, -333, 251)
 default_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [node name="Line2D2" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=1937384883]
-position = Vector2(534, -59)
+position = Vector2(431, -55)
 points = PackedVector2Array(-330, 336, 53, 336, 53, 250, -87, 250, -87, 334)
 default_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [node name="Line2D3" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=676637721]
-position = Vector2(534, -60)
+position = Vector2(431, -56)
 points = PackedVector2Array(-149, 369, -149, 398, -122, 398, -122, 368)
 default_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [node name="Line2D4" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=132985837]
-position = Vector2(581, -60)
+position = Vector2(478, -56)
 points = PackedVector2Array(-149, 369, -149, 398, -122, 398, -122, 368)
 default_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [node name="Line2D5" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=962207477]
-position = Vector2(488, -60)
+position = Vector2(385, -56)
 points = PackedVector2Array(-149, 369, -149, 398, -122, 398, -122, 368)
 default_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [node name="Line2D8" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=1059527940]
-position = Vector2(443, -91)
+position = Vector2(340, -87)
 points = PackedVector2Array(-149, 369, -149, 334, -122, 334, -122, 370)
 default_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [node name="Line2D9" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=609336926]
-position = Vector2(487, -91)
+position = Vector2(384, -87)
 points = PackedVector2Array(-149, 369, -149, 334, -122, 334, -122, 370)
 default_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [node name="Line2D10" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=579541833]
-position = Vector2(532, -91)
+position = Vector2(429, -87)
 points = PackedVector2Array(-149, 369, -149, 334, -122, 334, -122, 370)
 default_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [node name="Line2D6" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=917659251]
-position = Vector2(443, -60)
+position = Vector2(340, -56)
 points = PackedVector2Array(-149, 369, -149, 398, -122, 398, -122, 368)
 default_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [node name="Line2D7" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=1709627139]
-position = Vector2(443, -60)
+position = Vector2(340, -56)
 points = PackedVector2Array(74, 370, 74, 437, 176, 437, 176, 369)
 default_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [node name="Line2D17" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=2116101667]
-position = Vector2(534, -60)
+position = Vector2(431, -56)
 points = PackedVector2Array(57, 224, 81, 224)
 width = 20.0
 default_color = Color(0, 0, 0, 1)
 
 [node name="Line2D18" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=367693185]
-position = Vector2(534, -60)
+position = Vector2(431, -56)
 points = PackedVector2Array(-74, 252, -49, 252)
 width = 20.0
 default_color = Color(0, 0, 0, 1)
 
 [node name="Line2D19" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=1890616828]
-position = Vector2(534, -60)
+position = Vector2(431, -56)
 points = PackedVector2Array(-2, 367, 18, 367)
 width = 20.0
 default_color = Color(0, 0, 0, 1)
 
 [node name="Line2D20" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=836086110]
-position = Vector2(534, -60)
+position = Vector2(431, -56)
 points = PackedVector2Array(105, 251, 128, 251)
 width = 20.0
 default_color = Color(0, 0, 0, 1)
 
 [node name="Line2D21" type="Line2D" parent="MapContainer/PanelContainer/Control" unique_id=167951497]
-position = Vector2(534, -60)
+position = Vector2(431, -56)
 points = PackedVector2Array(164, 224, 187, 224)
 width = 20.0
 default_color = Color(0, 0, 0, 1)
 
 [node name="Label" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=1268600184]
 layout_mode = 0
-offset_left = 805.0
-offset_top = 138.0
-offset_right = 925.0
-offset_bottom = 170.0
+offset_left = 702.0
+offset_top = 142.0
+offset_right = 822.0
+offset_bottom = 174.0
 theme_override_font_sizes/font_size = 24
 text = "Cafeteria"
 
 [node name="Label7" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=2061363484]
 layout_mode = 0
-offset_left = 269.0
-offset_top = 33.0
-offset_right = 439.0
-offset_bottom = 65.0
+offset_left = 166.0
+offset_top = 37.0
+offset_right = 336.0
+offset_bottom = 69.0
 theme_override_font_sizes/font_size = 24
 text = "To Control Center"
 
 [node name="Label8" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=1393761065]
 layout_mode = 0
-offset_left = 109.0
-offset_top = 166.0
-offset_right = 279.0
-offset_bottom = 198.0
+offset_left = 37.0
+offset_top = 136.0
+offset_right = 207.0
+offset_bottom = 168.0
 theme_override_font_sizes/font_size = 24
 text = "To Mines"
 
 [node name="Label9" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=1119551185]
 layout_mode = 0
-offset_left = 63.0
-offset_top = 280.0
-offset_right = 233.0
-offset_bottom = 312.0
+offset_left = 19.0
+offset_top = 246.0
+offset_right = 189.0
+offset_bottom = 278.0
 theme_override_font_sizes/font_size = 24
 text = "To Hangar Bay"
 
 [node name="Label5" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=692885943]
 layout_mode = 0
-offset_left = 690.0
-offset_top = 76.0
-offset_right = 810.0
-offset_bottom = 108.0
+offset_left = 587.0
+offset_top = 80.0
+offset_right = 707.0
+offset_bottom = 112.0
 theme_override_font_sizes/font_size = 24
 text = "Storage"
 
 [node name="Label10" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=120173683]
 layout_mode = 0
-offset_left = 553.0
-offset_top = 119.0
-offset_right = 673.0
-offset_bottom = 151.0
+offset_left = 450.0
+offset_top = 123.0
+offset_right = 570.0
+offset_bottom = 155.0
 theme_override_font_sizes/font_size = 24
 text = "Breakroom"
 
 [node name="Label6" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=2136987849]
 layout_mode = 0
-offset_left = 640.0
-offset_top = 300.0
-offset_right = 760.0
-offset_bottom = 332.0
+offset_left = 537.0
+offset_top = 304.0
+offset_right = 657.0
+offset_bottom = 336.0
 theme_override_font_sizes/font_size = 24
 text = "Kitchens"
 
 [node name="Label3" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=1917186101]
 layout_mode = 0
-offset_left = 496.0
-offset_top = 220.0
-offset_right = 616.0
-offset_bottom = 252.0
+offset_left = 393.0
+offset_top = 224.0
+offset_right = 513.0
+offset_bottom = 256.0
 theme_override_font_sizes/font_size = 24
 text = "Gym"
 
 [node name="Label2" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=1538146406]
 layout_mode = 0
-offset_left = 281.0
-offset_top = 281.0
-offset_right = 495.0
-offset_bottom = 313.0
+offset_left = 178.0
+offset_top = 285.0
+offset_right = 392.0
+offset_bottom = 317.0
 theme_override_font_sizes/font_size = 24
 text = "Residence Hall A"
 
 [node name="Label4" type="Label" parent="MapContainer/PanelContainer/Control" unique_id=1278761768]
 layout_mode = 0
-offset_left = 529.0
-offset_top = 325.0
-offset_right = 743.0
-offset_bottom = 357.0
+offset_left = 426.0
+offset_top = 329.0
+offset_right = 640.0
+offset_bottom = 361.0
 theme_override_font_sizes/font_size = 24
 text = "Washroom"
 
 [node name="NameInputContainer" type="MarginContainer" parent="." unique_id=1703301771]
 unique_name_in_owner = true
 visible = false
+custom_maximum_size = Vector2(1000, -1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -656,6 +666,7 @@ horizontal_alignment = 1
 [node name="MailContainer" type="MarginContainer" parent="." unique_id=1041146529]
 unique_name_in_owner = true
 visible = false
+custom_maximum_size = Vector2(1000, -1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -899,23 +910,24 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_01wwf")
 [node name="HSeparator2" type="HSeparator" parent="LoginPortal/PanelContainer/MarginContainer/VBoxContainer" unique_id=2133852514]
 layout_mode = 2
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="LoginPortal/PanelContainer/MarginContainer/VBoxContainer" unique_id=76840284]
+[node name="LoginPrompt" type="HBoxContainer" parent="LoginPortal/PanelContainer/MarginContainer/VBoxContainer" unique_id=76840284]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Label" type="Label" parent="LoginPortal/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=869202389]
+[node name="Label" type="Label" parent="LoginPortal/PanelContainer/MarginContainer/VBoxContainer/LoginPrompt" unique_id=869202389]
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "Press "
 
-[node name="Label2" type="Label" parent="LoginPortal/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1861023581]
+[node name="Label2" type="Label" parent="LoginPortal/PanelContainer/MarginContainer/VBoxContainer/LoginPrompt" unique_id=1861023581]
 layout_mode = 2
 theme_type_variation = &"InvertedLabel"
 theme_override_font_sizes/font_size = 28
 text = " X "
 
-[node name="Label3" type="Label" parent="LoginPortal/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=303772300]
+[node name="Label3" type="Label" parent="LoginPortal/PanelContainer/MarginContainer/VBoxContainer/LoginPrompt" unique_id=303772300]
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = " To Continue"
@@ -949,7 +961,6 @@ horizontal_alignment = 1
 
 [node name="BottomHelp" type="HBoxContainer" parent="." unique_id=383177332]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -1100,7 +1111,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="NavigateH" type="HBoxContainer" parent="BottomHelp" unique_id=668892353]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
 
@@ -1118,14 +1128,16 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -8.0
-offset_bottom = 1.0
+offset_left = 1.0
+offset_top = -3.0
+offset_right = 1.0
+offset_bottom = 6.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 theme_type_variation = &"InvertedLabel"
 theme_override_styles/normal = SubResource("StyleBoxEmpty_01wwf")
-text = "⇆"
+text = "< >"
 horizontal_alignment = 1
 vertical_alignment = 1
 
