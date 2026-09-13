@@ -1080,7 +1080,7 @@ theme_override_constants/separation = 12
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"InvertedLabel"
-text = " Esc "
+text = " Z "
 horizontal_alignment = 1
 vertical_alignment = 1
 

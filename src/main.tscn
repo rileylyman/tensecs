@@ -7327,11 +7327,18 @@ grow_vertical = 2
 theme = ExtResource("23_43aqp")
 
 [node name="Label" type="Label" parent="CanvasLayer/Control" unique_id=755246325]
-layout_mode = 0
-offset_left = 388.0
-offset_top = 508.0
-offset_right = 763.0
-offset_bottom = 556.0
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -187.0
+offset_top = -121.0
+offset_right = 188.0
+offset_bottom = -73.0
+grow_horizontal = 2
+grow_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxFlat_adv81")
 text = "<Press Any Button to Start>"
 

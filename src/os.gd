@@ -174,7 +174,7 @@ func _input(event: InputEvent) -> void:
 	for a in ["select", "back", "up", "down", "right", "left"]:
 		if event.is_action_pressed(a):
 			$Audio.play()
-	if _state != State.NameInput and _state != State.ImageBig and event.is_action_pressed("back"):
+	if _state != State.ImageBig and event.is_action_pressed("back"):
 		handle_command(Command.GoBack)
 	match _state:
 		State.NameInput:
@@ -191,8 +191,10 @@ func _input(event: InputEvent) -> void:
 							_name_succeeded = true
 							%NameResultLabel.text = "<Success>"
 							push_mail_noti("A Job Well Done")
+							$Success.play()
 						else:
 							%NameResultLabel.text = "<Failure>"
+							$Error.play()
 					elif event.keycode == KEY_ESCAPE:
 						handle_command(Command.GoBack)
 			else:
