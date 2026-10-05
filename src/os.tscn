@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cc1fomjf362h5" path="res://addons/flowerwall_crt/scenes/flowerwall_crt.tscn" id="2_8hd57"]
 [ext_resource type="Script" uid="uid://b508iyr2yk0h" path="res://src/os.gd" id="2_e6663"]
 [ext_resource type="PackedScene" uid="uid://bf3b765n283fk" path="res://src/list_element.tscn" id="4_mvs76"]
+[ext_resource type="FontFile" uid="uid://sp4wt0ukddmk" path="res://assets/PxPlus_IBM_VGA_8x16-2x.ttf" id="5_hoff3"]
 [ext_resource type="Shader" uid="uid://ne4cxxwktoov" path="res://src/greyscale_image.gdshader" id="5_nypig"]
 [ext_resource type="Script" uid="uid://b2howx6swswgq" path="res://src/mail.gd" id="6_nypig"]
 [ext_resource type="AudioStream" uid="uid://dwqnovatac31h" path="res://assets/reaper/keyboard_sounds1.wav" id="7_86xux"]
@@ -20,6 +21,14 @@
 [ext_resource type="AudioStream" uid="uid://b5kvbsowqtxca" path="res://assets/reaper/success.wav" id="17_votk1"]
 [ext_resource type="AudioStream" uid="uid://ypnxo8ljsddn" path="res://assets/reaper/noti.wav" id="18_k81yc"]
 [ext_resource type="AudioStream" uid="uid://7vs0mub6p3ac" path="res://assets/reaper/jazz.wav" id="20_k81yc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w85aw"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.53133345, 1, 0.24000001, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k4k8l"]
 bg_color = Color(0, 0, 0, 1)
@@ -61,6 +70,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_dhl38")
 script = ExtResource("2_e6663")
+skip_intro = true
 
 [node name="flowerwall_crt" parent="." unique_id=1736349292 instance=ExtResource("2_8hd57")]
 layout_mode = 1
@@ -270,7 +280,6 @@ text = "00"
 horizontal_alignment = 1
 
 [node name="SearchBar" type="Control" parent="QueryContainer" unique_id=316799382]
-unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -320,7 +329,6 @@ indeterminate = true
 editor_preview_indeterminate = true
 
 [node name="OutcomeMsg" type="Label" parent="QueryContainer" unique_id=1929440161]
-unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -335,6 +343,577 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 28
 text = "<No Results Found>"
+horizontal_alignment = 1
+
+[node name="NewQueryContainer" type="Control" parent="." unique_id=1530287448]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DateLabel" type="Label" parent="NewQueryContainer" unique_id=2036726245]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 173.0
+offset_top = 213.0
+offset_right = 509.0
+offset_bottom = 245.0
+size_flags_horizontal = 3
+text = "Monday, June 1 1947"
+horizontal_alignment = 1
+
+[node name="InfLabel" type="Label" parent="NewQueryContainer" unique_id=1635756636]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 91.0
+offset_top = -133.0
+offset_right = 358.0
+offset_bottom = -66.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "INF043
+Unauthorized Smoking"
+horizontal_alignment = 1
+
+[node name="SearchBar" type="Control" parent="NewQueryContainer" unique_id=1596450472]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = 88.0
+offset_right = 20.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label4" type="Label" parent="NewQueryContainer/SearchBar" unique_id=761818705]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -147.0
+offset_top = 32.0
+offset_right = 147.0
+offset_bottom = 56.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "Searching"
+horizontal_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="NewQueryContainer/SearchBar" unique_id=1335626594]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.00002
+offset_top = 60.0
+offset_right = 150.00002
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+show_percentage = false
+indeterminate = true
+editor_preview_indeterminate = true
+
+[node name="OutcomeMsg" type="Label" parent="NewQueryContainer" unique_id=322718651]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = 149.0
+offset_right = 181.0
+offset_bottom = 177.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+text = "<No Results Found>"
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="NewQueryContainer" unique_id=259012005]
+layout_mode = 0
+offset_left = 270.0
+offset_top = 266.0
+offset_right = 425.0
+offset_bottom = 306.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_w85aw")
+
+[node name="ChooseDate" type="Label" parent="NewQueryContainer/PanelContainer" unique_id=2047454517]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 24
+text = " Choose Date "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="NewQueryContainer" unique_id=128033083]
+layout_mode = 0
+offset_left = 721.0
+offset_top = 266.0
+offset_right = 876.0
+offset_bottom = 306.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_w85aw")
+
+[node name="SetInfraction" type="Label" parent="NewQueryContainer/PanelContainer2" unique_id=1147583616]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 24
+text = " Set Infraction "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer3" type="PanelContainer" parent="NewQueryContainer" unique_id=1028964316]
+layout_mode = 0
+offset_left = 493.0
+offset_top = 364.0
+offset_right = 657.0
+offset_bottom = 404.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_w85aw")
+
+[node name="ExecuteQuery" type="Label" parent="NewQueryContainer/PanelContainer3" unique_id=1793984201]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 24
+text = "Execute Query"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CalendarSelector" type="Control" parent="." unique_id=526575839]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CalendarTop" type="PanelContainer" parent="CalendarSelector" unique_id=1099864092]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -197.0
+offset_top = 118.0
+offset_right = 201.0
+offset_bottom = 162.0
+grow_horizontal = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CalendarSelector/CalendarTop" unique_id=649839375]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CalendarSelector/CalendarTop/HBoxContainer" unique_id=1352973447]
+layout_mode = 2
+size_flags_vertical = 1
+theme_type_variation = &"InvertedLabel"
+text = " < "
+
+[node name="CalendarTopLabel" type="Label" parent="CalendarSelector/CalendarTop/HBoxContainer" unique_id=1746131241]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Jun 1 1642"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="CalendarSelector/CalendarTop/HBoxContainer" unique_id=516503956]
+layout_mode = 2
+size_flags_vertical = 1
+theme_type_variation = &"InvertedLabel"
+text = " > "
+
+[node name="PanelContainer" type="PanelContainer" parent="CalendarSelector" unique_id=1033553433]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -140.0
+offset_right = 300.0
+offset_bottom = 228.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CalendarGrid" type="GridContainer" parent="CalendarSelector/PanelContainer" unique_id=2134746897]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 7
+
+[node name="Dow1" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1568421627]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("5_hoff3")
+text = "S"
+horizontal_alignment = 1
+
+[node name="Dow2" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1025625270]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("5_hoff3")
+text = "M"
+horizontal_alignment = 1
+
+[node name="Dow3" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=557650416]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("5_hoff3")
+text = "T"
+horizontal_alignment = 1
+
+[node name="Dow4" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1145118472]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("5_hoff3")
+text = "W"
+horizontal_alignment = 1
+
+[node name="Dow5" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=347217866]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("5_hoff3")
+text = "T"
+horizontal_alignment = 1
+
+[node name="Dow6" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1246982547]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("5_hoff3")
+text = "F"
+horizontal_alignment = 1
+
+[node name="Dow7" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1843593819]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("5_hoff3")
+text = "S"
+horizontal_alignment = 1
+
+[node name="Date1" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1281112077]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "28"
+horizontal_alignment = 1
+
+[node name="Date2" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=361003888]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "29"
+horizontal_alignment = 1
+
+[node name="Date3" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1089395457]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "30"
+horizontal_alignment = 1
+
+[node name="Date4" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1309153037]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+theme_type_variation = &"InvertedLabel"
+text = "1"
+horizontal_alignment = 1
+
+[node name="Date5" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1973142251]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "2"
+horizontal_alignment = 1
+
+[node name="Date6" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1547052662]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "3"
+horizontal_alignment = 1
+
+[node name="Date7" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=160928336]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "4"
+horizontal_alignment = 1
+
+[node name="Date8" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=361939398]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "5"
+horizontal_alignment = 1
+
+[node name="Date9" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1712057698]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "6"
+horizontal_alignment = 1
+
+[node name="Date10" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1372404885]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "7"
+horizontal_alignment = 1
+
+[node name="Date11" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1711911414]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "8"
+horizontal_alignment = 1
+
+[node name="Date12" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=275579628]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "9"
+horizontal_alignment = 1
+
+[node name="Date13" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1359283930]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "10"
+horizontal_alignment = 1
+
+[node name="Date14" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=380813824]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "11"
+horizontal_alignment = 1
+
+[node name="Date15" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1166979874]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "12"
+horizontal_alignment = 1
+
+[node name="Date16" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=704860695]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "13"
+horizontal_alignment = 1
+
+[node name="Date17" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=132829733]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "14"
+horizontal_alignment = 1
+
+[node name="Date18" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=834537807]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "15"
+horizontal_alignment = 1
+
+[node name="Date19" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=73046596]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "16"
+horizontal_alignment = 1
+
+[node name="Date20" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=975102913]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "17"
+horizontal_alignment = 1
+
+[node name="Date21" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=121584207]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "18"
+horizontal_alignment = 1
+
+[node name="Date22" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=746202836]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "19"
+horizontal_alignment = 1
+
+[node name="Date23" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1464165174]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "20"
+horizontal_alignment = 1
+
+[node name="Date24" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=54757105]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "21"
+horizontal_alignment = 1
+
+[node name="Date25" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1257605561]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "22"
+horizontal_alignment = 1
+
+[node name="Date26" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=479799167]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "23"
+horizontal_alignment = 1
+
+[node name="Date27" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=176690874]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "24"
+horizontal_alignment = 1
+
+[node name="Date28" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=358689942]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "25"
+horizontal_alignment = 1
+
+[node name="Date29" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=504727137]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "26"
+horizontal_alignment = 1
+
+[node name="Date30" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1472967420]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "27"
+horizontal_alignment = 1
+
+[node name="Date31" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=463412115]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "28"
+horizontal_alignment = 1
+
+[node name="Date32" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=317760806]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "29"
+horizontal_alignment = 1
+
+[node name="Date33" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=565213377]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "30"
+horizontal_alignment = 1
+
+[node name="Date34" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1660819702]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "31"
+horizontal_alignment = 1
+
+[node name="Date35" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1576778304]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "1"
+horizontal_alignment = 1
+
+[node name="Date36" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=94170942]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "2"
+horizontal_alignment = 1
+
+[node name="Date37" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=812402872]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "3"
+horizontal_alignment = 1
+
+[node name="Date38" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=425094151]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "4"
+horizontal_alignment = 1
+
+[node name="Date39" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1377430122]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "5"
+horizontal_alignment = 1
+
+[node name="Date40" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=224769898]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "6"
+horizontal_alignment = 1
+
+[node name="Date41" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=694209538]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "7"
+horizontal_alignment = 1
+
+[node name="Date42" type="Label" parent="CalendarSelector/PanelContainer/CalendarGrid" unique_id=1956653247]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "8"
 horizontal_alignment = 1
 
 [node name="AboutContainer" type="MarginContainer" parent="." unique_id=2131062049]
@@ -834,6 +1413,7 @@ stretch_mode = 5
 
 [node name="LoginPortal" type="MarginContainer" parent="." unique_id=263114693]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(600, 350)
 layout_mode = 1
 anchors_preset = 8
@@ -934,7 +1514,6 @@ text = " To Continue"
 
 [node name="TopTitle" type="Label" parent="." unique_id=1951740952]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -973,28 +1552,7 @@ grow_vertical = 0
 theme_override_constants/separation = 48
 alignment = 1
 
-[node name="Select" type="HBoxContainer" parent="BottomHelp" unique_id=751209315]
-visible = false
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Label" type="Label" parent="BottomHelp/Select" unique_id=1317911868]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_type_variation = &"InvertedLabel"
-text = " X "
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Label2" type="Label" parent="BottomHelp/Select" unique_id=1521472336]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Select"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="Back" type="HBoxContainer" parent="BottomHelp" unique_id=1245593799]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
 
@@ -1013,7 +1571,27 @@ text = "Back"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Select" type="HBoxContainer" parent="BottomHelp" unique_id=751209315]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="BottomHelp/Select" unique_id=1317911868]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"InvertedLabel"
+text = " X "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="BottomHelp/Select" unique_id=1521472336]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Select"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Enlarge" type="HBoxContainer" parent="BottomHelp" unique_id=1831995134]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
 
@@ -1073,6 +1651,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TextBack" type="HBoxContainer" parent="BottomHelp" unique_id=723047801]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
 
@@ -1092,6 +1671,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TextEnter" type="HBoxContainer" parent="BottomHelp" unique_id=612362219]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
 
@@ -1111,6 +1691,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="NavigateH" type="HBoxContainer" parent="BottomHelp" unique_id=668892353]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
 

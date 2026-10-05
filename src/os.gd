@@ -6,6 +6,8 @@ extends Control
 # Add click mode
 # add computer startup sound
 
+@export var skip_intro := false
+
 enum Command {
 	Unknown,
 	GoToQueryScreen,
@@ -14,6 +16,8 @@ enum Command {
 	ConsoleInfo,
 	GoBack,
 	Home,
+	SelectDate,
+	SelectInfraction,
 	PerformQuery,
 	PerformRequery,
 	LoadImage,
@@ -29,6 +33,9 @@ enum State {
 	Image,
 	ImageBig,
 	Query,
+	QueryMain,
+	DateSelector,
+	InfractionSelector,
 	Mail,
 	NameInput,
 	Map,
@@ -41,7 +48,6 @@ const month_names: Array[String] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "J
 const true_name := "GRAYSON"
 
 var _is_going_back := false
-var _skip_intro := false
 
 var _login_done := false
 var _call_stack: Array[Callable] = []
@@ -61,6 +67,16 @@ var _curr_name_guess := ""
 var _name_succeeded := false
 
 var _successful_queries: Array[String] = []
+
+var _query_main_coord_x := 0
+var _query_main_coord_y := 0
+
+var _calendar_idx := 0
+var _calendar_over_selected := false
+var _calendar_month_idx := 0
+var _calendar_day_idx := 0
+var _calendar_year := 1642
+var _calendar_weekday_start_idx := 0
 
 @onready var alphabet := "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split()
 
@@ -125,14 +141,14 @@ func _ready() -> void:
 
 
 func show_self(should_show: bool) -> void:
-	if _skip_intro:
+	if skip_intro:
 		should_show = true
 	visible = should_show
 	if not should_show and crt.is_enabled:
 		crt.enable_shader()
 	elif should_show and not crt.is_enabled:
 		crt.enable_shader()
-		if _skip_intro:
+		if skip_intro:
 			display_home()
 		else:
 			display_login(false)
@@ -174,7 +190,7 @@ func _input(event: InputEvent) -> void:
 	for a in ["select", "back", "up", "down", "right", "left"]:
 		if event.is_action_pressed(a):
 			$Audio.play()
-	if _state != State.ImageBig and event.is_action_pressed("back"):
+	if _state not in [State.ImageBig, State.DateSelector] and event.is_action_pressed("back"):
 		handle_command(Command.GoBack)
 	match _state:
 		State.NameInput:
@@ -223,6 +239,102 @@ func _input(event: InputEvent) -> void:
 				_list_idx = (_list_idx + 1) % %ListElements.get_child_count()
 			elif event.is_action_pressed("select"):
 				handle_command(%ListElements.get_child(_list_idx).command)
+		State.QueryMain:
+			if event.is_action_pressed("up"):
+				_query_main_coord_y -= 1
+			elif event.is_action_pressed("down"):
+				_query_main_coord_y += 1
+			
+			if event.is_action_pressed("right"):
+				_query_main_coord_x += 1
+			elif event.is_action_pressed("left"):
+				_query_main_coord_x -= 1
+			
+			_query_main_coord_y = posmod(_query_main_coord_y, 2)
+			_query_main_coord_x = posmod(_query_main_coord_x, 2)
+
+			var choose_date_selected := _query_main_coord_x == 0 and _query_main_coord_y == 0
+			var set_infraction_selected := _query_main_coord_x == 1 and _query_main_coord_y == 0
+			var execute_query_selected := _query_main_coord_y == 1
+
+			%ChooseDate.theme_type_variation = &"InvertedLabel" if choose_date_selected else &""
+			%SetInfraction.theme_type_variation = &"InvertedLabel" if set_infraction_selected else &""
+			%ExecuteQuery.theme_type_variation = &"InvertedLabel" if execute_query_selected else &""
+
+			if event.is_action_pressed("select"):
+				if choose_date_selected:
+					handle_command(Command.SelectDate)
+				elif set_infraction_selected:
+					handle_command(Command.Unknown)
+				else:
+					handle_command(Command.PerformQuery)
+		State.DateSelector:
+			if event.is_action_pressed("back") and _calendar_over_selected:
+				handle_command(Command.GoBack)
+				return
+			elif event.is_action_pressed("back") or (event.is_action_pressed("up") and _calendar_idx < 7):
+				_calendar_over_selected = true
+			elif _calendar_over_selected and (event.is_action_pressed("select") or event.is_action_pressed("down")):
+				_calendar_over_selected = false
+
+			%CalendarTopLabel.theme_type_variation = &""
+			for c in %CalendarGrid.find_children("Date*"):
+				c.theme_type_variation = ""
+
+			if _calendar_over_selected:
+				%CalendarTopLabel.theme_type_variation = &"InvertedLabel"
+				if event.is_action_pressed("left"):
+					if _calendar_month_idx == 0:
+						_calendar_year -= 1
+						_calendar_month_idx = 11
+						_calendar_idx = 0
+					else:
+						_calendar_month_idx -= 1
+				elif event.is_action_pressed("right"):
+					if _calendar_month_idx == 11:
+						_calendar_year += 1
+						_calendar_month_idx = 0
+						_calendar_idx = 0
+					else:
+						_calendar_month_idx += 1
+
+			var first_day_of_month = Time.get_datetime_dict_from_datetime_string("%04d-%02d-%02dT00:00:00" % [_calendar_year, _calendar_month_idx + 1, 1], true)
+			_calendar_weekday_start_idx = first_day_of_month["weekday"]
+			for i in range(42):
+				var c = %CalendarGrid.get_node("Date" + str(i + 1))
+				var day := i - _calendar_weekday_start_idx + 1
+				if day <= 0:
+					c.text = str(days[posmod(_calendar_month_idx - 1, 12)] + day)
+					c.modulate.a = 0.25
+				elif day > days[_calendar_month_idx]:
+					c.text = str(day - days[_calendar_month_idx])
+					c.modulate.a = 0.25
+				else:
+					c.text = str(day)
+					c.modulate.a = 1.0
+
+			if not _calendar_over_selected:
+				if event.is_action_pressed("left"):
+					_calendar_idx -= 1
+				elif event.is_action_pressed("right"):
+					_calendar_idx += 1
+				
+				if event.is_action_pressed("down"):
+					_calendar_idx += 7
+				elif event.is_action_pressed("up"):
+					_calendar_idx -= 7
+
+				_calendar_idx = posmod(_calendar_idx, 42)
+
+			_calendar_idx = clamp(_calendar_idx, _calendar_weekday_start_idx, _calendar_weekday_start_idx + days[_calendar_month_idx] - 1)
+			_calendar_day_idx = _calendar_idx - _calendar_weekday_start_idx
+
+			%CalendarGrid.get_node("Date" + str(_calendar_idx + 1)).theme_type_variation = &"InvertedLabel"
+
+
+			# var datetime_dict = Time.get_datetime_dict_from_datetime_string("%04d-%02d-%02dT00:00:00" % [_calendar_year, _calendar_month_idx + 1, _calendar_day_idx + 1], true)
+			%CalendarTopLabel.text = "%s %d, %d" % [month_names[_calendar_month_idx], _calendar_day_idx + 1, _calendar_year]
+
 		State.Query:
 			var part = _date_parts[_date_idx]
 			var n = int(part.text)
@@ -282,7 +394,7 @@ func _input(event: InputEvent) -> void:
 				%Day.text = "%02d" % clamp(day, 1, days[clamp(month, 1, 12) - 1])
 				%Hour.text = "%02d" % clamp(hour, 0, 23)
 				%Minute.text = "%02d" % clamp(minute, 0, 59)
-				
+
 				var info := Time.get_datetime_dict_from_datetime_string("%s-%s-%sT%s:%s:00" % [%Year.text, %Month.text, %Day.text, %Hour.text, %Minute.text], true)
 				%DayAndMonthLabel.text = "%s, %s %02d" % [weekdays[info["weekday"]], month_names[int(%Month.text) - 1], int(%Day.text)]
 				var ampm := "am" if int(%Hour.text) < 12 else "pm"
@@ -343,8 +455,10 @@ func handle_command(cmd: Command) -> void:
 				_call_stack[0].call()
 				_call_stack.pop_front()
 				_is_going_back = false
+		Command.SelectDate:
+			display_calendar_selector()
 		Command.PerformQuery:
-			if _state == State.Query and not _is_searching:
+			if _state == State.QueryMain and not _is_searching:
 				do_query()
 		Command.PerformRequery:
 			do_requery()
@@ -490,6 +604,8 @@ func display_nothing() -> void:
 	%ListContainer.visible = false
 	%LoginPortal.visible = false
 	%QueryContainer.visible = false
+	%NewQueryContainer.visible = false
+	%CalendarSelector.visible = false
 	%TopTitle.visible = false
 	%TopTitleWithSub.visible = false
 	%BottomHelp.visible = false
@@ -543,16 +659,25 @@ func display_image() -> void:
 	
 	display_bottom(["Done", "Enlarge", "Scroll"])
 
+func display_calendar_selector() -> void:
+	display_nothing()
+	_call_stack.push_front(display_calendar_selector)
+	_state = State.DateSelector
+
+	%CalendarSelector.visible = true
+	display_title("Select Date")
+	display_bottom(["Select", "Back", "Navigate"])
+
 func display_query() -> void:
 	display_nothing()
 	_call_stack.push_front(display_query)
-	_state = State.Query
+	_state = State.QueryMain
 
-	%QueryContainer.visible = true
+	%NewQueryContainer.visible = true
 	%SearchBar.visible = false
 	%OutcomeMsg.visible = false
 	display_title("Camera Query")
-	display_bottom(["Back", "NavigateH", "Adjust", "Search"])
+	display_bottom(["Select", "Back", "Navigate"])
 
 var _has_done_login := false
 func display_login(should_fill: bool) -> void:

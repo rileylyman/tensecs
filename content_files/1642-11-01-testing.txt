@@ -1,0 +1,15 @@
+title: Testing The Title Feature
+date: 1642-11-01
+time: 17:00
+location: CAFETERIA
+infractions: SMOKING,ALCOHOL
+image:
+vignette:
+
+---
+
+*Speaker*:
+Hey, this is me testing that this works.
+
+*Speaker 2*:
+Okay, that's great to hear!
