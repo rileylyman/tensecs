@@ -45,6 +45,8 @@ enum State {
 const days: Array[int] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 const weekdays: Array[String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 const month_names: Array[String] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+const full_weekdays: Array[String] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+const full_month_names: Array[String] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 const true_name := "GRAYSON"
 
@@ -56,8 +58,10 @@ var _list_idx := 0
 var _list_idx_stack: Array[int] = []
 
 var _current_results_list := []
+
 var _current_infractions_list := []
-var _selected_infraction := Infractions.all[0]
+var _selected_infraction := I.Infraction.SMOKING
+var _available_infractions := [I.Infraction.SMOKING, I.Infraction.MURDER, I.Infraction.AGGRESSIVE_OUTBURST]
 
 var _current_list_names := []
 
@@ -264,8 +268,8 @@ func _input(event: InputEvent) -> void:
 			%SetInfraction.theme_type_variation = &"InvertedLabel" if set_infraction_selected else &""
 			%ExecuteQuery.theme_type_variation = &"InvertedLabel" if execute_query_selected else &""
 
-			var datetime_dict = Time.get_datetime_dict_from_datetime_string("%04d-%02d-%02dT00:00:00" % [_calendar_year, _calendar_month_idx + 1, _calendar_day_idx + 1], true)
-			%DateLabel.text = "%s, %s %d %d" % [weekdays[datetime_dict["weekday"]], month_names[_calendar_month_idx], _calendar_day_idx + 1, _calendar_year]
+			# var datetime_dict = Time.get_datetime_dict_from_datetime_string("%04d-%02d-%02dT00:00:00" % [_calendar_year, _calendar_month_idx + 1, _calendar_day_idx + 1], true)
+			# %DateLabel.text = "%s, %s %d %d" % [weekdays[datetime_dict["weekday"]], month_names[_calendar_month_idx], _calendar_day_idx + 1, _calendar_year]
 
 			if event.is_action_pressed("select"):
 				if choose_date_selected:
@@ -330,18 +334,24 @@ func _input(event: InputEvent) -> void:
 
 			if not _calendar_over_selected:
 				%CalendarGrid.get_node("Date" + str(_calendar_idx + 1)).theme_type_variation = &"InvertedLabel"
+			var has_wrapped := false
 			for i in range(42):
 				var c = %CalendarGrid.get_node("Date" + str(i + 1))
 				var day := i - _calendar_weekday_start_idx + 1
 				if day <= 0:
 					c.text = str(days[posmod(_calendar_month_idx - 1, 12)] + day)
 					c.modulate.a = 0.25
+					c.visible = true
 				elif day > days[_calendar_month_idx]:
+					if i % 7 == 0:
+						has_wrapped = true
 					c.text = str(day - days[_calendar_month_idx])
 					c.modulate.a = 0.25
+					c.visible = not has_wrapped
 				else:
 					c.text = str(day)
 					c.modulate.a = 1.0
+					c.visible = true
 
 			%CalendarTopLabel.text = "%s %d" % [month_names[_calendar_month_idx], _calendar_year]
 
@@ -674,6 +684,12 @@ func display_image() -> void:
 	
 	display_bottom(["Done", "Enlarge", "Scroll"])
 
+func inf_full(i: I.Infraction) -> String:
+	return "INF.%03d - %s" % [i, I.Infraction.find_key(i)]
+
+func inf_two_lines(i: I.Infraction) -> String:
+	return "INF.%03d\n%s" % [i, I.Infraction.find_key(i)]
+
 func display_infraction_selector() -> void:
 	display_nothing()
 	_call_stack.push_front(display_infraction_selector)
@@ -681,9 +697,9 @@ func display_infraction_selector() -> void:
 
 	_current_infractions_list.clear()
 	var dict: Dictionary[String, Command] = {}
-	for inf in Infractions.all:
+	for inf in _available_infractions:
 		_current_infractions_list.append(inf)
-		dict[inf.short_with_code()] = Command.SelectThisInfraction
+		dict[inf_full(inf)] = Command.SelectThisInfraction
 
 	display_list(
 		"Infractions",
@@ -705,10 +721,9 @@ func display_query() -> void:
 	_call_stack.push_front(display_query)
 	_state = State.QueryMain
 
-	# TODO: HACK: this is duplicated in the event handler
 	var datetime_dict = Time.get_datetime_dict_from_datetime_string("%04d-%02d-%02dT00:00:00" % [_calendar_year, _calendar_month_idx + 1, _calendar_day_idx + 1], true)
-	%DateLabel.text = "%s, %s %d %d" % [weekdays[datetime_dict["weekday"]], month_names[_calendar_month_idx], _calendar_day_idx + 1, _calendar_year]
-	%InfLabel.text = _selected_infraction.short_with_code()
+	%DateLabel.text = "%s\n%s %d, %d" % [full_weekdays[datetime_dict["weekday"]].to_upper(), full_month_names[_calendar_month_idx].to_upper(), _calendar_day_idx + 1, _calendar_year]
+	%InfLabel.text = inf_two_lines(_selected_infraction)
 
 	%NewQueryContainer.visible = true
 	%SearchBar.visible = false

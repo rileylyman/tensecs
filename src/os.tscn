@@ -430,9 +430,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -82.0
-offset_top = 47.0
+offset_top = -5.0
 offset_right = 82.0
-offset_bottom = 87.0
+offset_bottom = 35.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_w85aw")
@@ -454,9 +454,9 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = 276.0
-offset_top = -165.0
+offset_top = -158.0
 offset_right = -276.0
-offset_bottom = -38.0
+offset_bottom = -91.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -464,7 +464,9 @@ grow_vertical = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Monday, June 1 1947"
+size_flags_vertical = 8
+text = "MONDAY
+JUNE 1 1947"
 horizontal_alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="NewQueryContainer/HBoxContainer/DateLabel" unique_id=259012005]
@@ -473,9 +475,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -77.0
-offset_top = 44.0
+offset_top = 76.0
 offset_right = 78.0
-offset_bottom = 84.0
+offset_bottom = 116.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_w85aw")
 
@@ -492,7 +494,9 @@ vertical_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "INF043 - SMOKING"
+size_flags_vertical = 8
+text = "SMOKING
+INF.043"
 horizontal_alignment = 1
 
 [node name="PanelContainer2" type="PanelContainer" parent="NewQueryContainer/HBoxContainer/InfLabel" unique_id=128033083]
@@ -501,9 +505,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -82.1875
-offset_top = 45.0
+offset_top = 75.0
 offset_right = 81.8125
-offset_bottom = 85.0
+offset_bottom = 115.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_w85aw")
 

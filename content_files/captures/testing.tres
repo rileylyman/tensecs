@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Capture" format=3 uid="uid://b73vvqjom6j5l"]
+
+[ext_resource type="Texture2D" uid="uid://7a8gew7igyvh" path="res://assets/gltf/Computer_Computer.png" id="1_bjipn"]
+[ext_resource type="Script" uid="uid://corkdok1n2wmn" path="res://src/capture.gd" id="1_tkc2h"]
+
+[resource]
+script = ExtResource("1_tkc2h")
+name = "Testing 123"
+month = 1
+day = 14
+hour = 8
+minute = 23
+second = 34
+location = 2
+infractions = Array[int]([331])
+image = ExtResource("1_bjipn")
+transcript = "{Riley}:
+Hello, I am testing out this awesome new feature right here, right now."
+metadata/_custom_type_script = "uid://corkdok1n2wmn"
