@@ -60,7 +60,7 @@ var _list_idx_stack: Array[int] = []
 var _current_results_list := []
 
 var _current_infractions_list := []
-var _selected_infraction := I.Infraction.SMOKING
+var _selected_infraction := I.Infraction.AGGRESSIVE_OUTBURST
 var _available_infractions := [I.Infraction.SMOKING, I.Infraction.MURDER, I.Infraction.AGGRESSIVE_OUTBURST]
 
 var _current_list_names := []
@@ -70,20 +70,35 @@ var _date_keys_pressed := 0
 var _is_searching := false
 @onready var _date_parts := [%Year, %Month, %Day, %Hour, %Minute]
 
+@onready var all_captures: Array[Capture]
+
 var _curr_name_guess := ""
 var _name_succeeded := false
 
-var _successful_queries: Array[String] = []
+class Query:
+	var year: int
+	var month: int # [1-12]
+	var day: int # [1-31]
+	var infraction: I.Infraction
+	func _init(_year: int, _month: int, _day: int, _infraction: I.Infraction):
+		year = _year
+		month = _month
+		day = _day
+		infraction = _infraction
+
+var _successful_queries: Array[Query] = []
 
 var _query_main_coord_x := 0
 var _query_main_coord_y := 0
 
 var _calendar_idx := 0
 var _calendar_over_selected := false
-var _calendar_month_idx := 0
-var _calendar_day_idx := 0
+var _calendar_month_idx := 1
+var _calendar_day_idx := 14
 var _calendar_year := 1642
 var _calendar_weekday_start_idx := 0
+
+var _exiting_query := false
 
 @onready var alphabet := "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split()
 
@@ -146,6 +161,9 @@ func _ready() -> void:
 		mails.append(m)
 		i += 1
 
+	const dir := "res://content_files/captures/"
+	for path in ResourceLoader.list_directory(dir):
+		all_captures.append(ResourceLoader.load(dir + path))
 
 func show_self(should_show: bool) -> void:
 	if skip_intro:
@@ -197,7 +215,7 @@ func _input(event: InputEvent) -> void:
 	for a in ["select", "back", "up", "down", "right", "left"]:
 		if event.is_action_pressed(a):
 			$Audio.play()
-	if _state not in [State.ImageBig, State.DateSelector] and event.is_action_pressed("back"):
+	if _state not in [State.ImageBig, State.DateSelector, State.QueryMain] and event.is_action_pressed("back"):
 		handle_command(Command.GoBack)
 	match _state:
 		State.NameInput:
@@ -247,37 +265,45 @@ func _input(event: InputEvent) -> void:
 			elif event.is_action_pressed("select"):
 				handle_command(%ListElements.get_child(_list_idx).command)
 		State.QueryMain:
-			if event.is_action_pressed("up"):
-				_query_main_coord_y -= 1
-			elif event.is_action_pressed("down"):
-				_query_main_coord_y += 1
-			
-			if event.is_action_pressed("right"):
-				_query_main_coord_x += 1
-			elif event.is_action_pressed("left"):
-				_query_main_coord_x -= 1
-			
-			_query_main_coord_y = posmod(_query_main_coord_y, 2)
-			_query_main_coord_x = posmod(_query_main_coord_x, 2)
+			if event.is_action_pressed("back") or (event.is_action_pressed("select") and _exiting_query):
+				handle_command(Command.GoBack)
+				return
 
-			var choose_date_selected := _query_main_coord_x == 0 and _query_main_coord_y == 0
-			var set_infraction_selected := _query_main_coord_x == 1 and _query_main_coord_y == 0
-			var execute_query_selected := _query_main_coord_y == 1
-
-			%ChooseDate.theme_type_variation = &"InvertedLabel" if choose_date_selected else &""
-			%SetInfraction.theme_type_variation = &"InvertedLabel" if set_infraction_selected else &""
-			%ExecuteQuery.theme_type_variation = &"InvertedLabel" if execute_query_selected else &""
-
-			# var datetime_dict = Time.get_datetime_dict_from_datetime_string("%04d-%02d-%02dT00:00:00" % [_calendar_year, _calendar_month_idx + 1, _calendar_day_idx + 1], true)
-			# %DateLabel.text = "%s, %s %d %d" % [weekdays[datetime_dict["weekday"]], month_names[_calendar_month_idx], _calendar_day_idx + 1, _calendar_year]
-
+			var choose_date_selected := not _exiting_query and _query_main_coord_x == 0 and _query_main_coord_y == 0
+			var set_infraction_selected := not _exiting_query and _query_main_coord_x == 1 and _query_main_coord_y == 0
+			var execute_query_selected := not _exiting_query and _query_main_coord_y == 1
 			if event.is_action_pressed("select"):
 				if choose_date_selected:
 					handle_command(Command.SelectDate)
 				elif set_infraction_selected:
 					handle_command(Command.SelectInfraction)
-				else:
+				elif execute_query_selected:
 					handle_command(Command.PerformQuery)
+
+			if event.is_action_pressed("up"):
+				_exiting_query = false
+				_query_main_coord_y -= 1
+			elif event.is_action_pressed("down"):
+				_exiting_query = false
+				_query_main_coord_y += 1
+			
+			if event.is_action_pressed("right"):
+				_exiting_query = false
+				_query_main_coord_x += 1
+				if _query_main_coord_y == 1:
+					_query_main_coord_y = 0
+					_query_main_coord_x = 1
+			elif event.is_action_pressed("left"):
+				_exiting_query = false
+				_query_main_coord_x -= 1
+				if _query_main_coord_y == 1:
+					_query_main_coord_y = 0
+					_query_main_coord_x = 0
+			
+			_query_main_coord_y = posmod(_query_main_coord_y, 2)
+			_query_main_coord_x = posmod(_query_main_coord_x, 2)
+
+			_refresh_query_main_view()
 		State.DateSelector:
 			var was_over_selected := _calendar_over_selected
 			if (event.is_action_pressed("back") and _calendar_over_selected) or (event.is_action_pressed("select") and not _calendar_over_selected):
@@ -288,29 +314,24 @@ func _input(event: InputEvent) -> void:
 			elif _calendar_over_selected and (event.is_action_pressed("select") or event.is_action_pressed("down")):
 				_calendar_over_selected = false
 
-			%CalendarTopLabel.theme_type_variation = &""
-			for c in %CalendarGrid.find_children("Date*"):
-				c.theme_type_variation = ""
-
-			if _calendar_over_selected:
-				%CalendarTopLabel.theme_type_variation = &"InvertedLabel"
-				if event.is_action_pressed("left", true):
-					if _calendar_month_idx == 0:
-						_calendar_year -= 1
-						_calendar_month_idx = 11
-					else:
-						_calendar_month_idx -= 1
-					_calendar_idx = 0
-				elif event.is_action_pressed("right", true):
-					if _calendar_month_idx == 11:
-						_calendar_year += 1
-						_calendar_month_idx = 0
-					else:
-						_calendar_month_idx += 1
-					_calendar_idx = 0
-
 			var first_day_of_month = Time.get_datetime_dict_from_datetime_string("%04d-%02d-%02dT00:00:00" % [_calendar_year, _calendar_month_idx + 1, 1], true)
 			_calendar_weekday_start_idx = first_day_of_month["weekday"]
+			_calendar_idx = _calendar_weekday_start_idx + _calendar_day_idx
+
+			if _calendar_over_selected and event.is_action_pressed("left", true):
+				if _calendar_month_idx == 0:
+					_calendar_year -= 1
+					_calendar_month_idx = 11
+				else:
+					_calendar_month_idx -= 1
+				_calendar_idx = 0
+			elif _calendar_over_selected and event.is_action_pressed("right", true):
+				if _calendar_month_idx == 11:
+					_calendar_year += 1
+					_calendar_month_idx = 0
+				else:
+					_calendar_month_idx += 1
+				_calendar_idx = 0
 
 			if not _calendar_over_selected:
 				if event.is_action_pressed("left"):
@@ -329,31 +350,9 @@ func _input(event: InputEvent) -> void:
 
 			_calendar_idx = posmod(_calendar_idx, 42)
 			_calendar_idx = clamp(_calendar_idx, _calendar_weekday_start_idx, _calendar_weekday_start_idx + days[_calendar_month_idx] - 1)
-			if not _calendar_over_selected:
-				_calendar_day_idx = _calendar_idx - _calendar_weekday_start_idx
+			_calendar_day_idx = _calendar_idx - _calendar_weekday_start_idx
 
-			if not _calendar_over_selected:
-				%CalendarGrid.get_node("Date" + str(_calendar_idx + 1)).theme_type_variation = &"InvertedLabel"
-			var has_wrapped := false
-			for i in range(42):
-				var c = %CalendarGrid.get_node("Date" + str(i + 1))
-				var day := i - _calendar_weekday_start_idx + 1
-				if day <= 0:
-					c.text = str(days[posmod(_calendar_month_idx - 1, 12)] + day)
-					c.modulate.a = 0.25
-					c.visible = true
-				elif day > days[_calendar_month_idx]:
-					if i % 7 == 0:
-						has_wrapped = true
-					c.text = str(day - days[_calendar_month_idx])
-					c.modulate.a = 0.25
-					c.visible = not has_wrapped
-				else:
-					c.text = str(day)
-					c.modulate.a = 1.0
-					c.visible = true
-
-			%CalendarTopLabel.text = "%s %d" % [month_names[_calendar_month_idx], _calendar_year]
+			_refresh_calendar_view()
 
 		State.Query:
 			var part = _date_parts[_date_idx]
@@ -469,6 +468,8 @@ func handle_command(cmd: Command) -> void:
 		Command.GoBack:
 			if _state == State.Image:
 				process_image_notis()
+			if _state == State.QueryMain:
+				_exiting_query = false
 			if _call_stack.size() > 1:
 				_is_going_back = true
 				_call_stack.pop_front()
@@ -494,21 +495,78 @@ func handle_command(cmd: Command) -> void:
 		Command.ViewMailList:
 			display_mail_list()
 
-func find_results(query_string: String) -> Array:
-	var main := get_tree().current_scene
+func _refresh_query_main_view() -> void:
+	var datetime_dict = Time.get_datetime_dict_from_datetime_string("%04d-%02d-%02dT00:00:00" % [_calendar_year, _calendar_month_idx + 1, _calendar_day_idx + 1], true)
+	%DateLabel.text = "%s\n%s %d, %d" % [full_weekdays[datetime_dict["weekday"]].to_upper(), full_month_names[_calendar_month_idx].to_upper(), _calendar_day_idx + 1, _calendar_year]
+	%InfLabel.text = inf_two_lines(_selected_infraction)
+
+	var choose_date_selected := not _exiting_query and _query_main_coord_x == 0 and _query_main_coord_y == 0
+	var set_infraction_selected := not _exiting_query and _query_main_coord_x == 1 and _query_main_coord_y == 0
+	var execute_query_selected := not _exiting_query and _query_main_coord_y == 1
+	%ChooseDate.theme_type_variation = &"InvertedLabel" if choose_date_selected else &""
+	%SetInfraction.theme_type_variation = &"InvertedLabel" if set_infraction_selected else &""
+	%ExecuteQuery.theme_type_variation = &"InvertedLabel" if execute_query_selected else &""
+
+func _refresh_calendar_view() -> void:
+	var first_day_of_month = Time.get_datetime_dict_from_datetime_string("%04d-%02d-%02dT00:00:00" % [_calendar_year, _calendar_month_idx + 1, 1], true)
+	_calendar_weekday_start_idx = first_day_of_month["weekday"]
+
+	if _calendar_over_selected:
+		%CalendarTopLabel.theme_type_variation = &"InvertedLabel"
+	else:
+		%CalendarTopLabel.theme_type_variation = &""
+	%CalendarTopLabel.text = "%s %d" % [month_names[_calendar_month_idx], _calendar_year]
+
+	for c in %CalendarGrid.find_children("Date*"):
+		c.theme_type_variation = ""
+	if not _calendar_over_selected:
+		%CalendarGrid.get_node("Date" + str(_calendar_day_idx + _calendar_weekday_start_idx + 1)).theme_type_variation = &"InvertedLabel"
+
+	var has_wrapped := false
+	for i in range(42):
+		var c = %CalendarGrid.get_node("Date" + str(i + 1))
+		var day := i - _calendar_weekday_start_idx + 1
+		if day <= 0:
+			c.text = str(days[posmod(_calendar_month_idx - 1, 12)] + day)
+			c.modulate.a = 0.25
+			c.visible = true
+		elif day > days[_calendar_month_idx]:
+			if i % 7 == 0:
+				has_wrapped = true
+			c.text = str(day - days[_calendar_month_idx])
+			c.modulate.a = 0.25
+			c.visible = not has_wrapped
+		else:
+			c.text = str(day)
+			c.modulate.a = 1.0
+			c.visible = true
+
+
+func find_results(q: Query) -> Array:
 	var results := []
-	if main.name == "Main":
-		var cam_scenes := main.get_children().filter(func(c): return c is CamScene)
-		for c in cam_scenes:
-			c.visible = false
-		results = cam_scenes.filter(func(c): return c.time == query_string)
-		for r in results:
-			r.visible = true
+	# var main := get_tree().current_scene
+	# if main.name == "Main":
+	# 	var cam_scenes := main.get_children().filter(func(c): return c is CamScene)
+	# 	for c in cam_scenes:
+	# 		c.visible = false
+	# 	results = cam_scenes.filter(func(c): return c.time == query_string)
+	# 	for r in results:
+	# 		r.visible = true
+
+	for c in all_captures:
+		if c.year == q.year and c.month + 1 == q.month and c.day == q.day and c.infractions.has(q.infraction):
+			results.append(c)
 	return results
 
 func do_requery() -> void:
-	var results = find_results(_successful_queries[_list_idx - 1])
-	display_query_results(results)
+	var q := _successful_queries[_list_idx - 1]
+	_calendar_day_idx = q.day - 1
+	_calendar_month_idx = q.month - 1
+	_calendar_year = q.year
+	_selected_infraction = q.infraction
+	handle_command(Command.GoToQueryScreen)
+	# var results = find_results(_successful_queries[_list_idx - 1])
+	# display_query_results(results)
 
 func do_query():
 	_is_searching = true
@@ -517,8 +575,8 @@ func do_query():
 	%SearchBar/ProgressBar.indeterminate = false
 	%SearchBar/ProgressBar.indeterminate = true
 
-	var query_string := "16%s-%s-%sT%s:%s" % [%Year.text, %Month.text, %Day.text, %Hour.text, %Minute.text]
-	var results = find_results(query_string)
+	var query = Query.new(_calendar_year, _calendar_month_idx + 1, _calendar_day_idx + 1, _selected_infraction)
+	var results = find_results(query)
 
 	await get_tree().create_timer(1.0).timeout
 	%SearchBar.visible = false
@@ -529,12 +587,13 @@ func do_query():
 		$Error.play()
 	else:
 		$Success.play()
-		if not query_string in _successful_queries:
-			_successful_queries.append(query_string)
+		if not query in _successful_queries:
+			_successful_queries.append(query)
 			_successful_queries.sort()
 		%OutcomeMsg.text = "<Found %d result%s. Loading...>" % [results.size(), "s" if results.size() > 1 else ""]
 		await get_tree().create_timer(1.0).timeout
-		_call_stack.pop_front()
+		# _call_stack.pop_front()
+		_exiting_query = true
 		display_query_results(results)
 	_is_searching = false
 
@@ -544,12 +603,7 @@ func display_log() -> void:
 	var dict: Dictionary[String, Command] = {}
 	for q in _successful_queries:
 		var res := find_results(q)
-		var alias := ""
-		for r in res:
-			if not r.alias.is_empty():
-				alias = r.alias
-				break
-		dict[" At ".join(pretty_date(q)) + ("" if not alias else " - " + alias)] = Command.PerformRequery
+		dict["%s %d, %d - %s: %s" % [month_names[q.month - 1], q.day, q.year, I.Infraction.find_key(q.infraction), res[0].name]] = Command.PerformRequery
 
 	display_list(
 		"Query Log",
@@ -597,9 +651,10 @@ func display_query_results(results: Array) -> void:
 	_current_results_list = results
 	var dict: Dictionary[String, Command] = {}
 	for r in results:
-		dict[r.svp.location] = Command.LoadImage
+		var date_string = "%02d:%02d:%02d" % [r.hour, r.minute, r.second]
+		dict[date_string + " - " + I.Location.find_key(r.location) + ": " + r.name] = Command.LoadImage
 	display_list(
-		"Query Results;%s" % ("" if results.size() == 0 else " At ".join(pretty_date(results[0].time))),
+		"Query Results;%s %d, %d" % [month_names[results[0].month - 1], results[0].day, results[0].year],
 		dict,
 		["Select", "Back", "Navigate"]
 	)
@@ -646,8 +701,9 @@ func push_mail_noti(subject_line: String) -> void:
 		show_noti()
 
 func process_image_notis() -> void:
-	var r: CamScene = _current_results_list[_list_idx - 1]
-	push_mail_noti(r.trigger_mail)
+	pass
+	# var r: CamScene = _current_results_list[_list_idx - 1]
+	# push_mail_noti(r.trigger_mail)
 
 func pretty_date(date_string: String) -> Array[String]:
 	date_string += ":00"
@@ -673,14 +729,20 @@ func display_image() -> void:
 	_state = State.Image
 
 	%ImageContainer.visible = true
-	if get_tree().current_scene.name == "Main":
-		var r: CamScene = _current_results_list[_list_idx - 1]
-		%ImageRect.texture.viewport_path = r.svp.get_path()
-		%ImageDesc.text = ""
-		%ImageDesc.append_text("\n-- Automatic Audio Transcription --\n\n" + r.transcript.replace("{", "[font_size=20][b]").replace("}", "[/b][/font_size]") + "\n\n-- End of Transcript --\n")
-		var d := pretty_date(r.time)
-		%ImageHeader.text = _img_header_orig.format({"title_string": r.svp.location, "date_string": d[0] + " At " + d[1]})
-		%ImageScroll.scroll_vertical = 0
+
+	var r: Capture = _current_results_list[_list_idx - 1]
+	%ImageRect.texture = null
+	if r.cam_scene:
+		push_error("Cam scenes unimplemented as of yet")
+	elif r.image:
+		%ImageRect.texture = r.image
+	%ImageDesc.text = ""
+	%ImageDesc.append_text("\n-- Automatic Audio Transcription --\n\n" + r.transcript.replace("{", "[font_size=20][b]").replace("}", "[/b][/font_size]") + "\n\n-- End of Transcript --\n")
+	%ImageHeader.text = _img_header_orig.format({
+		"title_string": I.Location.find_key(r.location),
+		"date_string": "%s %d, %d At %02d:%02d:%02d" % [month_names[r.month - 1], r.day, r.year, r.hour, r.minute, r.second],
+	})
+	%ImageScroll.scroll_vertical = 0
 	
 	display_bottom(["Done", "Enlarge", "Scroll"])
 
@@ -712,6 +774,7 @@ func display_calendar_selector() -> void:
 	_call_stack.push_front(display_calendar_selector)
 	_state = State.DateSelector
 
+	_refresh_calendar_view()
 	%CalendarSelector.visible = true
 	display_title("Select Date")
 	display_bottom(["Select", "Back", "Navigate"])
@@ -721,9 +784,7 @@ func display_query() -> void:
 	_call_stack.push_front(display_query)
 	_state = State.QueryMain
 
-	var datetime_dict = Time.get_datetime_dict_from_datetime_string("%04d-%02d-%02dT00:00:00" % [_calendar_year, _calendar_month_idx + 1, _calendar_day_idx + 1], true)
-	%DateLabel.text = "%s\n%s %d, %d" % [full_weekdays[datetime_dict["weekday"]].to_upper(), full_month_names[_calendar_month_idx].to_upper(), _calendar_day_idx + 1, _calendar_year]
-	%InfLabel.text = inf_two_lines(_selected_infraction)
+	_refresh_query_main_view()
 
 	%NewQueryContainer.visible = true
 	%SearchBar.visible = false
