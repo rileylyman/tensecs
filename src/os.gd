@@ -18,6 +18,7 @@ enum Command {
 	Home,
 	SelectDate,
 	SelectInfraction,
+	SelectThisInfraction,
 	PerformQuery,
 	PerformRequery,
 	LoadImage,
@@ -55,6 +56,8 @@ var _list_idx := 0
 var _list_idx_stack: Array[int] = []
 
 var _current_results_list := []
+var _current_infractions_list := []
+var _selected_infraction := Infractions.all[0]
 
 var _current_list_names := []
 
@@ -261,18 +264,22 @@ func _input(event: InputEvent) -> void:
 			%SetInfraction.theme_type_variation = &"InvertedLabel" if set_infraction_selected else &""
 			%ExecuteQuery.theme_type_variation = &"InvertedLabel" if execute_query_selected else &""
 
+			var datetime_dict = Time.get_datetime_dict_from_datetime_string("%04d-%02d-%02dT00:00:00" % [_calendar_year, _calendar_month_idx + 1, _calendar_day_idx + 1], true)
+			%DateLabel.text = "%s, %s %d %d" % [weekdays[datetime_dict["weekday"]], month_names[_calendar_month_idx], _calendar_day_idx + 1, _calendar_year]
+
 			if event.is_action_pressed("select"):
 				if choose_date_selected:
 					handle_command(Command.SelectDate)
 				elif set_infraction_selected:
-					handle_command(Command.Unknown)
+					handle_command(Command.SelectInfraction)
 				else:
 					handle_command(Command.PerformQuery)
 		State.DateSelector:
-			if event.is_action_pressed("back") and _calendar_over_selected:
+			var was_over_selected := _calendar_over_selected
+			if (event.is_action_pressed("back") and _calendar_over_selected) or (event.is_action_pressed("select") and not _calendar_over_selected):
 				handle_command(Command.GoBack)
 				return
-			elif event.is_action_pressed("back") or (event.is_action_pressed("up") and _calendar_idx < 7):
+			elif event.is_action_pressed("back") or (event.is_action_pressed("up") and _calendar_day_idx < 7):
 				_calendar_over_selected = true
 			elif _calendar_over_selected and (event.is_action_pressed("select") or event.is_action_pressed("down")):
 				_calendar_over_selected = false
@@ -283,23 +290,46 @@ func _input(event: InputEvent) -> void:
 
 			if _calendar_over_selected:
 				%CalendarTopLabel.theme_type_variation = &"InvertedLabel"
-				if event.is_action_pressed("left"):
+				if event.is_action_pressed("left", true):
 					if _calendar_month_idx == 0:
 						_calendar_year -= 1
 						_calendar_month_idx = 11
-						_calendar_idx = 0
 					else:
 						_calendar_month_idx -= 1
-				elif event.is_action_pressed("right"):
+					_calendar_idx = 0
+				elif event.is_action_pressed("right", true):
 					if _calendar_month_idx == 11:
 						_calendar_year += 1
 						_calendar_month_idx = 0
-						_calendar_idx = 0
 					else:
 						_calendar_month_idx += 1
+					_calendar_idx = 0
 
 			var first_day_of_month = Time.get_datetime_dict_from_datetime_string("%04d-%02d-%02dT00:00:00" % [_calendar_year, _calendar_month_idx + 1, 1], true)
 			_calendar_weekday_start_idx = first_day_of_month["weekday"]
+
+			if not _calendar_over_selected:
+				if event.is_action_pressed("left"):
+					if _calendar_idx - 1 - _calendar_weekday_start_idx >= 0:
+						_calendar_idx -= 1
+				elif event.is_action_pressed("right"):
+					if _calendar_idx + 1 - _calendar_weekday_start_idx < days[_calendar_month_idx]:
+						_calendar_idx += 1
+				
+				if event.is_action_pressed("down") and not was_over_selected:
+					if _calendar_idx + 7 - _calendar_weekday_start_idx < days[_calendar_month_idx]:
+						_calendar_idx += 7
+				elif event.is_action_pressed("up"):
+					if _calendar_idx - 7 - _calendar_weekday_start_idx >= 0:
+						_calendar_idx -= 7
+
+			_calendar_idx = posmod(_calendar_idx, 42)
+			_calendar_idx = clamp(_calendar_idx, _calendar_weekday_start_idx, _calendar_weekday_start_idx + days[_calendar_month_idx] - 1)
+			if not _calendar_over_selected:
+				_calendar_day_idx = _calendar_idx - _calendar_weekday_start_idx
+
+			if not _calendar_over_selected:
+				%CalendarGrid.get_node("Date" + str(_calendar_idx + 1)).theme_type_variation = &"InvertedLabel"
 			for i in range(42):
 				var c = %CalendarGrid.get_node("Date" + str(i + 1))
 				var day := i - _calendar_weekday_start_idx + 1
@@ -313,27 +343,7 @@ func _input(event: InputEvent) -> void:
 					c.text = str(day)
 					c.modulate.a = 1.0
 
-			if not _calendar_over_selected:
-				if event.is_action_pressed("left"):
-					_calendar_idx -= 1
-				elif event.is_action_pressed("right"):
-					_calendar_idx += 1
-				
-				if event.is_action_pressed("down"):
-					_calendar_idx += 7
-				elif event.is_action_pressed("up"):
-					_calendar_idx -= 7
-
-				_calendar_idx = posmod(_calendar_idx, 42)
-
-			_calendar_idx = clamp(_calendar_idx, _calendar_weekday_start_idx, _calendar_weekday_start_idx + days[_calendar_month_idx] - 1)
-			_calendar_day_idx = _calendar_idx - _calendar_weekday_start_idx
-
-			%CalendarGrid.get_node("Date" + str(_calendar_idx + 1)).theme_type_variation = &"InvertedLabel"
-
-
-			# var datetime_dict = Time.get_datetime_dict_from_datetime_string("%04d-%02d-%02dT00:00:00" % [_calendar_year, _calendar_month_idx + 1, _calendar_day_idx + 1], true)
-			%CalendarTopLabel.text = "%s %d, %d" % [month_names[_calendar_month_idx], _calendar_day_idx + 1, _calendar_year]
+			%CalendarTopLabel.text = "%s %d" % [month_names[_calendar_month_idx], _calendar_year]
 
 		State.Query:
 			var part = _date_parts[_date_idx]
@@ -457,6 +467,11 @@ func handle_command(cmd: Command) -> void:
 				_is_going_back = false
 		Command.SelectDate:
 			display_calendar_selector()
+		Command.SelectInfraction:
+			display_infraction_selector()
+		Command.SelectThisInfraction:
+			_selected_infraction = _current_infractions_list[_list_idx - 1]
+			handle_command(Command.GoBack)
 		Command.PerformQuery:
 			if _state == State.QueryMain and not _is_searching:
 				do_query()
@@ -659,6 +674,23 @@ func display_image() -> void:
 	
 	display_bottom(["Done", "Enlarge", "Scroll"])
 
+func display_infraction_selector() -> void:
+	display_nothing()
+	_call_stack.push_front(display_infraction_selector)
+	_state = State.InfractionSelector
+
+	_current_infractions_list.clear()
+	var dict: Dictionary[String, Command] = {}
+	for inf in Infractions.all:
+		_current_infractions_list.append(inf)
+		dict[inf.short_with_code()] = Command.SelectThisInfraction
+
+	display_list(
+		"Infractions",
+		dict,
+		["Select", "Back", "Navigate"]
+	)
+
 func display_calendar_selector() -> void:
 	display_nothing()
 	_call_stack.push_front(display_calendar_selector)
@@ -672,6 +704,11 @@ func display_query() -> void:
 	display_nothing()
 	_call_stack.push_front(display_query)
 	_state = State.QueryMain
+
+	# TODO: HACK: this is duplicated in the event handler
+	var datetime_dict = Time.get_datetime_dict_from_datetime_string("%04d-%02d-%02dT00:00:00" % [_calendar_year, _calendar_month_idx + 1, _calendar_day_idx + 1], true)
+	%DateLabel.text = "%s, %s %d %d" % [weekdays[datetime_dict["weekday"]], month_names[_calendar_month_idx], _calendar_day_idx + 1, _calendar_year]
+	%InfLabel.text = _selected_infraction.short_with_code()
 
 	%NewQueryContainer.visible = true
 	%SearchBar.visible = false
