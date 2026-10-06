@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://d4cpc65enqv0q"]
+
+[sub_resource type="Environment" id="Environment_smqr3"]
+background_mode = 1
+ambient_light_source = 2
+ambient_light_color = Color(0.34, 0.34, 0.34, 1)
+
+[node name="DisablingControlMatrix" type="Node3D" unique_id=1966127479]
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=116890715]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewport" unique_id=1698015484]
+environment = SubResource("Environment_smqr3")
+
+[node name="Root" type="Node3D" parent="SubViewport" unique_id=258594199]

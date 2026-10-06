@@ -11,6 +11,6 @@ extends Resource
 @export var location: I.Location
 @export var infractions: Array[I.Infraction]
 @export var image: Texture2D
-@export var cam_scene: PackedScene
+@export var scene: PackedScene
 @export var vignette: PackedScene
 @export_multiline var transcript: String

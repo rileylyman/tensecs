@@ -564,7 +564,10 @@ func do_requery() -> void:
 	_calendar_month_idx = q.month - 1
 	_calendar_year = q.year
 	_selected_infraction = q.infraction
+	_query_main_coord_x = 0
+	_query_main_coord_y = 1
 	handle_command(Command.GoToQueryScreen)
+	handle_command(Command.PerformQuery)
 	# var results = find_results(_successful_queries[_list_idx - 1])
 	# display_query_results(results)
 
@@ -723,6 +726,8 @@ func pretty_date(date_string: String) -> Array[String]:
 	return [date_part, time_part]
 
 @onready var _img_header_orig: String = %ImageHeader.text
+@onready var _img_vptex: ViewportTexture = %ImageRect.texture
+var _current_scene: Node3D = null
 func display_image() -> void:
 	display_nothing()
 	_call_stack.push_front(display_image)
@@ -731,9 +736,15 @@ func display_image() -> void:
 	%ImageContainer.visible = true
 
 	var r: Capture = _current_results_list[_list_idx - 1]
-	%ImageRect.texture = null
-	if r.cam_scene:
-		push_error("Cam scenes unimplemented as of yet")
+	if r.scene:
+		var scene := r.scene.instantiate()
+		if _current_scene:
+			_current_scene.queue_free()
+		get_tree().current_scene.add_child(scene)
+		_current_scene = scene
+		scene.get_node("SubViewport/Root").global_position = Vector3(0, -1000, 0)
+		%ImageRect.texture = _img_vptex
+		%ImageRect.texture.viewport_path = scene.get_node("SubViewport").get_path()
 	elif r.image:
 		%ImageRect.texture = r.image
 	%ImageDesc.text = ""
