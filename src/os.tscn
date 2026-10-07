@@ -937,7 +937,6 @@ horizontal_alignment = 1
 
 [node name="AboutContainer" type="MarginContainer" parent="." unique_id=2131062049]
 unique_name_in_owner = true
-visible = false
 custom_maximum_size = Vector2(1100, -1)
 layout_mode = 1
 anchors_preset = 15
@@ -976,10 +975,10 @@ text = "Welcome, Felxi092, to the [b][u]Pelagius[/u][/b] security management con
 Using this interface, authorized personnel may
   	 Review security camera footage and attached audio transcripts
   	 View up-to-date facility floor plans
-  	 [s]Manage security counter-measures[/s]
-       	 [u]Feb 15, 1643 at 3:12am[/u] Error: Control disabled by external override
 
-[u]Please note:[/u] To preserve storage longevity, security cameras only capture still-frame snapshots [u]once every ten seconds[/u], and only if motion is detected.
+[u]Please note:[/u] Smoking at the terminal is now a Class-2 Infraction under station bylaws (ratified 1642-01-01). Your most recent violation on February 14 has been logged.
+
+We look forward to your obedience.
 "
 fit_content = true
 
@@ -1313,6 +1312,7 @@ fit_content = true
 
 [node name="ImageContainer" type="Control" parent="." unique_id=170892621]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1876,6 +1876,5 @@ autoplay = true
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=1679312618]
 stream = ExtResource("20_k81yc")
 volume_db = -10.214
-autoplay = true
 
 [editable path="flowerwall_crt"]

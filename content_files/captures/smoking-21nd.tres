@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Capture" format=3 uid="uid://d2d1kf1cqvcjl"]
+
+[ext_resource type="PackedScene" uid="uid://drvw7dlvlkamw" path="res://content_files/scenes/smoking_15th.tscn" id="1_nv8dq"]
+[ext_resource type="Script" uid="uid://corkdok1n2wmn" path="res://src/capture.gd" id="2_tvi3q"]
+
+[resource]
+script = ExtResource("2_tvi3q")
+month = 1
+day = 21
+hour = 19
+minute = 1
+second = 30
+location = 3
+infractions = Array[int]([242])
+scene = ExtResource("1_nv8dq")
+transcript = "{Nick}:
+All that drama finally seems to be dying down, huh?
+
+{Sadie}:
+Don't jinx it."
+metadata/_custom_type_script = "uid://corkdok1n2wmn"

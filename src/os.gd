@@ -61,7 +61,7 @@ var _current_results_list := []
 
 var _current_infractions_list := []
 var _selected_infraction := I.Infraction.AGGRESSIVE_OUTBURST
-var _available_infractions := [I.Infraction.SMOKING, I.Infraction.MURDER, I.Infraction.AGGRESSIVE_OUTBURST]
+var _available_infractions := [I.Infraction.SMOKING, I.Infraction.AGGRESSIVE_OUTBURST, I.Infraction.TARDINESS, I.Infraction.ENTERING_RESTRICTED_AREA, I.Infraction.UNAUTHORIZED_TERMINAL_ACCESS]
 
 var _current_list_names := []
 
@@ -554,6 +554,8 @@ func find_results(q: Query) -> Array:
 	# 		r.visible = true
 
 	for c in all_captures:
+		print(c.year, ", ", c.month + 1, ", ", c.day, ", ", c.infractions)
+		print(q.year, ", ", q.month, ", ", q.day, ", ", q.infraction)
 		if c.year == q.year and c.month + 1 == q.month and c.day == q.day and c.infractions.has(q.infraction):
 			results.append(c)
 	return results
@@ -567,11 +569,11 @@ func do_requery() -> void:
 	_query_main_coord_x = 0
 	_query_main_coord_y = 1
 	handle_command(Command.GoToQueryScreen)
-	handle_command(Command.PerformQuery)
+	do_query(0.5)
 	# var results = find_results(_successful_queries[_list_idx - 1])
 	# display_query_results(results)
 
-func do_query():
+func do_query(duration: float = 1.0):
 	_is_searching = true
 	%OutcomeMsg.visible = false
 	%SearchBar.visible = true
@@ -581,7 +583,7 @@ func do_query():
 	var query = Query.new(_calendar_year, _calendar_month_idx + 1, _calendar_day_idx + 1, _selected_infraction)
 	var results = find_results(query)
 
-	await get_tree().create_timer(1.0).timeout
+	await get_tree().create_timer(duration).timeout
 	%SearchBar.visible = false
 	%OutcomeMsg.visible = true
 
@@ -594,7 +596,7 @@ func do_query():
 			_successful_queries.append(query)
 			_successful_queries.sort()
 		%OutcomeMsg.text = "<Found %d result%s. Loading...>" % [results.size(), "s" if results.size() > 1 else ""]
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(duration).timeout
 		# _call_stack.pop_front()
 		_exiting_query = true
 		display_query_results(results)
@@ -606,7 +608,7 @@ func display_log() -> void:
 	var dict: Dictionary[String, Command] = {}
 	for q in _successful_queries:
 		var res := find_results(q)
-		dict["%s %d, %d - %s: %s" % [month_names[q.month - 1], q.day, q.year, I.Infraction.find_key(q.infraction), res[0].name]] = Command.PerformRequery
+		dict["%s %d, %d - %s (%d result%s)" % [month_names[q.month - 1], q.day, q.year, I.Infraction.find_key(q.infraction), res.size(), "s" if res.size() > 1 else ""]] = Command.PerformRequery
 
 	display_list(
 		"Query Log",
@@ -616,7 +618,7 @@ func display_log() -> void:
 
 func display_mail() -> void:
 	display_nothing()
-	_call_stack.push_front(display_image)
+	_call_stack.push_front(display_mail)
 	_state = State.Mail
 
 	%MailContainer.visible = true
@@ -657,7 +659,7 @@ func display_query_results(results: Array) -> void:
 		var date_string = "%02d:%02d:%02d" % [r.hour, r.minute, r.second]
 		dict[date_string + " - " + I.Location.find_key(r.location) + ": " + r.name] = Command.LoadImage
 	display_list(
-		"Query Results;%s %d, %d" % [month_names[results[0].month - 1], results[0].day, results[0].year],
+		"Query Results;%s %d, %d" % [month_names[results[0].month], results[0].day, results[0].year],
 		dict,
 		["Select", "Back", "Navigate"]
 	)
@@ -751,7 +753,7 @@ func display_image() -> void:
 	%ImageDesc.append_text("\n-- Automatic Audio Transcription --\n\n" + r.transcript.replace("{", "[font_size=20][b]").replace("}", "[/b][/font_size]") + "\n\n-- End of Transcript --\n")
 	%ImageHeader.text = _img_header_orig.format({
 		"title_string": I.Location.find_key(r.location),
-		"date_string": "%s %d, %d At %02d:%02d:%02d" % [month_names[r.month - 1], r.day, r.year, r.hour, r.minute, r.second],
+		"date_string": "%s %d, %d At %02d:%02d:%02d" % [month_names[r.month], r.day, r.year, r.hour, r.minute, r.second],
 	})
 	%ImageScroll.scroll_vertical = 0
 	

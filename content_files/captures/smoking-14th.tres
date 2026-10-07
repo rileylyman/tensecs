@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="Capture" format=3 uid="uid://32fem6a3an5r"]
+
+[ext_resource type="PackedScene" uid="uid://drvw7dlvlkamw" path="res://content_files/scenes/smoking_15th.tscn" id="1_3nkec"]
+[ext_resource type="Script" uid="uid://corkdok1n2wmn" path="res://src/capture.gd" id="2_lded8"]
+
+[resource]
+script = ExtResource("2_lded8")
+month = 1
+day = 14
+hour = 19
+minute = 2
+second = 14
+location = 3
+infractions = Array[int]([242])
+scene = ExtResource("1_3nkec")
+transcript = "{Nick}:
+Well, all that to say: I just can't believe Robert is gone.
+
+{Sadie}:
+Who would've thought it'd be _him_ do something like that.
+
+{Nick}:
+It's just so sad. Anyway, I better head back to work. Meet back here next week, same time?
+
+{Sadie}:
+At this point, you don't even have to ask."
+metadata/_custom_type_script = "uid://corkdok1n2wmn"

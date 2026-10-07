@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Capture" format=3 uid="uid://cgrbday8asjno"]
+
+[ext_resource type="PackedScene" uid="uid://drvw7dlvlkamw" path="res://content_files/scenes/smoking_15th.tscn" id="1_no4s5"]
+[ext_resource type="Script" uid="uid://corkdok1n2wmn" path="res://src/capture.gd" id="2_7xrel"]
+
+[resource]
+script = ExtResource("2_7xrel")
+month = 1
+day = 7
+hour = 19
+minute = 2
+second = 14
+location = 3
+infractions = Array[int]([242])
+scene = ExtResource("1_no4s5")
+transcript = "{Sadie}:
+So what was all that at lunch today?
+
+{Nick}:
+It was so strange. Robert was going on about some crazy shit. Made me late for my shift after lunch. It seems like he's in some deep shit..."
+metadata/_custom_type_script = "uid://corkdok1n2wmn"

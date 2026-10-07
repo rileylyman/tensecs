@@ -3,14 +3,19 @@ extends Object
 
 enum Infraction {
     UNKNOWN = 0,
-    SMOKING = 042,
-    MURDER = 555,
-    THEFT = 136,
+    TARDINESS = 136,
+    SMOKING = 242,
+    ENTERING_RESTRICTED_AREA = 300,
     AGGRESSIVE_OUTBURST = 331,
+    UNAUTHORIZED_TERMINAL_ACCESS = 497,
+    MURDER = 555,
 }
 
 enum Location {
     CAFETERIA,
     LOUNGE,
     MEDICAL_BAY,
+    SECURITY,
+    MINESHAFT_ENTRY,
+    ARCHIVES,
 }

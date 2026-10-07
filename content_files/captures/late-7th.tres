@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="Capture" format=3 uid="uid://bedkdaloyilbh"]
+
+[ext_resource type="PackedScene" uid="uid://d4lgjqlt5dlwu" path="res://content_files/scenes/late_7th.tscn" id="1_j2xy2"]
+[ext_resource type="Script" uid="uid://corkdok1n2wmn" path="res://src/capture.gd" id="2_2ht3l"]
+
+[resource]
+script = ExtResource("2_2ht3l")
+month = 1
+day = 7
+hour = 12
+minute = 33
+second = 15
+location = 4
+infractions = Array[int]([136])
+scene = ExtResource("1_j2xy2")
+transcript = "{Sadie}:
+Nick, Hurry up! You're already late!
+
+{Nick}:
+I know, I know! Just stall for me, could you?
+
+{Sadie}:
+Where's Robert?
+
+{Nick}:
+He's not coming, he ran off down to the archives. Said something about his life being over. I couldn't make sense of any of it.
+
+{Sadie}:
+But the archives are restricted! He'll get his pay docked!"
+metadata/_custom_type_script = "uid://corkdok1n2wmn"

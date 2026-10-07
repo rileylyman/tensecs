@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="Capture" format=3 uid="uid://ckjotowqv07uf"]
+
+[ext_resource type="PackedScene" uid="uid://d3r1kvjkn2mms" path="res://content_files/scenes/archives_10th.tscn" id="1_0prr4"]
+[ext_resource type="Script" uid="uid://corkdok1n2wmn" path="res://src/capture.gd" id="2_n60sx"]
+
+[resource]
+script = ExtResource("2_n60sx")
+month = 1
+day = 10
+hour = 7
+minute = 30
+second = 18
+location = 5
+infractions = Array[int]([300])
+scene = ExtResource("1_0prr4")
+transcript = "{Octavia}:
+Guards, guards, it's him! He's back!
+
+{Robert}:
+Wait, wait, wait! What's going on??
+
+{Octavia}:
+You're obviously the one who broke in over the weekend! Hey! Stop Running! Guards, get him!"
+metadata/_custom_type_script = "uid://corkdok1n2wmn"

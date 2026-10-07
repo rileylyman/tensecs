@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="Capture" format=3 uid="uid://num0wahwxisa"]
+
+[ext_resource type="PackedScene" uid="uid://dibnxjllqorq6" path="res://content_files/scenes/archives_7th.tscn" id="1_ji3u6"]
+[ext_resource type="Script" uid="uid://corkdok1n2wmn" path="res://src/capture.gd" id="2_xmucw"]
+
+[resource]
+script = ExtResource("2_xmucw")
+month = 1
+day = 7
+hour = 12
+minute = 29
+second = 22
+location = 5
+infractions = Array[int]([300])
+scene = ExtResource("1_ji3u6")
+transcript = "{Octavia}:
+Sir, you can't be in here. This is a restricted area.
+
+{Robert}:
+Please, I'm begging you. I  need to get a copy of my keycard access records. Somebody's trying to frame me!
+
+{Octavia}:
+Look, I can run it by the Archive Authority, but it's very unlikely they'll grant you access. Come back on Monday."
+metadata/_custom_type_script = "uid://corkdok1n2wmn"
