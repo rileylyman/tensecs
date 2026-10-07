@@ -13,6 +13,7 @@ second = 14
 location = 3
 infractions = Array[int]([242])
 scene = ExtResource("1_3nkec")
+trigger_mail = "A Warm Welcome"
 transcript = "{Nick}:
 Well, all that to say: I just can't believe Robert is gone.
 

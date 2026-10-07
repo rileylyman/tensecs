@@ -48,7 +48,7 @@ const month_names: Array[String] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "J
 const full_weekdays: Array[String] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 const full_month_names: Array[String] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
-const true_name := "GRAYSON"
+const true_name := "SADIE"
 
 var _is_going_back := false
 
@@ -711,8 +711,8 @@ func process_image_notis() -> void:
 	if r.learn_infraction != I.Infraction.UNKNOWN and r.learn_infraction not in _available_infractions:
 		show_noti("Infraction Unlocked!", inf_full(r.learn_infraction))
 		_available_infractions.append(r.learn_infraction)
-
-	# push_mail_noti(r.trigger_mail)
+	if r.trigger_mail:
+		push_mail_noti(r.trigger_mail)
 
 func pretty_date(date_string: String) -> Array[String]:
 	date_string += ":00"

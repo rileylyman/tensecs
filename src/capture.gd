@@ -14,4 +14,5 @@ extends Resource
 @export var scene: PackedScene
 @export var vignette: PackedScene
 @export var learn_infraction: I.Infraction
+@export var trigger_mail := ""
 @export_multiline var transcript: String
