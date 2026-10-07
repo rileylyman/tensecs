@@ -60,8 +60,8 @@ var _list_idx_stack: Array[int] = []
 var _current_results_list := []
 
 var _current_infractions_list := []
-var _selected_infraction := I.Infraction.AGGRESSIVE_OUTBURST
-var _available_infractions := [I.Infraction.SMOKING, I.Infraction.AGGRESSIVE_OUTBURST, I.Infraction.TARDINESS, I.Infraction.ENTERING_RESTRICTED_AREA, I.Infraction.UNAUTHORIZED_TERMINAL_ACCESS]
+var _selected_infraction := I.Infraction.SMOKING
+var _available_infractions := [I.Infraction.SMOKING]
 
 var _current_list_names := []
 
@@ -93,8 +93,8 @@ var _query_main_coord_y := 0
 
 var _calendar_idx := 0
 var _calendar_over_selected := false
-var _calendar_month_idx := 1
-var _calendar_day_idx := 14
+var _calendar_month_idx := 0
+var _calendar_day_idx := 0
 var _calendar_year := 1642
 var _calendar_weekday_start_idx := 0
 
@@ -199,10 +199,11 @@ func _trigger_right() -> void:
 	Input.parse_input_event(i)
 
 var _showing_noti := false
-func show_noti() -> void:
+func show_noti(header := "You got mail!", subheader := "View it from the main menu.") -> void:
 	if _showing_noti:
 		return
 	_showing_noti = true
+	%MailNoti/Label.text = "[font_size=38]%s[/font_size]\n[font_size=28] %s" % [header, subheader]
 	await create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT).tween_property(%MailNoti, "offset_transform_position:x", 0.0, 0.5).finished
 	$Noti.play()
 	await get_tree().create_timer(3.0).timeout
@@ -497,7 +498,7 @@ func handle_command(cmd: Command) -> void:
 
 func _refresh_query_main_view() -> void:
 	var datetime_dict = Time.get_datetime_dict_from_datetime_string("%04d-%02d-%02dT00:00:00" % [_calendar_year, _calendar_month_idx + 1, _calendar_day_idx + 1], true)
-	%DateLabel.text = "%s\n%s %d, %d" % [full_weekdays[datetime_dict["weekday"]].to_upper(), full_month_names[_calendar_month_idx].to_upper(), _calendar_day_idx + 1, _calendar_year]
+	%DateLabel.text = "%s\n%s %d, %d" % [full_weekdays[datetime_dict["weekday"] - 1].to_upper(), full_month_names[_calendar_month_idx].to_upper(), _calendar_day_idx + 1, _calendar_year]
 	%InfLabel.text = inf_two_lines(_selected_infraction)
 
 	var choose_date_selected := not _exiting_query and _query_main_coord_x == 0 and _query_main_coord_y == 0
@@ -706,8 +707,11 @@ func push_mail_noti(subject_line: String) -> void:
 		show_noti()
 
 func process_image_notis() -> void:
-	pass
-	# var r: CamScene = _current_results_list[_list_idx - 1]
+	var r: Capture = _current_results_list[_list_idx - 1]
+	if r.learn_infraction != I.Infraction.UNKNOWN and r.learn_infraction not in _available_infractions:
+		show_noti("Infraction Unlocked!", inf_full(r.learn_infraction))
+		_available_infractions.append(r.learn_infraction)
+
 	# push_mail_noti(r.trigger_mail)
 
 func pretty_date(date_string: String) -> Array[String]:

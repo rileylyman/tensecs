@@ -13,4 +13,5 @@ extends Resource
 @export var image: Texture2D
 @export var scene: PackedScene
 @export var vignette: PackedScene
+@export var learn_infraction: I.Infraction
 @export_multiline var transcript: String

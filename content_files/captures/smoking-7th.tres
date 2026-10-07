@@ -13,9 +13,10 @@ second = 14
 location = 3
 infractions = Array[int]([242])
 scene = ExtResource("1_no4s5")
+learn_infraction = 136
 transcript = "{Sadie}:
-So what was all that at lunch today?
+So, what was all that after lunch yesterday?
 
 {Nick}:
-It was so strange. Robert was going on about some crazy shit. Made me late for my shift after lunch. It seems like he's in some deep shit..."
+It was so strange. Robert was going on about some crazy shit. Made me late for my shift. It seems like he's in some deep shit..."
 metadata/_custom_type_script = "uid://corkdok1n2wmn"

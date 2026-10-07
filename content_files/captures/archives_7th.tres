@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_xmucw")
 month = 1
-day = 7
+day = 6
 hour = 12
 minute = 29
 second = 22
@@ -14,11 +14,11 @@ location = 5
 infractions = Array[int]([300])
 scene = ExtResource("1_ji3u6")
 transcript = "{Octavia}:
-Sir, you can't be in here. This is a restricted area.
+For the third time- you need to leave, before I call security.
 
 {Robert}:
-Please, I'm begging you. I  need to get a copy of my keycard access records. Somebody's trying to frame me!
+Please, I'm begging you. I just need a copy of my keycard access records.
 
 {Octavia}:
-Look, I can run it by the Archive Authority, but it's very unlikely they'll grant you access. Come back on Monday."
+It's very unlikely the Authority would agree to that... Look, come back on Monday, I'll see what I can do. But, for now, please, just get out of here!"
 metadata/_custom_type_script = "uid://corkdok1n2wmn"

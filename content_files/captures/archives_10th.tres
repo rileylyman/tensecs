@@ -13,6 +13,7 @@ second = 18
 location = 5
 infractions = Array[int]([300])
 scene = ExtResource("1_0prr4")
+learn_infraction = 497
 transcript = "{Octavia}:
 Guards, guards, it's him! He's back!
 

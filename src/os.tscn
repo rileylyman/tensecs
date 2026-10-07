@@ -1876,5 +1876,6 @@ autoplay = true
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=1679312618]
 stream = ExtResource("20_k81yc")
 volume_db = -10.214
+autoplay = true
 
 [editable path="flowerwall_crt"]

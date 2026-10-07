@@ -13,6 +13,8 @@ second = 45
 location = 3
 infractions = Array[int]([497])
 scene = ExtResource("1_8uqqb")
-transcript = "{Sadie}:
-(Humming)"
+transcript = "(Alarms sounding)
+
+{Sadie}:
+Shit, I don't have much time in here."
 metadata/_custom_type_script = "uid://corkdok1n2wmn"
